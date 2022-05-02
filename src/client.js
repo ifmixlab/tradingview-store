@@ -62,6 +62,7 @@ module.exports = class Client {
 
     error: [],
     event: [],
+    packet:[]
   };
 
   /**
@@ -71,6 +72,10 @@ module.exports = class Client {
   #handleEvent(ev, ...data) {
     this.#callbacks[ev].forEach((e) => e(...data));
     this.#callbacks.event.forEach((e) => e(ev, ...data));
+  }
+
+  #handlePacketCB(data) {
+    this.#callbacks.packet.forEach((e) => e(data));
   }
 
   #handleError(...msgs) {
@@ -154,11 +159,17 @@ module.exports = class Client {
     this.#callbacks.event.push(cb);
   }
 
+  onPacket(cb) {
+    this.#callbacks.packet.push(cb);
+  }
+
   #parsePacket(str) {
     if (!this.isOpen) return;
 
     protocol.parseWSPacket(str).forEach((packet) => {
       if (global.TW_DEBUG) console.log('§90§30§107 CLIENT §0 PACKET', packet);
+      this.#handlePacketCB(packet)
+
       if (typeof packet === 'number') { // Ping
         this.#ws.send(protocol.formatWSPacket(`~h~${packet}`));
         this.#handleEvent('ping', packet);
