@@ -1,7 +1,7 @@
 const https = require('https');
 
 /**
- * @param {https.RequestOptions} options HTTPS Request options
+ * @param {https.RequestOptions} options HTTPS Request marketOptions
  * @param {boolean} [raw] Get raw or JSON data
  * @param {string} [content] Request body content
  * @returns {Promise<{ data: (string | object | array), cookies: string[] }>} Result

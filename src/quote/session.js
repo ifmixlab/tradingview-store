@@ -64,13 +64,13 @@ module.exports = (client) => class QuoteSession {
   #symbolListeners = {};
 
   /**
-   * @typedef {Object} quoteSessionOptions Quote Session options
+   * @typedef {Object} quoteSessionOptions Quote Session marketOptions
    * @prop {'all' | 'price'} [fields] Asked quote fields
    * @prop {quoteField[]} [customFields] List of asked quote fields
    */
 
   /**
-   * @param {quoteSessionOptions} options Quote settings options
+   * @param {quoteSessionOptions} options Quote settings marketOptions
    */
   constructor(options = {}) {
     this.#client.sessions[this.#sessionID] = {

@@ -10,7 +10,7 @@
  * @property {string | number | boolean} value Input default value
  * @property {boolean} isHidden If the input is hidden
  * @property {boolean} isFake If the input is fake
- * @property {string[]} [options] Input options if the input is a select
+ * @property {string[]} [marketOptions] Input marketOptions if the input is a select
  */
 
 /**

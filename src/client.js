@@ -229,7 +229,7 @@ module.exports = class Client {
    */
 
   /** Client object
-   * @param {ClientOptions} clientOptions TradingView client options
+   * @param {ClientOptions} clientOptions TradingView client marketOptions
    */
   constructor(clientOptions = {}) {
     if (clientOptions.DEBUG) global.TW_DEBUG = clientOptions.DEBUG;

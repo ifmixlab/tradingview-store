@@ -332,7 +332,7 @@ module.exports = (client) => class ChartSession {
   /**
    * Set the chart market
    * @param {string} symbol Market symbol
-   * @param {Object} [options] Chart options
+   * @param {Object} [options] Chart marketOptions
    * @param {import('../types').TimeFrame} [options.timeframe] Chart period timeframe
    * @param {number} [options.range] Number of loaded periods/candles (Default: 100)
    * @param {number} [options.to] Last candle timestamp (Default is now)
