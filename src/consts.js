@@ -3,5 +3,6 @@ const tvEventTypes={
 }
 
 module.exports = {
-    tvEventTypes
+    tvEventTypes,
+    DB_NAME_OD:"od_tv_test"
 };
