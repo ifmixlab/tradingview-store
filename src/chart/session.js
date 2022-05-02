@@ -1,5 +1,5 @@
 const { genSessionID } = require('../utils');
-
+const {tvEventTypes}  = require('../consts');
 const studyConstructor = require('./study');
 
 /**
@@ -136,6 +136,8 @@ module.exports = (client) => class ChartSession {
    */
   #periods = {};
 
+
+
   /** @return {PricePeriod[]} List of periods values */
   get periods() {
     return Object.values(this.#periods).sort((a, b) => b.time - a.time);
@@ -171,7 +173,9 @@ module.exports = (client) => class ChartSession {
    * @param {...{}} data Packet data
    */
   #handleEvent(ev, ...data) {
-    this.#callbacks[ev].forEach((e) => e(...data));
+    if(this.#callbacks[ev]){
+      this.#callbacks[ev].forEach((e) => e(...data));
+    }
     this.#callbacks.event.forEach((e) => e(ev, ...data));
   }
 
@@ -231,6 +235,8 @@ module.exports = (client) => class ChartSession {
           this.#handleEvent('update', changes);
           return;
         }
+
+        this.#handleEvent(packet.type, packet);
 
         if (packet.type === 'symbol_error') {
           this.#handleError(`(${packet.data[1]}) Symbol error:`, packet.data[2]);
@@ -517,6 +523,13 @@ module.exports = (client) => class ChartSession {
    */
   onReplayPoint(cb) {
     this.#callbacks.replayPoint.push(cb);
+  }
+
+  onTVEvent(type,cb) {
+    if(!this.#callbacks[type]){
+      this.#callbacks[type] = [];
+    }
+    this.#callbacks[type].push(cb);
   }
 
   /**

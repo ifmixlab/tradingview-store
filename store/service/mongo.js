@@ -15,6 +15,21 @@ async function getClient() {
     return client;
 }
 
+async function run(process) {
+    const mongoClient = await getClient();
+    await mongoClient.connect()
+    try {
+        await process(mongoClient)
+    } catch (e) {
+        console.error("process error. ", e)
+    } finally {
+        console.log("mongo run done.")
+        // await mongoClient.close()
+    }
+}
+
+
 module.exports = {
-    getClient
+    getClient,
+    run
 };
