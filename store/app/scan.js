@@ -14,6 +14,8 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await  Promise.all([
         processType(mongoClient, "crypto",scan_crypto_columns),
+        processType(mongoClient, "china",scan_stock_columns),
+        processType(mongoClient, "hongkong",scan_stock_columns),
         processType(mongoClient, "america",scan_stock_columns)
     ])
     console.log("mainProcess done.")
@@ -47,7 +49,7 @@ async function processType(mongoClient, type, columns) {
                 obj[colName] = value;
             }
             obj.symbol = it.s;
-            obj.t = new Date();
+            obj.pAt = new Date();
             // console.log("doc: ", JSON.stringify(obj));
             return obj;
         })
