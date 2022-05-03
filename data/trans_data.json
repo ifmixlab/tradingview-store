@@ -1,0 +1,1718 @@
+{
+    "name": [
+        {
+            "value": "Ticker"
+        },
+        {
+            "value": "Ticker"
+        }
+    ],
+    "description": [
+        {
+            "value": "Description"
+        },
+        {
+            "value": "Description"
+        }
+    ],
+    "country": [
+        {
+            "value": "Country"
+        },
+        {
+            "value": "Country"
+        }
+    ],
+    "type": [
+        {
+            "value": "Symbol Type"
+        },
+        {
+            "value": "Symbol Type"
+        }
+    ],
+    "after_tax_margin": [
+        {
+            "value": "Net Margin (TTM)"
+        },
+        {
+            "value": "Net Margin"
+        }
+    ],
+    "average_volume": [
+        {
+            "value": "Average Volume (10 day)"
+        },
+        {
+            "value": "Avg Vol (10)"
+        }
+    ],
+    "average_volume_30d_calc": [
+        {
+            "value": "Average Volume (30 day)"
+        },
+        {
+            "value": "Avg Vol (30)"
+        }
+    ],
+    "average_volume_60d_calc": [
+        {
+            "value": "Average Volume (60 day)"
+        },
+        {
+            "value": "Avg Vol (60)"
+        }
+    ],
+    "average_volume_90d_calc": [
+        {
+            "value": "Average Volume (90 day)"
+        },
+        {
+            "value": "Avg Vol (90)"
+        }
+    ],
+    "basic_eps_net_income": [
+        {
+            "value": "Basic EPS (FY)"
+        },
+        {
+            "value": "EPS (FY)"
+        }
+    ],
+    "beta_1_year": [
+        {
+            "value": "1-Year Beta"
+        },
+        {
+            "value": "1-Y Beta"
+        }
+    ],
+    "beta_3_year": [
+        {
+            "value": "Beta - 3 Year"
+        },
+        {
+            "value": "Beta 3Y"
+        }
+    ],
+    "beta_5_year": [
+        {
+            "value": "Beta - 5 Year"
+        },
+        {
+            "value": "Beta 5Y"
+        }
+    ],
+    "candlestick": [
+        {
+            "value": "Pattern"
+        },
+        {
+            "value": "Pattern"
+        }
+    ],
+    "current_ratio": [
+        {
+            "value": "Current Ratio (MRQ)"
+        },
+        {
+            "value": "Current Ratio"
+        }
+    ],
+    "debt_to_assets": [
+        {
+            "value": "Debt to Assets"
+        },
+        {
+            "value": "Debt to Assets"
+        }
+    ],
+    "debt_to_equity": [
+        {
+            "value": "Debt to Equity Ratio (MRQ)"
+        },
+        {
+            "value": "DEBT/EQUITY"
+        }
+    ],
+    "dividends_paid": [
+        {
+            "value": "Dividends Paid (FY)"
+        },
+        {
+            "value": "Div Paid"
+        }
+    ],
+    "dividends_per_share_fq": [
+        {
+            "value": "Dividends per Share (MRQ)"
+        },
+        {
+            "value": "Div per Share (MRQ)"
+        }
+    ],
+    "dividends_yield": [
+        {
+            "value": "Dividend Yield Forward"
+        },
+        {
+            "value": "Div Yield FWD"
+        }
+    ],
+    "dividend_yield_recent": [
+        {
+            "value": "Dividend Yield Forward"
+        },
+        {
+            "value": "Div Yield FWD"
+        }
+    ],
+    "dps_common_stock_prim_issue_fy": [
+        {
+            "value": "Dividends per Share (FY)"
+        },
+        {
+            "value": "Div per Share (FY)"
+        }
+    ],
+    "earnings_per_share_basic_ttm": [
+        {
+            "value": "Basic EPS (TTM)"
+        },
+        {
+            "value": "EPS (TTM)"
+        }
+    ],
+    "earnings_per_share_diluted_ttm": [
+        {
+            "value": "EPS Diluted (TTM)"
+        },
+        {
+            "value": "EPS Diluted (TTM)"
+        }
+    ],
+    "earnings_per_share_forecast_next_fq": [
+        {
+            "value": "EPS Forecast (FQ)"
+        },
+        {
+            "value": "EPS Forecast"
+        }
+    ],
+    "earnings_per_share_fq": [
+        {
+            "value": "EPS Diluted (MRQ)"
+        },
+        {
+            "value": "EPS Diluted (MRQ)"
+        }
+    ],
+    "earnings_release_date": [
+        {
+            "value": "Recent Earnings Date"
+        },
+        {
+            "value": "Recent Earnings Date"
+        }
+    ],
+    "earnings_release_next_date": [
+        {
+            "value": "Upcoming Earnings Date"
+        },
+        {
+            "value": "Upcoming Earnings Date"
+        }
+    ],
+    "ebitda": [
+        {
+            "value": "EBITDA (TTM)"
+        },
+        {
+            "value": "EBITDA"
+        }
+    ],
+    "enterprise_value_ebitda_ttm": [
+        {
+            "value": "Enterprise Value/EBITDA (TTM)"
+        },
+        {
+            "value": "EV/EBITDA"
+        }
+    ],
+    "enterprise_value_fq": [
+        {
+            "value": "Enterprise Value (MRQ)"
+        },
+        {
+            "value": "EV"
+        }
+    ],
+    "exchange": [
+        {
+            "value": "Exchange"
+        },
+        {
+            "value": "Exchange"
+        }
+    ],
+    "gross_margin": [
+        {
+            "value": "Gross Margin (TTM)"
+        },
+        {
+            "value": "Gross Margin"
+        }
+    ],
+    "gross_profit": [
+        {
+            "value": "Gross Profit (FY)"
+        },
+        {
+            "value": "Gross Profit (FY)"
+        }
+    ],
+    "gross_profit_fq": [
+        {
+            "value": "Gross Profit (MRQ)"
+        },
+        {
+            "value": "Gross Profit (MRQ)"
+        }
+    ],
+    "index": [
+        {
+            "value": "Index"
+        },
+        {
+            "value": "Index"
+        }
+    ],
+    "industry": [
+        {
+            "value": "Industry"
+        },
+        {
+            "value": "Industry"
+        }
+    ],
+    "last_annual_eps": [
+        {
+            "value": "EPS Diluted (FY)"
+        },
+        {
+            "value": "EPS Diluted (FY)"
+        }
+    ],
+    "last_annual_revenue": [
+        {
+            "value": "Last Year Revenue (FY)"
+        },
+        {
+            "value": "Annual Rev"
+        }
+    ],
+    "long_term_capital": [
+        {
+            "value": "Capital Long Term"
+        },
+        {
+            "value": "Capital Long Term"
+        }
+    ],
+    "market_cap_basic": [
+        {
+            "value": "Market Capitalization"
+        },
+        {
+            "value": "Mkt Cap"
+        }
+    ],
+    "market_cap_calc": [
+        {
+            "value": "Market Capitalization"
+        },
+        {
+            "value": "Mkt Cap"
+        }
+    ],
+    "market_cap_diluted_calc": [
+        {
+            "value": "Fully Diluted Market Cap"
+        },
+        {
+            "value": "FD Mkt Cap"
+        }
+    ],
+    "net_debt": [
+        {
+            "value": "Net Debt (MRQ)"
+        },
+        {
+            "value": "Net Debt"
+        }
+    ],
+    "net_income": [
+        {
+            "value": "Net Income (FY)"
+        },
+        {
+            "value": "Income"
+        }
+    ],
+    "number_of_employees": [
+        {
+            "value": "Number of Employees"
+        },
+        {
+            "value": "EMPLOYEES"
+        }
+    ],
+    "number_of_shareholders": [
+        {
+            "value": "Number of Shareholders"
+        },
+        {
+            "value": "Shareholders"
+        }
+    ],
+    "open_price": [
+        {
+            "value": "Open Price"
+        },
+        {
+            "value": "Open"
+        }
+    ],
+    "operating_margin": [
+        {
+            "value": "Operating Margin (TTM)"
+        },
+        {
+            "value": "Operating Margin"
+        }
+    ],
+    "pre_tax_margin": [
+        {
+            "value": "Pretax Margin (TTM)"
+        },
+        {
+            "value": "Pretax Margin"
+        }
+    ],
+    "preferred_dividends": [
+        {
+            "value": "Dividends Preferred"
+        },
+        {
+            "value": "Div Pref"
+        }
+    ],
+    "prev_close_price": [
+        {
+            "value": "Previous Close Price"
+        },
+        {
+            "value": "Prev"
+        }
+    ],
+    "price_52_week_high": [
+        {
+            "value": "52 Week High"
+        },
+        {
+            "value": "High 52W"
+        }
+    ],
+    "price_52_week_low": [
+        {
+            "value": "52 Week Low"
+        },
+        {
+            "value": "Low 52W"
+        }
+    ],
+    "price_book_ratio": [
+        {
+            "value": "Price to Book (FY)"
+        },
+        {
+            "value": "P/B (FY)"
+        }
+    ],
+    "price_earnings_ttm": [
+        {
+            "value": "Price to Earnings Ratio (TTM)"
+        },
+        {
+            "value": "P/E"
+        }
+    ],
+    "price_percent_change_1_week": [
+        {
+            "value": "Price % Change 1 Week"
+        },
+        {
+            "value": "Chng 1W"
+        }
+    ],
+    "price_percent_change_4_week": [
+        {
+            "value": "Price % Change 4 Week"
+        },
+        {
+            "value": "Chng 4W"
+        }
+    ],
+    "price_percent_change_52_week": [
+        {
+            "value": "Price % Change 52 Week"
+        },
+        {
+            "value": "Chng 52W"
+        }
+    ],
+    "price_revenue_ttm": [
+        {
+            "value": "Price to Revenue Ratio (TTM)"
+        },
+        {
+            "value": "Price/Rev"
+        }
+    ],
+    "price_sales_ratio": [
+        {
+            "value": "Price to Sales (FY)"
+        },
+        {
+            "value": "P/S"
+        }
+    ],
+    "quick_ratio": [
+        {
+            "value": "Quick Ratio (MRQ)"
+        },
+        {
+            "value": "Quick Ratio"
+        }
+    ],
+    "return_of_invested_capital_percent_ttm": [
+        {
+            "value": "Return on Invested Capital % (TTM)"
+        },
+        {
+            "value": "ROIC %"
+        }
+    ],
+    "return_on_assets": [
+        {
+            "value": "Return on Assets (TTM)"
+        },
+        {
+            "value": "ROA"
+        }
+    ],
+    "return_on_equity": [
+        {
+            "value": "Return on Equity (TTM)"
+        },
+        {
+            "value": "ROE"
+        }
+    ],
+    "return_on_invested_capital": [
+        {
+            "value": "Return on Invested Capital (TTM)"
+        },
+        {
+            "value": "ROIC %"
+        }
+    ],
+    "revenue_per_employee": [
+        {
+            "value": "Revenue per Employee (TTM)"
+        },
+        {
+            "value": "Revenue per Employee"
+        }
+    ],
+    "sector": [
+        {
+            "value": "Sector"
+        },
+        {
+            "value": "Sector"
+        }
+    ],
+    "submarket": [
+        {
+            "value": "Submarket"
+        },
+        {
+            "value": "Submarket"
+        }
+    ],
+    "is_primary": [
+        {
+            "value": "Primary Listing"
+        },
+        {
+            "value": "Primary Listing"
+        }
+    ],
+    "eps_surprise_fq": [
+        {
+            "value": "Surprise"
+        },
+        {
+            "value": "Surprise"
+        }
+    ],
+    "eps_surprise_percent_fq": [
+        {
+            "value": "Surprise %"
+        },
+        {
+            "value": "Surprise %"
+        }
+    ],
+    "total_assets": [
+        {
+            "value": "Total Assets (MRQ)"
+        },
+        {
+            "value": "Assets"
+        }
+    ],
+    "total_capital": [
+        {
+            "value": "Total Capital"
+        },
+        {
+            "value": "Capital"
+        }
+    ],
+    "total_current_assets": [
+        {
+            "value": "Total Current Assets (MRQ)"
+        },
+        {
+            "value": "Current Assets"
+        }
+    ],
+    "total_debt": [
+        {
+            "value": "Total Debt (MRQ)"
+        },
+        {
+            "value": "Debt"
+        }
+    ],
+    "total_revenue": [
+        {
+            "value": "Total Revenue (FY)"
+        },
+        {
+            "value": "Revenue"
+        }
+    ],
+    "total_liabilities_fy": [
+        {
+            "value": "Total Liabilities (FY)"
+        },
+        {
+            "value": "Liabilities (FY)"
+        }
+    ],
+    "total_liabilities_fq": [
+        {
+            "value": "Total Liabilities (MRQ)"
+        },
+        {
+            "value": "Liabilities (MRQ)"
+        }
+    ],
+    "total_shares_outstanding_fundamental": [
+        {
+            "value": "Total Shares Outstanding (MRQ)"
+        },
+        {
+            "value": "Shares"
+        }
+    ],
+    "volume": [
+        {
+            "value": "Volume"
+        },
+        {
+            "value": "Vol"
+        }
+    ],
+    "relative_volume": [
+        {
+            "value": "Relative Volume"
+        },
+        {
+            "value": "Relative Vol"
+        }
+    ],
+    "relative_volume_at_time": [
+        {
+            "value": "Relative Volume at Time"
+        },
+        {
+            "value": "Relative Vol at Time"
+        }
+    ],
+    "change_abs": [
+        {
+            "value": "Change"
+        },
+        {
+            "value": "Chg"
+        }
+    ],
+    "change": [
+        {
+            "value": "Change %"
+        },
+        {
+            "value": "Chg %"
+        }
+    ],
+    "change.1": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.1": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.5": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.5": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.15": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.15": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.60": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.60": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.240": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.240": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.1W": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.1W": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "change.1M": [
+        "Change {resolution}, %",
+        "{resolution} CHG %"
+    ],
+    "change_abs.1M": [
+        "Change {resolution}",
+        "{resolution} CHG"
+    ],
+    "pre_change": [
+        {
+            "value": "Pre-market Change %"
+        },
+        {
+            "value": "Pre-market chg %"
+        }
+    ],
+    "post_change": [
+        {
+            "value": "Post-market Change %"
+        },
+        {
+            "value": "Post-market chg %"
+        }
+    ],
+    "bid": [
+        {
+            "value": "Bid"
+        },
+        {
+            "value": "Bid"
+        }
+    ],
+    "ask": [
+        {
+            "value": "Ask"
+        },
+        {
+            "value": "Ask"
+        }
+    ],
+    "close": [
+        {
+            "value": "Close"
+        },
+        {
+            "value": "Close"
+        }
+    ],
+    "open": [
+        {
+            "value": "Open"
+        },
+        {
+            "value": "Open"
+        }
+    ],
+    "high": [
+        {
+            "value": "High"
+        },
+        {
+            "value": "High"
+        }
+    ],
+    "low": [
+        {
+            "value": "Low"
+        },
+        {
+            "value": "Low"
+        }
+    ],
+    "gap": [
+        {
+            "value": "Gap %"
+        },
+        {
+            "value": "Gap %"
+        }
+    ],
+    "price_earnings_to_growth_ttm": [
+        {
+            "value": "Price/Earnings/Growth (TTM)"
+        },
+        {
+            "value": "PEG"
+        }
+    ],
+    "price_sales": [
+        {
+            "value": "Price/Sales"
+        },
+        {
+            "value": "Price/Sales"
+        }
+    ],
+    "price_book_fq": [
+        {
+            "value": "Price to Book (MRQ)"
+        },
+        {
+            "value": "P/B (MRQ)"
+        }
+    ],
+    "price_free_cash_flow_ttm": [
+        {
+            "value": "Price to Free Cash Flow (TTM)"
+        },
+        {
+            "value": "Price/Free Cash Flow"
+        }
+    ],
+    "float_shares_outstanding": [
+        {
+            "value": "Shares Float"
+        },
+        {
+            "value": "Float"
+        }
+    ],
+    "free_cash_flow": [
+        {
+            "value": "Free Cash Flow (TTM)"
+        },
+        {
+            "value": "Free Cash Flow"
+        }
+    ],
+    "total_shares_outstanding": [
+        {
+            "value": "Shares Outstanding"
+        },
+        {
+            "value": "Shares Outstanding"
+        }
+    ],
+    "total_shares_diluted": [
+        {
+            "value": "Total Coins"
+        },
+        {
+            "value": "Total Coins"
+        }
+    ],
+    "total_value_traded": [
+        {
+            "value": "Traded Volume"
+        },
+        {
+            "value": "Traded Vol"
+        }
+    ],
+    "change_from_open": [
+        {
+            "value": "Change from Open %"
+        },
+        {
+            "value": "Chg from Open %"
+        }
+    ],
+    "change_from_open_abs": [
+        {
+            "value": "Change from Open"
+        },
+        {
+            "value": "Chg from Open"
+        }
+    ],
+    "Perf.W": [
+        {
+            "value": "Weekly Performance"
+        },
+        {
+            "value": "Weekly Perf"
+        }
+    ],
+    "Perf.1M": [
+        {
+            "value": "Monthly Performance"
+        },
+        {
+            "value": "Monthly Perf"
+        }
+    ],
+    "Perf.3M": [
+        {
+            "value": "3-Month Performance"
+        },
+        {
+            "value": "3-Month Perf"
+        }
+    ],
+    "Perf.6M": [
+        {
+            "value": "6-Month Performance"
+        },
+        {
+            "value": "6-Month Perf"
+        }
+    ],
+    "Perf.Y": [
+        {
+            "value": "Yearly Performance"
+        },
+        {
+            "value": "Yearly Perf"
+        }
+    ],
+    "Perf.YTD": [
+        {
+            "value": "YTD Performance"
+        },
+        {
+            "value": "YTD Perf"
+        }
+    ],
+    "Volatility.W": [
+        {
+            "value": "Volatility Week"
+        },
+        {
+            "value": "Volatility W"
+        }
+    ],
+    "Volatility.M": [
+        {
+            "value": "Volatility Month"
+        },
+        {
+            "value": "Volatility M"
+        }
+    ],
+    "Volatility.D": [
+        {
+            "value": "Volatility"
+        },
+        {
+            "value": "Volatility"
+        }
+    ],
+    "RSI": [
+        {
+            "value": "Relative Strength Index (14)"
+        },
+        {
+            "value": "RSI14"
+        }
+    ],
+    "RSI7": [
+        {
+            "value": "Relative Strength Index (7)"
+        },
+        {
+            "value": "RSI7"
+        }
+    ],
+    "ADX": [
+        {
+            "value": "Average Directional Index (14)"
+        },
+        {
+            "value": "ADX"
+        }
+    ],
+    "ADX+DI": [
+        {
+            "value": "Positive Directional Indicator (14)"
+        },
+        {
+            "value": "+DI"
+        }
+    ],
+    "ADX-DI": [
+        {
+            "value": "Negative Directional Indicator (14)"
+        },
+        {
+            "value": "-DI"
+        }
+    ],
+    "ATR": [
+        {
+            "value": "Average True Range (14)"
+        },
+        {
+            "value": "ATR"
+        }
+    ],
+    "Mom": [
+        {
+            "value": "Momentum (10)"
+        },
+        {
+            "value": "MOM"
+        }
+    ],
+    "High.All": [
+        {
+            "value": "All Time High"
+        },
+        {
+            "value": "All Time High"
+        }
+    ],
+    "Low.All": [
+        {
+            "value": "All Time Low"
+        },
+        {
+            "value": "All Time Low"
+        }
+    ],
+    "High.6M": [
+        {
+            "value": "6-Month High"
+        },
+        {
+            "value": "6-Month High"
+        }
+    ],
+    "Low.6M": [
+        {
+            "value": "6-Month Low"
+        },
+        {
+            "value": "6-Month Low"
+        }
+    ],
+    "High.3M": [
+        {
+            "value": "3-Month High"
+        },
+        {
+            "value": "3-Month High"
+        }
+    ],
+    "Low.3M": [
+        {
+            "value": "3-Month Low"
+        },
+        {
+            "value": "3-Month Low"
+        }
+    ],
+    "High.1M": [
+        {
+            "value": "1-Month High"
+        },
+        {
+            "value": "1-Month High"
+        }
+    ],
+    "Low.1M": [
+        {
+            "value": "1-Month Low"
+        },
+        {
+            "value": "1-Month Low"
+        }
+    ],
+    "EMA5": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA5"
+        }
+    ],
+    "EMA10": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA10"
+        }
+    ],
+    "EMA20": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA20"
+        }
+    ],
+    "EMA30": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA30"
+        }
+    ],
+    "EMA50": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA50"
+        }
+    ],
+    "EMA100": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA100"
+        }
+    ],
+    "EMA200": [
+        "Exponential Moving Average ({number})",
+        {
+            "value": "EMA200"
+        }
+    ],
+    "SMA5": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA5"
+        }
+    ],
+    "SMA10": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA10"
+        }
+    ],
+    "SMA20": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA20"
+        }
+    ],
+    "SMA30": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA30"
+        }
+    ],
+    "SMA50": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA50"
+        }
+    ],
+    "SMA100": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA100"
+        }
+    ],
+    "SMA200": [
+        "Simple Moving Average ({number})",
+        {
+            "value": "SMA200"
+        }
+    ],
+    "Stoch.K": [
+        {
+            "value": "Stochastic %K (14, 3, 3)"
+        },
+        {
+            "value": "Stoch %K"
+        }
+    ],
+    "Stoch.D": [
+        {
+            "value": "Stochastic %D (14, 3, 3)"
+        },
+        {
+            "value": "Stoch %D"
+        }
+    ],
+    "MACD.macd": [
+        {
+            "value": "MACD Level (12, 26)"
+        },
+        {
+            "value": "MACD Level"
+        }
+    ],
+    "MACD.signal": [
+        {
+            "value": "MACD Signal (12, 26)"
+        },
+        {
+            "value": "MACD Signal"
+        }
+    ],
+    "Aroon.Up": [
+        {
+            "value": "Aroon Up (14)"
+        },
+        {
+            "value": "Aroon Up"
+        }
+    ],
+    "Aroon.Down": [
+        {
+            "value": "Aroon Down (14)"
+        },
+        {
+            "value": "Aroon Down"
+        }
+    ],
+    "BB.upper": [
+        {
+            "value": "Bollinger Upper Band (20)"
+        },
+        {
+            "value": "BB Up"
+        }
+    ],
+    "BB.lower": [
+        {
+            "value": "Bollinger Lower Band (20)"
+        },
+        {
+            "value": "BB Low"
+        }
+    ],
+    "goodwill": [
+        {
+            "value": "Goodwill"
+        },
+        {
+            "value": "Goodwill"
+        }
+    ],
+    "debt_to_equity_fq": [
+        {
+            "value": "Debt/Equity, MRQ"
+        },
+        {
+            "value": "Debt/Eq"
+        }
+    ],
+    "CCI20": [
+        {
+            "value": "Commodity Channel Index (20)"
+        },
+        {
+            "value": "CCI20"
+        }
+    ],
+    "DonchCh20.Upper": [
+        {
+            "value": "Donchian Channels Upper Band (20)"
+        },
+        {
+            "value": "DonchCh20 Up"
+        }
+    ],
+    "DonchCh20.Lower": [
+        {
+            "value": "Donchian Channels Lower Band (20)"
+        },
+        {
+            "value": "DonchCh20 Low"
+        }
+    ],
+    "HullMA9": [
+        {
+            "value": "Hull Moving Average (9)"
+        },
+        {
+            "value": "HullMA9"
+        }
+    ],
+    "AO": [
+        {
+            "value": "Awesome Oscillator"
+        },
+        {
+            "value": "AO"
+        }
+    ],
+    "Pivot.M.Classic.S3": [
+        {
+            "value": "Pivot Classic S3"
+        },
+        {
+            "value": "S3"
+        }
+    ],
+    "Pivot.M.Classic.S2": [
+        {
+            "value": "Pivot Classic S2"
+        },
+        {
+            "value": "S2"
+        }
+    ],
+    "Pivot.M.Classic.S1": [
+        {
+            "value": "Pivot Classic S1"
+        },
+        {
+            "value": "S1"
+        }
+    ],
+    "Pivot.M.Classic.Middle": [
+        {
+            "value": "Pivot Classic P"
+        },
+        {
+            "value": "P"
+        }
+    ],
+    "Pivot.M.Classic.R1": [
+        {
+            "value": "Pivot Classic R1"
+        },
+        {
+            "value": "R1"
+        }
+    ],
+    "Pivot.M.Classic.R2": [
+        {
+            "value": "Pivot Classic R2"
+        },
+        {
+            "value": "R2"
+        }
+    ],
+    "Pivot.M.Classic.R3": [
+        {
+            "value": "Pivot Classic R3"
+        },
+        {
+            "value": "R3"
+        }
+    ],
+    "Pivot.M.Fibonacci.S3": [
+        {
+            "value": "Pivot Fibonacci S3"
+        },
+        {
+            "value": "S3"
+        }
+    ],
+    "Pivot.M.Fibonacci.S2": [
+        {
+            "value": "Pivot Fibonacci S2"
+        },
+        {
+            "value": "S2"
+        }
+    ],
+    "Pivot.M.Fibonacci.S1": [
+        {
+            "value": "Pivot Fibonacci S1"
+        },
+        {
+            "value": "S1"
+        }
+    ],
+    "Pivot.M.Fibonacci.Middle": [
+        {
+            "value": "Pivot Fibonacci P"
+        },
+        {
+            "value": "P"
+        }
+    ],
+    "Pivot.M.Fibonacci.R1": [
+        {
+            "value": "Pivot Fibonacci R1"
+        },
+        {
+            "value": "R1"
+        }
+    ],
+    "Pivot.M.Fibonacci.R2": [
+        {
+            "value": "Pivot Fibonacci R2"
+        },
+        {
+            "value": "R2"
+        }
+    ],
+    "Pivot.M.Fibonacci.R3": [
+        {
+            "value": "Pivot Fibonacci R3"
+        },
+        {
+            "value": "R3"
+        }
+    ],
+    "Pivot.M.Camarilla.S3": [
+        {
+            "value": "Pivot Camarilla S3"
+        },
+        {
+            "value": "S3"
+        }
+    ],
+    "Pivot.M.Camarilla.S2": [
+        {
+            "value": "Pivot Camarilla S2"
+        },
+        {
+            "value": "S2"
+        }
+    ],
+    "Pivot.M.Camarilla.S1": [
+        {
+            "value": "Pivot Camarilla S1"
+        },
+        {
+            "value": "S1"
+        }
+    ],
+    "Pivot.M.Camarilla.Middle": [
+        {
+            "value": "Pivot Camarilla P"
+        },
+        {
+            "value": "P"
+        }
+    ],
+    "Pivot.M.Camarilla.R1": [
+        {
+            "value": "Pivot Camarilla R1"
+        },
+        {
+            "value": "R1"
+        }
+    ],
+    "Pivot.M.Camarilla.R2": [
+        {
+            "value": "Pivot Camarilla R2"
+        },
+        {
+            "value": "R2"
+        }
+    ],
+    "Pivot.M.Camarilla.R3": [
+        {
+            "value": "Pivot Camarilla R3"
+        },
+        {
+            "value": "R3"
+        }
+    ],
+    "Pivot.M.Woodie.S3": [
+        {
+            "value": "Pivot Woodie S3"
+        },
+        {
+            "value": "S3"
+        }
+    ],
+    "Pivot.M.Woodie.S2": [
+        {
+            "value": "Pivot Woodie S2"
+        },
+        {
+            "value": "S2"
+        }
+    ],
+    "Pivot.M.Woodie.S1": [
+        {
+            "value": "Pivot Woodie S1"
+        },
+        {
+            "value": "S1"
+        }
+    ],
+    "Pivot.M.Woodie.Middle": [
+        {
+            "value": "Pivot Woodie P"
+        },
+        {
+            "value": "P"
+        }
+    ],
+    "Pivot.M.Woodie.R1": [
+        {
+            "value": "Pivot Woodie R1"
+        },
+        {
+            "value": "R1"
+        }
+    ],
+    "Pivot.M.Woodie.R2": [
+        {
+            "value": "Pivot Woodie R2"
+        },
+        {
+            "value": "R2"
+        }
+    ],
+    "Pivot.M.Woodie.R3": [
+        {
+            "value": "Pivot Woodie R3"
+        },
+        {
+            "value": "R3"
+        }
+    ],
+    "Pivot.M.Demark.S1": [
+        {
+            "value": "Pivot DM S1"
+        },
+        {
+            "value": "S1"
+        }
+    ],
+    "Pivot.M.Demark.Middle": [
+        {
+            "value": "Pivot DM P"
+        },
+        {
+            "value": "P"
+        }
+    ],
+    "Pivot.M.Demark.R1": [
+        {
+            "value": "Pivot DM R1"
+        },
+        {
+            "value": "R1"
+        }
+    ],
+    "KltChnl.upper": [
+        {
+            "value": "Keltner Channels Upper Band (20)"
+        },
+        {
+            "value": "KltCh20 Up"
+        }
+    ],
+    "KltChnl.lower": [
+        {
+            "value": "Keltner Channels Lower Band (20)"
+        },
+        {
+            "value": "KltCh20 Low"
+        }
+    ],
+    "P.SAR": [
+        {
+            "value": "Parabolic SAR"
+        },
+        {
+            "value": "SAR"
+        }
+    ],
+    "Value.Traded": [
+        {
+            "value": "Volume*Price"
+        },
+        {
+            "value": "Volume*Price"
+        }
+    ],
+    "MoneyFlow": [
+        {
+            "value": "Money Flow (14)"
+        },
+        {
+            "value": "MFI"
+        }
+    ],
+    "ChaikinMoneyFlow": [
+        {
+            "value": "Chaikin Money Flow (20)"
+        },
+        {
+            "value": "CMF"
+        }
+    ],
+    "Recommend.All": [
+        {
+            "value": "Technical Rating"
+        },
+        {
+            "value": "Technical Rating"
+        }
+    ],
+    "Recommend.MA": [
+        {
+            "value": "Moving Averages Rating"
+        },
+        {
+            "value": "Moving Averages Rating"
+        }
+    ],
+    "Recommend.Other": [
+        {
+            "value": "Oscillators Rating"
+        },
+        {
+            "value": "Oscillators Rating"
+        }
+    ],
+    "Stoch.RSI.K": [
+        {
+            "value": "Stochastic RSI Fast (3, 3, 14, 14)"
+        },
+        {
+            "value": "Stoch RSI Fast"
+        }
+    ],
+    "Stoch.RSI.D": [
+        {
+            "value": "Stochastic RSI Slow (3, 3, 14, 14)"
+        },
+        {
+            "value": "Stoch RSI Slow"
+        }
+    ],
+    "W.R": [
+        {
+            "value": "Williams Percent Range (14)"
+        },
+        {
+            "value": "%R"
+        }
+    ],
+    "ROC": [
+        {
+            "value": "Rate Of Change (9)"
+        },
+        {
+            "value": "ROC"
+        }
+    ],
+    "BBPower": [
+        {
+            "value": "Bull Bear Power"
+        },
+        {
+            "value": "BBPower"
+        }
+    ],
+    "UO": [
+        {
+            "value": "Ultimate Oscillator (7, 14, 28)"
+        },
+        {
+            "value": "UO"
+        }
+    ],
+    "Ichimoku.CLine": [
+        {
+            "value": "Ichimoku Conversion Line (9, 26, 52, 26)"
+        },
+        {
+            "value": "Ichimoku Conversion"
+        }
+    ],
+    "Ichimoku.BLine": [
+        {
+            "value": "Ichimoku Base Line (9, 26, 52, 26)"
+        },
+        {
+            "value": "Ichimoku Base"
+        }
+    ],
+    "Ichimoku.Lead1": [
+        {
+            "value": "Ichimoku Leading Span A (9, 26, 52, 26)"
+        },
+        {
+            "value": "Ichimoku Leading Span A"
+        }
+    ],
+    "Ichimoku.Lead2": [
+        {
+            "value": "Ichimoku Leading Span B (9, 26, 52, 26)"
+        },
+        {
+            "value": "Ichimoku Leading Span B"
+        }
+    ],
+    "VWAP": [
+        {
+            "value": "Volume Weighted Average Price"
+        },
+        {
+            "value": "VWAP"
+        }
+    ],
+    "VWMA": [
+        {
+            "value": "Volume Weighted Moving Average (20)"
+        },
+        {
+            "value": "VWMA"
+        }
+    ],
+    "ADR": [
+        {
+            "value": "Average Day Range (14)"
+        },
+        {
+            "value": "ADR"
+        }
+    ]
+}

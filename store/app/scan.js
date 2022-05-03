@@ -13,10 +13,10 @@ main();
 async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await  Promise.all([
-        processType(mongoClient, "crypto",scan_crypto_columns),
-        processType(mongoClient, "china",scan_stock_columns),
+        // processType(mongoClient, "crypto",scan_crypto_columns),
+        // processType(mongoClient, "china",scan_stock_columns),
         processType(mongoClient, "hongkong",scan_stock_columns),
-        processType(mongoClient, "america",scan_stock_columns)
+        // processType(mongoClient, "america",scan_stock_columns)
     ])
     console.log("mainProcess done.")
 }
