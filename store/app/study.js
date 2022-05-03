@@ -1,150 +1,222 @@
 const TradingView = require("../../main");
 const mongo = require("../service/mongo");
-const { DB_NAME_OD } = require("../../src/consts");
-const { sleep } = require("../../src/utils");
+const {sleep} = require("../../src/utils");
+const {DB_NAME_OD} = require("../../src/consts")
+
+const symbols = require("../../data/study_symbols.json");
+// const symbols = ["NASDAQ:MDXH",
+//     "NYSE:AGCB",
+//     "AMEX:USFR",
+//     "NASDAQ:GTYH"];
 
 const PAGE_SIZE = 1000000;
 const strategyInfo = {
-  name: "GetYourTrend",
-  version: "1.0",
-  scriptId: "PUB;ac51f0ccf0314382ad0fb9b9709ab576",
+    name: "GetYourTrend",
+    version: "1.0",
+    scriptId: "PUB;ac51f0ccf0314382ad0fb9b9709ab576",
 };
 
 async function main() {
-  await mongo.run((client) => process(client));
+    await mongo.run((client) => mainProcess(client));
+    throw new Error("main done");
 }
 
 main();
 
 async function savePacket(mongoClient, symbolCtx, data) {
-  const doc = {
-    ...symbolCtx,
-    d: data,
-  };
-  await mongo.saveDoc(mongoClient, "packet", doc);
-  console.log("savePacket done.", JSON.stringify(doc));
+    const doc = {
+        ...symbolCtx,
+        d: data,
+    };
+    await mongo.insertDoc(mongoClient, "packet_history", doc);
+    console.log("savePacket done.", JSON.stringify(symbolCtx));
+}
+
+async function findHasReportSymbols(mongoClient) {
+    const coll = mongoClient.db(DB_NAME_OD).collection("study_report_history")
+    const cursor =  coll.find({},{
+        limit:10000000,
+        timeout:false,
+        projection:{
+            "_id":0,
+            "symbol":1
+        }
+    })
+    const res = await cursor.toArray()
+    const obj = {}
+    res.map(it=>obj[it.symbol] = true)
+    return obj;
 }
 
 async function saveChartInfo(mongoClient, symbolCtx, infos) {
-  const doc = {
-    ...symbolCtx.symbol,
-    i: infos,
-  };
-  await mongo.saveDoc(mongoClient, "chart_info", doc);
-  console.log("saveChartInfo done.", JSON.stringify(doc));
+    const {symbol} = symbolCtx
+    if(!symbol){
+        console.error("saveChartInfo error, invalid symbol!");
+        return
+    }
+    const doc = {
+        ...infos,
+        symbol: symbolCtx.symbol,
+        uAt: new Date(),
+    };
+    const coll = mongoClient.db(DB_NAME_OD).collection("chart_info")
+    const res = await coll.replaceOne({
+        _id:symbol
+    }, doc,{
+        upsert:true
+    });
+    console.log("saveChartInfo done.", symbolCtx.symbol);
 }
 
-async function savePeriods(mongoClient, collName, symbolCtx, origin_periods) {
-  const periods = JSON.parse(JSON.stringify(origin_periods));
-  const docs = periods
-    .map((it) => {
-      const ti = it.time || it.$time;
-      if (ti == null) {
-        return null;
-      }
-      return {
-        ...symbolCtx.symbol,
-        ...it,
-        _id: `${symbolCtx.symbol}_${ti}`,
-        uAt: new Date(ti * 1000),
-      };
-    })
-    .filter((it) => it != null);
-  console.log("savePeriods...", JSON.stringify(docs));
-  mongo.saveManyDoc(mongoClient, collName, docs);
-  console.log("savePeriods done.");
+async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
+    const periods = JSON.parse(JSON.stringify(origin_periods));
+    const ops = periods
+        .map((it) => {
+            if(it.$time){
+                it.time = it.$time
+                delete it.$time
+            }
+            const ti = it.time;
+            if (ti == null) {
+                return null;
+            }
+            const _id = `${symbolCtx.symbol}_${ti}`;
+            const doc = {
+                ...it,
+                symbol: symbolCtx.symbol,
+                uAt: new Date(ti * 1000),
+            }
+            const op={
+                replaceOne:{
+                    filter:{
+                        _id,
+                    },
+                    replacement:doc,
+                    upsert:true
+                }
+            }
+            return op;
+        })
+        .filter((it) => it != null);
+    console.log("updatePeriods...", symbolCtx.symbol);
+    await mongo.bulkWrite(mongoClient, collName, ops);
+    console.log("updatePeriods done.");
 }
 
 async function saveStudyReport(mongoClient, collName, symbolCtx, origin_data) {
-  const data = JSON.parse(JSON.stringify(origin_data));
-  const doc = {
-    ...symbolCtx,
-    ...data,
-  };
-  console.log("saveStudyReport...", JSON.stringify(data));
-  await mongo.saveDoc(mongoClient, collName, doc);
-  console.log("saveStudyReport done.");
+    const data = JSON.parse(JSON.stringify(origin_data));
+    const doc = {
+        ...symbolCtx,
+        ...data,
+    };
+    console.log("saveStudyReport...", symbolCtx.symbol);
+    await mongo.insertDoc(mongoClient, collName, doc);
+    console.log("saveStudyReport done.");
 }
 
-const symbols = ["NASDAQ:PDD", "NYSE:CPNG"];
-
-async function process(mongoClient) {
-  await processSymbol(mongoClient, 0);
-}
-
-async function processSymbol(mongoClient, symbol_index) {
-  const symbol = symbols[symbol_index];
-  if (!symbol) {
-    console.error(
-      "processSymbol skip. symbol is invalid:",
-      symbol,
-      " symbol_index:",
-      symbol_index
-    );
-    return;
-  }
-  console.log("processSymbol start. symbol:", symbol);
-  const tvClient = new TradingView.Client({
-    DEBUG: true,
-  });
-
-  const symbolCtx = {
-    symbol,
-    uAt: new Date(),
-    strategyInfo,
-    marketOptions: {
-      // Set the market
-      timeframe: "D",
-      currency: "USD",
-      range: PAGE_SIZE,
-    },
-  };
-  tvClient.onPacket((data) => {
-    savePacket(mongoClient, symbolCtx, data);
-  });
-  const chart = new tvClient.Session.Chart(); // Init a Chart session
-  chart.setTimezone("Asia/Shanghai");
-  chart.setMarket(symbol, symbolCtx.marketOptions);
-
-  chart.onSymbolLoaded(() => {
-    // When the symbol is successfully loaded
-    console.log(`Market "${chart.infos.description}" loaded !`);
-    saveChartInfo(mongoClient, symbolCtx, chart.infos);
-  });
-
-  const indic = await TradingView.getIndicator(strategyInfo.scriptId);
-  const STD = new chart.Study(indic);
-
-  STD.onError((...err) => {
-    console.error("Study error:", ...err);
-  });
-
-  STD.onReady(() => {
-    console.log(`STD '${STD.instance.description}' Loaded !`);
-  });
-
-  async function onUpdate() {
-    await Promise.all([
-      savePeriods(mongoClient, "chart_periods", symbolCtx, chart.periods),
-      savePeriods(mongoClient, "study_periods", symbolCtx, STD.periods),
-      saveStudyReport(
-        mongoClient,
-        "study_report",
-        symbolCtx,
-        STD.strategyReport
-      ),
-    ]);
-    // client.end();
-    if (symbol_index >= symbols.length - 1) {
-      console.log("process all symbols success.");
-      throw new Error("exit");
-    } else {
-      await sleep(1000);
-      processSymbol(mongoClient, symbol_index + 1);
+function split_array(arr,len){
+    let arr_length = arr.length;
+    let newArr = [];
+    for(let i=0;i<arr_length;i+=len){
+        newArr.push(arr.slice(i,i+len));
     }
-  }
+    return newArr;
+}
 
-  STD.onUpdate(() => {
-    onUpdate();
-  });
+
+async function mainProcess(mongoClient) {
+    console.log("mainProcess start")
+    const map = await findHasReportSymbols(mongoClient)
+    const noReportSymbols = [];
+    symbols.map(it=>{
+        if(!map[it]){
+            noReportSymbols.push(it)
+        }
+    })
+    const candidates = split_array(noReportSymbols,5)
+    console.log("candidates:",JSON.stringify(candidates))
+    for (let i = 0; i < candidates.length; i++) {
+        console.log("process candidates, step:",i)
+        const candidate = candidates[i];
+        await Promise.all(candidate.map(it=>{
+            return processSymbol(mongoClient,it);
+        }))
+    }
+    console.log("mainProcess done")
+}
+
+async function processSymbol(mongoClient, symbol) {
+    if (!symbol) {
+        console.error("processSymbol skip. symbol is invalid:", symbol);
+        return;
+    }
+    console.log("processSymbol start. symbol:", symbol);
+    return new Promise(async (resolve, reject) => {
+        const tvClient = new TradingView.Client({
+            DEBUG: true,
+        });
+
+        const symbolCtx = {
+            symbol,
+            uAt: new Date(),
+            strategyInfo,
+            marketOptions: {
+                // Set the market
+                timeframe: "D",
+                currency: "USD",
+                range: PAGE_SIZE,
+            },
+        };
+        tvClient.onPacket((data) => {
+            savePacket(mongoClient, symbolCtx, data);
+        });
+        const chart = new tvClient.Session.Chart(); // Init a Chart session
+        chart.setTimezone("Asia/Shanghai");
+        chart.setMarket(symbol, symbolCtx.marketOptions);
+
+        chart.onSymbolLoaded(() => {
+            // When the symbol is successfully loaded
+            console.log(`Market "${chart.infos.description}" loaded !`);
+            saveChartInfo(mongoClient, symbolCtx, chart.infos);
+        });
+
+        const indic = await TradingView.getIndicator(strategyInfo.scriptId);
+        const STD = new chart.Study(indic);
+
+        STD.onError((...err) => {
+            console.error("Study error:", ...err);
+            reject()
+        });
+
+        STD.onReady(async () => {
+            console.log("processSymbol done. symbol:", symbol," STD:", STD.instance.description);
+            await tvClient.end()
+            resolve()
+        });
+
+        async function onUpdate() {
+            await Promise.all([
+                updatePeriods(mongoClient, "chart_period_day", symbolCtx, chart.periods),
+                updatePeriods(mongoClient, "study_period_day", symbolCtx, STD.periods),
+                saveStudyReport(
+                    mongoClient,
+                    "study_report_history",
+                    symbolCtx,
+                    STD.strategyReport
+                ),
+            ]);
+            // await tvClient.end();
+            // if (symbol_index >= symbols.length - 1) {
+            //     console.log("process all symbols success.");
+            //     throw new Error("exit");
+            // } else {
+            //     await sleep(1000);
+            //     processSymbol(mongoClient, symbol_index + 1);
+            // }
+        }
+
+        STD.onUpdate(() => {
+            onUpdate();
+        });
+    })
 }

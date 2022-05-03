@@ -2,7 +2,6 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
-const {AnyBulkWriteOperation} = require("mongodb");
 
 async function main() {
     await mongo.run((client) => mainProcess(client));
@@ -22,7 +21,7 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess done.")
 }
 async function saveHistory(mongoClient,type,docs) {
-    await mongo.saveManyDoc(mongoClient, `scan_history_${type}`, docs);
+    await mongo.insertManyDocs(mongoClient, `scan_history_${type}`, docs);
 }
 
 async function saveLatest(mongoClient,type,origin_docs) {
@@ -43,6 +42,7 @@ async function saveLatest(mongoClient,type,origin_docs) {
     })
     await mongo.bulkWrite(mongoClient, `scan_latest_${type}`, ops);
 }
+
 async function processType(mongoClient, type, columns) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("processType start. type:",type)

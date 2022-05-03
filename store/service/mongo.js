@@ -7,32 +7,34 @@ const client = new MongoClient(uri);
 
 let connected = false;
 
-async function saveDoc(mongoClient, collName, doc) {
+async function insertDoc(mongoClient, collName, doc) {
     try {
-        console.log("saveDoc, collName: ", collName, " doc: ", JSON.stringify(doc));
+        // console.log("insertDoc, collName: ", collName, " doc: ", JSON.stringify(doc));
         const coll = mongoClient.db(DB_NAME_OD).collection(collName);
         const res = await coll.insertOne(doc);
-        console.log("saveDoc done. collName: ", collName);
+        console.log("insertDoc done. collName: ", collName);
         return res;
     } catch (e) {
-        console.error("saveDoc error. collName: ", collName, doc, e);
+        console.error("insertDoc error. collName: ", collName, doc, e);
     }
 }
 
-async function saveManyDoc(mongoClient, collName, docs) {
+
+
+async function insertManyDocs(mongoClient, collName, docs) {
     try {
         console.log(
-            "saveManyDoc, collName: ",
+            "insertManyDocs, collName: ",
             collName,
             " docs.length: ",
             docs.length
         );
         const coll = mongoClient.db(DB_NAME_OD).collection(collName);
         const res = await coll.insertMany(docs, {bypassDocumentValidation:true,ordered: false});
-        console.log("saveManyDoc done. collName: ", collName);
+        console.log("insertManyDocs done. collName: ", collName);
         return res;
     } catch (e) {
-        console.error("saveManyDoc error. collName: ", collName, docs, e);
+        console.error("insertManyDocs error. collName: ", collName, docs, e);
     }
 }
 
@@ -49,7 +51,7 @@ async function bulkWrite(mongoClient, collName, ops) {
         console.log("bulkWrite done. collName: ", collName);
         return res;
     } catch (e) {
-        console.error("bulkWrite error. collName: ", collName, docs, e);
+        console.error("bulkWrite error. collName: ", collName, e);
     }
 }
 
@@ -71,14 +73,14 @@ async function run(process) {
         console.error("process error. ", e);
     } finally {
         console.log("mongo run done.");
-        await mongoClient.close()
+        // await mongoClient.close()
     }
 }
 
 module.exports = {
     getClient,
     run,
-    saveDoc,
-    saveManyDoc,
+    insertDoc,
+    insertManyDocs,
     bulkWrite,
 };
