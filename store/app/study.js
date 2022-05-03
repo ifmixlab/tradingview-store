@@ -46,7 +46,7 @@ async function savePeriods(mongoClient, collName, symbolCtx, origin_periods) {
         ...symbolCtx.symbol,
         ...it,
         _id: `${symbolCtx.symbol}_${ti}`,
-        pAt: new Date(ti * 1000),
+        uAt: new Date(ti * 1000),
       };
     })
     .filter((it) => it != null);
@@ -90,7 +90,7 @@ async function processSymbol(mongoClient, symbol_index) {
 
   const symbolCtx = {
     symbol,
-    pAt: new Date(),
+    uAt: new Date(),
     strategyInfo,
     marketOptions: {
       // Set the market
