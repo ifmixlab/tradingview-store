@@ -24,8 +24,8 @@ async function saveManyDoc(mongoClient, collName, docs) {
     console.log(
       "saveManyDoc, collName: ",
       collName,
-      " docs: ",
-      JSON.stringify(docs)
+      " docs.length: ",
+        docs.length
     );
     const coll = mongoClient.db(DB_NAME_OD).collection(collName);
     const res = await coll.insertMany(docs, { ordered: false });
