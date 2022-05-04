@@ -52,25 +52,25 @@ async function saveChartPeriods(mongoClient, params, chart) {
     console.log("saveChartPeriods done.",JSON.stringify(doc))
 }
 
-const symbolIds = ["NASDAQ:PDD","NYSE:CPNG"]
+const symbols = ["NASDAQ:PDD","NYSE:CPNG"]
 
 async function process(mongoClient) {
     await processSymbol(mongoClient,0)
 }
 
-async function processSymbol(mongoClient,symbolId_index) {
-    const symbolId = symbolIds[symbolId_index]
-    if(!symbolId){
-        console.error("processSymbol skip. symbolId is invalid:",symbolId," symbolId_index:",symbolId_index)
+async function processSymbol(mongoClient,symbol_index) {
+    const symbol = symbols[symbol_index]
+    if(!symbol){
+        console.error("processSymbol skip. symbol is invalid:",symbol," symbol_index:",symbol_index)
         return
     }
-    console.log("processSymbol start. symbolId:",symbolId)
+    console.log("processSymbol start. symbol:",symbol)
     const tvClient = new TradingView.Client({
         DEBUG: true
     });
     let series_completed = false;
     const params = {
-        symbolId,
+        symbol,
         options: { // Set the market
             timeframe: 'D',
             currency:'USD',
@@ -82,14 +82,14 @@ async function processSymbol(mongoClient,symbolId_index) {
     })
     const chart = new tvClient.Session.Chart(); // Init a Chart session
     chart.setTimezone('Asia/Shanghai');
-    chart.setMarket(symbolId, params.options);
+    chart.setMarket(symbol, params.options);
 
     chart.onError((...err) => { // Listen for errors (can avoid crash)
         console.error('Chart error:', ...err);
         // Do something...
     });
 
-    chart.onSymbolLoaded(() => { // When the symbolId is successfully loaded
+    chart.onSymbolLoaded(() => { // When the symbol is successfully loaded
         console.log(`Market "${chart.infos.description}" loaded !`);
         saveChartInfo(mongoClient,params,chart)
     });
@@ -100,10 +100,10 @@ async function processSymbol(mongoClient,symbolId_index) {
             console.log("fetchMore >>> ")
             chart.fetchMore(PAGE_SIZE)
         }else{
-            if(symbolId_index+1  < symbolIds.length){
-                processSymbol(mongoClient,symbolId_index+1);
+            if(symbol_index+1  < symbols.length){
+                processSymbol(mongoClient,symbol_index+1);
             }else{
-                console.log("process all symbolIds success.")
+                console.log("process all symbols success.")
                 throw new Error("exit")
             }
         }

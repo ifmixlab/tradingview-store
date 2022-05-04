@@ -15,14 +15,14 @@ main();
 async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await  Promise.all([
-        processScreener(mongoClient, "crypto",scan_crypto_columns),
-        processScreener(mongoClient, "china",scan_stock_columns),
-        processScreener(mongoClient, "hongkong",scan_stock_columns),
-        processScreener(mongoClient, "america",scan_stock_columns)
+        processMarket(mongoClient, "crypto",scan_crypto_columns),
+        processMarket(mongoClient, "china",scan_stock_columns),
+        processMarket(mongoClient, "hongkong",scan_stock_columns),
+        processMarket(mongoClient, "america",scan_stock_columns),
     ])
     console.log("mainProcess done.")
 }
-async function saveHistory(ctx,mongoClient,screener,origin_docs) {
+async function saveHistory(ctx,mongoClient,market,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     docs.forEach(it=>{
         it.ts = ctx.ts
@@ -30,16 +30,16 @@ async function saveHistory(ctx,mongoClient,screener,origin_docs) {
     await mongo.insertManyDocs(mongoClient, DB_NAME_OD_TV,`indicator_history`, docs);
 }
 
-async function saveLatest(ctx,mongoClient,screener,origin_docs) {
+async function saveLatest(ctx,mongoClient,market,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     const ops = docs.map(it=>{
-        const {symbolId} = it.meta
+        const {symbol} = it.meta
         it.ts = ctx.ts
         delete it._id
         const op={
             replaceOne:{
                 filter:{
-                    "meta.symbolId":symbolId
+                    "meta.symbol":symbol
                 },
                 replacement:it,
                 upsert:true
@@ -50,23 +50,23 @@ async function saveLatest(ctx,mongoClient,screener,origin_docs) {
     await mongo.bulkWrite(mongoClient, `indicator_latest`, ops);
 }
 
-async function processScreener(mongoClient, screener, columns) {
+async function processMarket(mongoClient, market, columns) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    console.log("processScreener start. screener:",screener)
+    console.log("processMarket start. market:",market)
     // const res ={
     //     data:[
     //         {
-    //             s:"test1:symbolId1",
+    //             s:"test1:symbol1",
     //             d:["bar",100,200,300],
     //         },
     //         {
-    //             s:"test2:symbolId2",
+    //             s:"test2:symbol2",
     //             d:["bar",100,200,400],
     //         }
     //     ]
     // }
     const res = await TradingView.fetchScanDataForAllSymbols(
-        screener.toLowerCase(),
+        market,
         columns
     );
     if(res==null || res.data == null){
@@ -75,7 +75,7 @@ async function processScreener(mongoClient, screener, columns) {
     }
     const ctx = {
         ts:new Date(),
-        screener
+        market
     }
     const docs = res.data
         .map((it) => {
@@ -83,11 +83,11 @@ async function processScreener(mongoClient, screener, columns) {
                 console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
                 return null;
             }
-            const symbolId = `${screener}:${it.s}`;
+            const symbol = it.s;
             const obj = {
                 meta:{
-                    symbolId,
-                    screener,
+                    symbol,
+                    market,
                     ...utils.splitTVSymbol(it.s)
                 }
             };
@@ -101,8 +101,8 @@ async function processScreener(mongoClient, screener, columns) {
         })
         .filter((it) => it != null);
     await Promise.all([
-        saveHistory(ctx,mongoClient,screener,docs),
-        saveLatest(ctx,mongoClient,screener,docs),
+        saveHistory(ctx,mongoClient,market,docs),
+        saveLatest(ctx,mongoClient,market,docs),
     ])
-    console.log("processScreener done. screener:",screener)
+    console.log("processMarket done. market:",market)
 }

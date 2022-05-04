@@ -4,9 +4,10 @@ const {DB_NAME_OD_TV, DB_NAME_LOG_TV} = require("../../src/consts")
 
 const symbolIds = require("../../data/study_symbol_ids.json");
 const utils = require("../utils")
-// const symbolIds = ["hongkong:HKEX:8020", "america:NASDAQ:APMI"];
+// const symbolIds = ["hongkong_HKEX:8020", "america_NASDAQ:APMI"];
 
 const PAGE_SIZE = 1000000;
+const skipHasReport = true;
 const strategyInfo = {
     name: "GetYourTrend",
     version: "1.0",
@@ -37,22 +38,22 @@ async function findHasReportSymbols(mongoClient) {
         timeout: false,
         projection: {
             "_id": 0,
-            "meta.symbolId": 1
+            "meta.symbol": 1
         }
     })
     const res = await cursor.toArray()
     const obj = {}
     res.map(it => {
-        obj[it.meta.symbolId] = true
+        obj[it.meta.symbol] = true
     })
     return obj;
 }
 
 async function saveChartInfo(mongoClient, symbolCtx, infos) {
-    const { meta} = symbolCtx
-    const {symbolId} = meta
-    if (!symbolId) {
-        console.error("saveChartInfo error, invalid symbolId!");
+    const {meta} = symbolCtx
+    const {symbol} = meta
+    if (!symbol) {
+        console.error("saveChartInfo error, invalid symbol!");
         return
     }
     const doc = {
@@ -62,11 +63,11 @@ async function saveChartInfo(mongoClient, symbolCtx, infos) {
     };
     const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_info")
     const res = await coll.replaceOne({
-        "meta.symbolId": symbolId
+        "meta.symbol": symbol
     }, doc, {
         upsert: true
     });
-    console.log("saveChartInfo done.", symbolId);
+    console.log("saveChartInfo done.", symbol);
 }
 
 async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
@@ -92,7 +93,7 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
             const op = {
                 replaceOne: {
                     filter: {
-                        "meta.symbolId": meta.symbolId
+                        "meta.symbol": meta.symbol
                     },
                     replacement: doc,
                     upsert: true
@@ -101,7 +102,7 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
             return op;
         })
         .filter((it) => it != null);
-    console.log("updatePeriods...", meta.symbolId);
+    console.log("updatePeriods...", meta.symbol);
     await mongo.bulkWrite(mongoClient, collName, ops);
     console.log("updatePeriods done.");
 }
@@ -121,7 +122,7 @@ async function saveStudyReport(mongoClient, symbolCtx, origin_data) {
     await Promise.all([
         mongo.insertDoc(mongoClient, DB_NAME_OD_TV, "study_report_history", doc1),
         mongo.replaceDoc(mongoClient, DB_NAME_OD_TV, "study_report_latest",
-            {"meta.symbolId": meta.symbolId}, doc2),
+            {"meta.symbol": meta.symbol}, doc2),
     ])
     console.log("saveStudyReport done.");
 }
@@ -138,7 +139,10 @@ function split_array(arr, len) {
 
 async function mainProcess(mongoClient) {
     console.log("mainProcess start")
-    const map = await findHasReportSymbols(mongoClient)
+    let map = {}
+    if (skipHasReport) {
+        map = await findHasReportSymbols(mongoClient)
+    }
     const noReportSymbols = [];
     symbolIds.map(it => {
         if (!map[it]) {
@@ -151,26 +155,28 @@ async function mainProcess(mongoClient) {
         console.log("process candidates, step:", i)
         const candidate = candidates[i];
         await Promise.all(candidate.map(it => {
-            return processSymbol(mongoClient, it);
+            const [market,symbol] = it.split("_")
+            return processSymbol(mongoClient, symbol,market);
         }))
     }
     console.log("mainProcess done")
 }
 
-async function processSymbol(mongoClient, symbolId) {
-    if (!symbolId) {
-        console.error("processSymbol skip. symbolId is invalid:", symbolId);
+async function processSymbol(mongoClient, symbol,market) {
+    if (!symbol) {
+        console.error("processSymbol skip. symbol is invalid:", symbol);
         return;
     }
-    console.log("processSymbol start. symbolId:", symbolId);
+    console.log("processSymbol start. symbol:", symbol);
     return new Promise(async (resolve, reject) => {
         const tvClient = new TradingView.Client({
             DEBUG: true,
         });
         const symbolCtx = {
             meta: {
-                symbolId,
-                ...utils.splitSymbolId(symbolId)
+                symbol,
+                market,
+                ...utils.splitTVSymbol(symbol)
             },
             ts: new Date(),
             strategyInfo,
@@ -186,9 +192,9 @@ async function processSymbol(mongoClient, symbolId) {
         });
         const chart = new tvClient.Session.Chart(); // Init a Chart session
         chart.setTimezone("Asia/Shanghai");
-        chart.setMarket(utils.getSymbol(symbolId), symbolCtx.marketOptions);
+        chart.setMarket(symbol, symbolCtx.marketOptions);
         chart.onSymbolLoaded(() => {
-            // When the symbolId is successfully loaded
+            // When the symbol is successfully loaded
             console.log(`Market "${chart.infos.description}" loaded !`);
             saveChartInfo(mongoClient, symbolCtx, chart.infos);
         });
@@ -198,14 +204,15 @@ async function processSymbol(mongoClient, symbolId) {
 
         let stdDone = false;
         let updateDone = false;
-        function  checkResolve(){
+
+        function checkResolve() {
             console.log("checkResolve... ")
-            if(updateDone && stdDone){
+            if (updateDone && stdDone) {
                 resolve()
-            }else{
-                setTimeout(()=>{
+            } else {
+                setTimeout(() => {
                     checkResolve()
-                },1000)
+                }, 1000)
             }
         }
 
@@ -215,7 +222,7 @@ async function processSymbol(mongoClient, symbolId) {
         });
 
         STD.onReady(async () => {
-            console.log("processSymbol done. symbolId:", symbolId, " STD:", STD.instance.description);
+            console.log("processSymbol done. symbol:", symbol, " STD:", STD.instance.description);
             await tvClient.end()
             stdDone = true;
             checkResolve()
@@ -234,12 +241,12 @@ async function processSymbol(mongoClient, symbolId) {
             updateDone = true;
 
             // await tvClient.end();
-            // if (symbolId_index >= symbolIds.length - 1) {
+            // if (symbol_index >= symbolIds.length - 1) {
             //     console.log("process all symbolIds success.");
             //     throw new Error("exit");
             // } else {
             //     await sleep(1000);
-            //     processSymbol(mongoClient, symbolId_index + 1);
+            //     processSymbol(mongoClient, symbol_index + 1);
             // }
         }
 
