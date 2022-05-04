@@ -53,11 +53,6 @@ async function saveLatest(ctx,mongoClient,screener,origin_docs) {
 async function processScreener(mongoClient, screener, columns) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("processScreener start. screener:",screener)
-    // const res = await TradingView.fetchScanData(
-    //   ["NASDAQ:LTRPB", "NYSE:MMU"],
-    //   screener,
-    //     columns
-    // );
     // const res ={
     //     data:[
     //         {
@@ -84,16 +79,16 @@ async function processScreener(mongoClient, screener, columns) {
     }
     const docs = res.data
         .map((it) => {
-            // if (it.d.length !== columns.length) {
-            //     console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
-            //     return null;
-            // }
+            if (it.d.length !== columns.length) {
+                console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
+                return null;
+            }
             const symbol = `${screener}:${it.s}`;
             const obj = {
                 meta:{
                     symbol,
                     screener,
-                    ...utils.splitSymbol(it.s)
+                    ...utils.splitTVSymbol(it.s)
                 }
             };
             for (let index = 0; index < columns.length; index++) {
