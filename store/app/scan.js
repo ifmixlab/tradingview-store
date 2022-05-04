@@ -33,13 +33,13 @@ async function saveHistory(ctx,mongoClient,screener,origin_docs) {
 async function saveLatest(ctx,mongoClient,screener,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     const ops = docs.map(it=>{
-        const {symbol} = it.meta
+        const {symbolId} = it.meta
         it.ts = ctx.ts
         delete it._id
         const op={
             replaceOne:{
                 filter:{
-                    "meta.symbol":symbol
+                    "meta.symbolId":symbolId
                 },
                 replacement:it,
                 upsert:true
@@ -56,11 +56,11 @@ async function processScreener(mongoClient, screener, columns) {
     // const res ={
     //     data:[
     //         {
-    //             s:"test1:symbol1",
+    //             s:"test1:symbolId1",
     //             d:["bar",100,200,300],
     //         },
     //         {
-    //             s:"test2:symbol2",
+    //             s:"test2:symbolId2",
     //             d:["bar",100,200,400],
     //         }
     //     ]
@@ -83,10 +83,10 @@ async function processScreener(mongoClient, screener, columns) {
                 console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
                 return null;
             }
-            const symbol = `${screener}:${it.s}`;
+            const symbolId = `${screener}:${it.s}`;
             const obj = {
                 meta:{
-                    symbol,
+                    symbolId,
                     screener,
                     ...utils.splitTVSymbol(it.s)
                 }
