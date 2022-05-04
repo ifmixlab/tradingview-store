@@ -19,7 +19,18 @@ async function insertDoc(mongoClient,dbName, collName, doc) {
     }
 }
 
-
+async function replaceDoc(mongoClient,dbName, collName,filter, doc) {
+    try {
+        const coll = mongoClient.db(dbName).collection(collName);
+        const res = await coll.replaceOne(filter, doc, {
+            upsert: true
+        });
+        console.log("replaceDoc done. collName: ", collName);
+        return res;
+    } catch (e) {
+        console.error("replaceDoc error. collName: ", collName, doc, e);
+    }
+}
 
 async function insertManyDocs(mongoClient, dbName,collName, docs) {
     try {
@@ -81,6 +92,7 @@ module.exports = {
     getClient,
     run,
     insertDoc,
+    replaceDoc,
     insertManyDocs,
     bulkWrite,
 };

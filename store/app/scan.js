@@ -15,34 +15,31 @@ main();
 async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await  Promise.all([
-        processType(mongoClient, "crypto",scan_crypto_columns),
-        processType(mongoClient, "china",scan_stock_columns),
-        processType(mongoClient, "hongkong",scan_stock_columns),
-        processType(mongoClient, "america",scan_stock_columns)
+        processScreener(mongoClient, "crypto",scan_crypto_columns),
+        processScreener(mongoClient, "china",scan_stock_columns),
+        processScreener(mongoClient, "hongkong",scan_stock_columns),
+        processScreener(mongoClient, "america",scan_stock_columns)
     ])
     console.log("mainProcess done.")
 }
-async function saveHistory(ctx,mongoClient,type,origin_docs) {
+async function saveHistory(ctx,mongoClient,screener,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     docs.forEach(it=>{
         it.ts = ctx.ts
-        delete it.symbol
     })
     await mongo.insertManyDocs(mongoClient, DB_NAME_OD_TV,`indicator_history`, docs);
 }
 
-async function saveLatest(ctx,mongoClient,type,origin_docs) {
+async function saveLatest(ctx,mongoClient,screener,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     const ops = docs.map(it=>{
-        const {screener} = ctx
-        const {symbol} = it
-        delete it._id
-        delete it.symbol
+        const {symbol} = it.meta
         it.ts = ctx.ts
+        delete it._id
         const op={
             replaceOne:{
                 filter:{
-                    _id:`${screener}_${symbol}`,
+                    "meta.symbol":symbol
                 },
                 replacement:it,
                 upsert:true
@@ -53,28 +50,28 @@ async function saveLatest(ctx,mongoClient,type,origin_docs) {
     await mongo.bulkWrite(mongoClient, `indicator_latest`, ops);
 }
 
-async function processType(mongoClient, type, columns) {
+async function processScreener(mongoClient, screener, columns) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    console.log("processType start. type:",type)
+    console.log("processScreener start. screener:",screener)
     // const res = await TradingView.fetchScanData(
     //   ["NASDAQ:LTRPB", "NYSE:MMU"],
-    //   type,
+    //   screener,
     //     columns
     // );
     // const res ={
     //     data:[
     //         {
-    //             s:"test:symbol1",
-    //             d:["bar",1,2,3],
+    //             s:"test1:symbol1",
+    //             d:["bar",100,200,300],
     //         },
     //         {
-    //             s:"test:symbol2",
-    //             d:["bar",1,2,4],
+    //             s:"test2:symbol2",
+    //             d:["bar",100,200,400],
     //         }
     //     ]
     // }
     const res = await TradingView.fetchScanDataForAllSymbols(
-        type,
+        screener.toLowerCase(),
         columns
     );
     if(res==null || res.data == null){
@@ -83,21 +80,21 @@ async function processType(mongoClient, type, columns) {
     }
     const ctx = {
         ts:new Date(),
-        screener:type
+        screener
     }
     const docs = res.data
         .map((it) => {
-            if (it.d.length !== columns.length) {
-                console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
-                return null;
-            }
-            const symbol = it.s;
+            // if (it.d.length !== columns.length) {
+            //     console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
+            //     return null;
+            // }
+            const symbol = `${screener}:${it.s}`;
             const obj = {
                 meta:{
-                    screener: type,
-                    ...utils.splitSymbol(symbol)
-                },
-                symbol
+                    symbol,
+                    screener,
+                    ...utils.splitSymbol(it.s)
+                }
             };
             for (let index = 0; index < columns.length; index++) {
                 const colName = columns[index];
@@ -109,8 +106,8 @@ async function processType(mongoClient, type, columns) {
         })
         .filter((it) => it != null);
     await Promise.all([
-        saveHistory(ctx,mongoClient,type,docs),
-        saveLatest(ctx,mongoClient,type,docs),
+        saveHistory(ctx,mongoClient,screener,docs),
+        saveLatest(ctx,mongoClient,screener,docs),
     ])
-    console.log("processType done. type:",type)
+    console.log("processScreener done. screener:",screener)
 }

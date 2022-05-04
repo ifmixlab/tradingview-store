@@ -4,10 +4,7 @@ const {DB_NAME_OD_TV, DB_NAME_LOG_TV} = require("../../src/consts")
 
 const symbols = require("../../data/study_symbols.json");
 const utils = require("../utils")
-// const symbols = ["NASDAQ:MDXH",
-//     "NYSE:AGCB",
-//     "AMEX:USFR",
-//     "NASDAQ:GTYH"];
+// const symbols = ["hongkong:HKEX:8020", "america:NASDAQ:APMI"];
 
 const PAGE_SIZE = 1000000;
 const strategyInfo = {
@@ -28,48 +25,52 @@ async function savePacket(mongoClient, symbolCtx, data) {
         ...symbolCtx,
         d: data,
     };
-    delete doc.symbol
-    await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV,"packet_history", doc);
+    await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV, "packet_history", doc);
     console.log("savePacket done.", JSON.stringify(symbolCtx));
 }
 
+
 async function findHasReportSymbols(mongoClient) {
-    const coll = mongoClient.db(DB_NAME_OD_TV).collection("study_report_history")
+    const coll = mongoClient.db(DB_NAME_OD_TV).collection("study_report_latest")
     const cursor = coll.find({}, {
         limit: 10000000,
         timeout: false,
         projection: {
             "_id": 0,
-            "symbol": 1
+            "meta.symbol": 1
         }
     })
     const res = await cursor.toArray()
     const obj = {}
-    res.map(it => obj[it.symbol] = true)
+    res.map(it => {
+        obj[it.meta.symbol] = true
+    })
     return obj;
 }
 
 async function saveChartInfo(mongoClient, symbolCtx, infos) {
-    const {symbol} = symbolCtx
+    const { meta} = symbolCtx
+    const {symbol} = meta
     if (!symbol) {
         console.error("saveChartInfo error, invalid symbol!");
         return
     }
     const doc = {
         ...infos,
-        meta: symbolCtx.meta,
-        ts: new Date(),
+        meta,
+        ts: symbolCtx.ts,
     };
     const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_info")
     const res = await coll.replaceOne({
-        _id: symbol
+        "meta.symbol": symbol
     }, doc, {
         upsert: true
     });
-    console.log("saveChartInfo done.", symbolCtx.symbol);
+    console.log("saveChartInfo done.", symbol);
 }
 
 async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
+    const {meta} = symbolCtx
     const periods = JSON.parse(JSON.stringify(origin_periods));
     const ops = periods
         .map((it) => {
@@ -82,17 +83,16 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
                 return null;
             }
             delete it.time
-            delete it.symbol
-            const _id = `${symbolCtx.symbol}_${ti}`;
+            delete it._id
             const doc = {
                 ...it,
-                meta: symbolCtx.meta,
+                meta,
                 ts: new Date(ti * 1000),
             }
             const op = {
                 replaceOne: {
                     filter: {
-                        _id,
+                        "meta.symbol": meta.symbol
                     },
                     replacement: doc,
                     upsert: true
@@ -101,19 +101,28 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
             return op;
         })
         .filter((it) => it != null);
-    console.log("updatePeriods...", symbolCtx.symbol);
+    console.log("updatePeriods...", meta.symbol);
     await mongo.bulkWrite(mongoClient, collName, ops);
     console.log("updatePeriods done.");
 }
 
-async function saveStudyReport(mongoClient, collName, symbolCtx, origin_data) {
+async function saveStudyReport(mongoClient, symbolCtx, origin_data) {
+    const {meta} = symbolCtx
     const data = JSON.parse(JSON.stringify(origin_data));
-    const doc = {
+    const doc1 = {
         ...symbolCtx,
         ...data,
     };
-    console.log("saveStudyReport...", symbolCtx.symbol);
-    await mongo.insertDoc(mongoClient,DB_NAME_OD_TV, collName, doc);
+    const doc2 = {
+        ...symbolCtx,
+        ...data,
+    };
+    console.log("saveStudyReport start.");
+    await Promise.all([
+        mongo.insertDoc(mongoClient, DB_NAME_OD_TV, "study_report_history", doc1),
+        mongo.replaceDoc(mongoClient, DB_NAME_OD_TV, "study_report_latest",
+            {"meta.symbol": meta.symbol}, doc2),
+    ])
     console.log("saveStudyReport done.");
 }
 
@@ -159,8 +168,8 @@ async function processSymbol(mongoClient, symbol) {
             DEBUG: true,
         });
         const symbolCtx = {
-            symbol,
             meta: {
+                symbol,
                 ...utils.splitSymbol(symbol)
             },
             ts: new Date(),
@@ -177,8 +186,7 @@ async function processSymbol(mongoClient, symbol) {
         });
         const chart = new tvClient.Session.Chart(); // Init a Chart session
         chart.setTimezone("Asia/Shanghai");
-        chart.setMarket(symbol, symbolCtx.marketOptions);
-
+        chart.setMarket(utils.getExchangeCodeSymbol(symbol), symbolCtx.marketOptions);
         chart.onSymbolLoaded(() => {
             // When the symbol is successfully loaded
             console.log(`Market "${chart.infos.description}" loaded !`);
@@ -188,6 +196,19 @@ async function processSymbol(mongoClient, symbol) {
         const indic = await TradingView.getIndicator(strategyInfo.scriptId);
         const STD = new chart.Study(indic);
 
+        let stdDone = false;
+        let updateDone = false;
+        function  checkResolve(){
+            console.log("checkResolve... ")
+            if(updateDone && stdDone){
+                resolve()
+            }else{
+                setTimeout(()=>{
+                    checkResolve()
+                },1000)
+            }
+        }
+
         STD.onError((...err) => {
             console.error("Study error:", ...err);
             reject()
@@ -196,20 +217,22 @@ async function processSymbol(mongoClient, symbol) {
         STD.onReady(async () => {
             console.log("processSymbol done. symbol:", symbol, " STD:", STD.instance.description);
             await tvClient.end()
-            resolve()
+            stdDone = true;
+            checkResolve()
         });
 
         async function onUpdate() {
             await Promise.all([
-                updatePeriods(mongoClient, "chart_detail_day", symbolCtx, chart.periods),
-                updatePeriods(mongoClient, "study_detail_day", symbolCtx, STD.periods),
+                updatePeriods(mongoClient, "chart_detail_daily", symbolCtx, chart.periods),
+                updatePeriods(mongoClient, "study_detail_daily", symbolCtx, STD.periods),
                 saveStudyReport(
                     mongoClient,
-                    "study_report_history",
                     symbolCtx,
                     STD.strategyReport
                 ),
             ]);
+            updateDone = true;
+
             // await tvClient.end();
             // if (symbol_index >= symbols.length - 1) {
             //     console.log("process all symbols success.");
