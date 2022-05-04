@@ -1,9 +1,9 @@
 const TradingView = require("../../main");
 const mongo = require("../service/mongo");
-const {sleep} = require("../../src/utils");
-const {DB_NAME_OD} = require("../../src/consts")
+const {DB_NAME_OD_TV, DB_NAME_LOG_TV} = require("../../src/consts")
 
 const symbols = require("../../data/study_symbols.json");
+const utils = require("../utils")
 // const symbols = ["NASDAQ:MDXH",
 //     "NYSE:AGCB",
 //     "AMEX:USFR",
@@ -28,42 +28,43 @@ async function savePacket(mongoClient, symbolCtx, data) {
         ...symbolCtx,
         d: data,
     };
-    await mongo.insertDoc(mongoClient, "packet_history", doc);
+    delete doc.symbol
+    await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV,"packet_history", doc);
     console.log("savePacket done.", JSON.stringify(symbolCtx));
 }
 
 async function findHasReportSymbols(mongoClient) {
-    const coll = mongoClient.db(DB_NAME_OD).collection("study_report_history")
-    const cursor =  coll.find({},{
-        limit:10000000,
-        timeout:false,
-        projection:{
-            "_id":0,
-            "symbol":1
+    const coll = mongoClient.db(DB_NAME_OD_TV).collection("study_report_history")
+    const cursor = coll.find({}, {
+        limit: 10000000,
+        timeout: false,
+        projection: {
+            "_id": 0,
+            "symbol": 1
         }
     })
     const res = await cursor.toArray()
     const obj = {}
-    res.map(it=>obj[it.symbol] = true)
+    res.map(it => obj[it.symbol] = true)
     return obj;
 }
 
 async function saveChartInfo(mongoClient, symbolCtx, infos) {
     const {symbol} = symbolCtx
-    if(!symbol){
+    if (!symbol) {
         console.error("saveChartInfo error, invalid symbol!");
         return
     }
     const doc = {
         ...infos,
-        symbol: symbolCtx.symbol,
-        uAt: new Date(),
+        meta: symbolCtx.meta,
+        ts: new Date(),
     };
-    const coll = mongoClient.db(DB_NAME_OD).collection("chart_info")
+    const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_info")
     const res = await coll.replaceOne({
-        _id:symbol
-    }, doc,{
-        upsert:true
+        _id: symbol
+    }, doc, {
+        upsert: true
     });
     console.log("saveChartInfo done.", symbolCtx.symbol);
 }
@@ -72,7 +73,7 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
     const periods = JSON.parse(JSON.stringify(origin_periods));
     const ops = periods
         .map((it) => {
-            if(it.$time){
+            if (it.$time) {
                 it.time = it.$time
                 delete it.$time
             }
@@ -80,19 +81,21 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
             if (ti == null) {
                 return null;
             }
+            delete it.time
+            delete it.symbol
             const _id = `${symbolCtx.symbol}_${ti}`;
             const doc = {
                 ...it,
-                symbol: symbolCtx.symbol,
-                uAt: new Date(ti * 1000),
+                meta: symbolCtx.meta,
+                ts: new Date(ti * 1000),
             }
-            const op={
-                replaceOne:{
-                    filter:{
+            const op = {
+                replaceOne: {
+                    filter: {
                         _id,
                     },
-                    replacement:doc,
-                    upsert:true
+                    replacement: doc,
+                    upsert: true
                 }
             }
             return op;
@@ -110,15 +113,15 @@ async function saveStudyReport(mongoClient, collName, symbolCtx, origin_data) {
         ...data,
     };
     console.log("saveStudyReport...", symbolCtx.symbol);
-    await mongo.insertDoc(mongoClient, collName, doc);
+    await mongo.insertDoc(mongoClient,DB_NAME_OD_TV, collName, doc);
     console.log("saveStudyReport done.");
 }
 
-function split_array(arr,len){
+function split_array(arr, len) {
     let arr_length = arr.length;
     let newArr = [];
-    for(let i=0;i<arr_length;i+=len){
-        newArr.push(arr.slice(i,i+len));
+    for (let i = 0; i < arr_length; i += len) {
+        newArr.push(arr.slice(i, i + len));
     }
     return newArr;
 }
@@ -128,18 +131,18 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess start")
     const map = await findHasReportSymbols(mongoClient)
     const noReportSymbols = [];
-    symbols.map(it=>{
-        if(!map[it]){
+    symbols.map(it => {
+        if (!map[it]) {
             noReportSymbols.push(it)
         }
     })
-    const candidates = split_array(noReportSymbols,5)
-    console.log("candidates:",JSON.stringify(candidates))
+    const candidates = split_array(noReportSymbols, 5)
+    console.log("candidates:", JSON.stringify(candidates))
     for (let i = 0; i < candidates.length; i++) {
-        console.log("process candidates, step:",i)
+        console.log("process candidates, step:", i)
         const candidate = candidates[i];
-        await Promise.all(candidate.map(it=>{
-            return processSymbol(mongoClient,it);
+        await Promise.all(candidate.map(it => {
+            return processSymbol(mongoClient, it);
         }))
     }
     console.log("mainProcess done")
@@ -155,10 +158,12 @@ async function processSymbol(mongoClient, symbol) {
         const tvClient = new TradingView.Client({
             DEBUG: true,
         });
-
         const symbolCtx = {
             symbol,
-            uAt: new Date(),
+            meta: {
+                ...utils.splitSymbol(symbol)
+            },
+            ts: new Date(),
             strategyInfo,
             marketOptions: {
                 // Set the market
@@ -189,15 +194,15 @@ async function processSymbol(mongoClient, symbol) {
         });
 
         STD.onReady(async () => {
-            console.log("processSymbol done. symbol:", symbol," STD:", STD.instance.description);
+            console.log("processSymbol done. symbol:", symbol, " STD:", STD.instance.description);
             await tvClient.end()
             resolve()
         });
 
         async function onUpdate() {
             await Promise.all([
-                updatePeriods(mongoClient, "chart_period_day", symbolCtx, chart.periods),
-                updatePeriods(mongoClient, "study_period_day", symbolCtx, STD.periods),
+                updatePeriods(mongoClient, "chart_detail_day", symbolCtx, chart.periods),
+                updatePeriods(mongoClient, "study_detail_day", symbolCtx, STD.periods),
                 saveStudyReport(
                     mongoClient,
                     "study_report_history",

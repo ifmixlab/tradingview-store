@@ -1,5 +1,5 @@
 const {MongoClient} = require("mongodb");
-const {DB_NAME_OD} = require("../../src/consts")
+const {DB_NAME_OD_TV} = require("../../src/consts")
 
 const uri = "mongodb://127.0.0.1:27017/od_tv?readPreference=primary&ssl=false";
 
@@ -7,10 +7,10 @@ const client = new MongoClient(uri);
 
 let connected = false;
 
-async function insertDoc(mongoClient, collName, doc) {
+async function insertDoc(mongoClient,dbName, collName, doc) {
     try {
         // console.log("insertDoc, collName: ", collName, " doc: ", JSON.stringify(doc));
-        const coll = mongoClient.db(DB_NAME_OD).collection(collName);
+        const coll = mongoClient.db(dbName).collection(collName);
         const res = await coll.insertOne(doc);
         console.log("insertDoc done. collName: ", collName);
         return res;
@@ -21,7 +21,7 @@ async function insertDoc(mongoClient, collName, doc) {
 
 
 
-async function insertManyDocs(mongoClient, collName, docs) {
+async function insertManyDocs(mongoClient, dbName,collName, docs) {
     try {
         console.log(
             "insertManyDocs, collName: ",
@@ -29,7 +29,7 @@ async function insertManyDocs(mongoClient, collName, docs) {
             " docs.length: ",
             docs.length
         );
-        const coll = mongoClient.db(DB_NAME_OD).collection(collName);
+        const coll = mongoClient.db(dbName).collection(collName);
         const res = await coll.insertMany(docs, {bypassDocumentValidation:true,ordered: false});
         console.log("insertManyDocs done. collName: ", collName);
         return res;
@@ -46,7 +46,7 @@ async function bulkWrite(mongoClient, collName, ops) {
             " ops.length: ",
             ops.length
         );
-        const coll = mongoClient.db(DB_NAME_OD).collection(collName);
+        const coll = mongoClient.db(DB_NAME_OD_TV).collection(collName);
         const res = await coll.bulkWrite(ops, {bypassDocumentValidation: true, ordered: false})
         console.log("bulkWrite done. collName: ", collName);
         return res;

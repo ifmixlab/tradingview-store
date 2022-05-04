@@ -2,10 +2,12 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
+const {DB_NAME_OD_TV} = require("../../src/consts");
+const utils = require("../utils")
 
 async function main() {
     await mongo.run((client) => mainProcess(client));
-    process.exit(-1)
+    process.exit(0)
 }
 
 main();
@@ -20,19 +22,27 @@ async function mainProcess(mongoClient) {
     ])
     console.log("mainProcess done.")
 }
-async function saveHistory(mongoClient,type,docs) {
-    await mongo.insertManyDocs(mongoClient, `scan_history_${type}`, docs);
+async function saveHistory(ctx,mongoClient,type,origin_docs) {
+    const docs = JSON.parse(JSON.stringify(origin_docs))
+    docs.forEach(it=>{
+        it.ts = ctx.ts
+        delete it.symbol
+    })
+    await mongo.insertManyDocs(mongoClient, DB_NAME_OD_TV,`indicator_history`, docs);
 }
 
-async function saveLatest(mongoClient,type,origin_docs) {
+async function saveLatest(ctx,mongoClient,type,origin_docs) {
     const docs = JSON.parse(JSON.stringify(origin_docs))
     const ops = docs.map(it=>{
+        const {screener} = ctx
         const {symbol} = it
         delete it._id
+        delete it.symbol
+        it.ts = ctx.ts
         const op={
             replaceOne:{
                 filter:{
-                    _id:symbol,
+                    _id:`${screener}_${symbol}`,
                 },
                 replacement:it,
                 upsert:true
@@ -40,7 +50,7 @@ async function saveLatest(mongoClient,type,origin_docs) {
         }
         return op
     })
-    await mongo.bulkWrite(mongoClient, `scan_latest_${type}`, ops);
+    await mongo.bulkWrite(mongoClient, `indicator_latest`, ops);
 }
 
 async function processType(mongoClient, type, columns) {
@@ -71,14 +81,24 @@ async function processType(mongoClient, type, columns) {
         console.error("fetch error, res or res.data is null. ",JSON.stringify(res))
         return;
     }
+    const ctx = {
+        ts:new Date(),
+        screener:type
+    }
     const docs = res.data
         .map((it) => {
-            // if (it.d.length !== columns.length) {
-            //     return null;
-            // }
-            const obj = {};
-            obj.symbol = it.s;
-            obj.uAt = new Date();
+            if (it.d.length !== columns.length) {
+                console.error("len not match, skip. len:",it.d.length," it:",JSON.stringify(it))
+                return null;
+            }
+            const symbol = it.s;
+            const obj = {
+                meta:{
+                    screener: type,
+                    ...utils.splitSymbol(symbol)
+                },
+                symbol
+            };
             for (let index = 0; index < columns.length; index++) {
                 const colName = columns[index];
                 const value = it.d[index];
@@ -89,8 +109,8 @@ async function processType(mongoClient, type, columns) {
         })
         .filter((it) => it != null);
     await Promise.all([
-        saveHistory(mongoClient,type,docs),
-        saveLatest(mongoClient,type,docs),
+        saveHistory(ctx,mongoClient,type,docs),
+        saveLatest(ctx,mongoClient,type,docs),
     ])
     console.log("processType done. type:",type)
 }
