@@ -145,12 +145,14 @@ async function mainProcess(mongoClient) {
     }
     const noReportSymbols = [];
     symbolIds.map(it => {
-        if (!map[it]) {
+        const symbol = it.split("_")[1]
+        if (!map[symbol]) {
             noReportSymbols.push(it)
         }
     })
+
     const candidates = split_array(noReportSymbols, 5)
-    console.log("candidates:", JSON.stringify(candidates))
+    console.log(`get candidates done. all: ${symbolIds.length}, noReport: ${noReportSymbols.length}, candidates:`,JSON.stringify(candidates))
     for (let i = 0; i < candidates.length; i++) {
         console.log("process candidates, step:", i)
         const candidate = candidates[i];
