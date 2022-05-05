@@ -4,7 +4,7 @@ const {DB_NAME_OD_TV, DB_NAME_LOG_TV} = require("../../src/consts")
 
 const symbolIds = require("../../data/study_symbol_ids.json");
 const utils = require("../utils")
-// const symbolIds = ["hongkong_HKEX:8020", "america_NASDAQ:APMI"];
+// const symbolIds = ["hongkong_HKEX:1991", "hongkong_HKEX:531"];
 
 const PAGE_SIZE = 1000000;
 const skipHasReport = true;
@@ -63,9 +63,9 @@ async function saveChartInfo(mongoClient, symbolCtx, infos) {
         meta,
         ts: symbolCtx.ts,
     };
-   await mongo.replaceDoc(mongoClient,DB_NAME_OD_TV,"chart_info",{
+    await mongo.replaceDoc(mongoClient, DB_NAME_OD_TV, "chart_info", {
         "meta.symbol": symbol
-    },doc)
+    }, doc)
     console.log("saveChartInfo done.", symbol);
 }
 
@@ -84,15 +84,17 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
             }
             delete it.time
             delete it._id
+            const ts=new Date(ti * 1000)
             const doc = {
                 ...it,
                 meta,
-                ts: new Date(ti * 1000),
+                ts,
             }
             const op = {
                 replaceOne: {
                     filter: {
-                        "meta.symbol": meta.symbol
+                        "meta.symbol": meta.symbol,
+                        ts
                     },
                     replacement: mongo.fixFieldNameForMongo(doc),
                     upsert: true
@@ -150,20 +152,20 @@ async function mainProcess(mongoClient) {
         }
     })
 
-    const candidates = split_array(noReportSymbols, 5)
-    console.log(`get candidates done. all: ${symbolIds.length}, noReport: ${noReportSymbols.length}, candidates:`,JSON.stringify(candidates))
+    const candidates = split_array(noReportSymbols, 6)
+    console.log(`get candidates done. all: ${symbolIds.length}, noReport: ${noReportSymbols.length}, candidates:`, JSON.stringify(candidates))
     for (let i = 0; i < candidates.length; i++) {
         console.log("process candidates, step:", i)
         const candidate = candidates[i];
         await Promise.all(candidate.map(it => {
-            const [market,symbol] = it.split("_")
-            return processSymbol(mongoClient, symbol,market);
+            const [market, symbol] = it.split("_")
+            return processSymbol(mongoClient, symbol, market);
         }))
     }
     console.log("mainProcess done")
 }
 
-async function processSymbol(mongoClient, symbol,market) {
+async function processSymbol(mongoClient, symbol, market) {
     if (!symbol) {
         console.error("processSymbol skip. symbol is invalid:", symbol);
         return;
