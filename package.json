@@ -28,6 +28,7 @@
   "author": "Mathieu Colmon",
   "license": "ISC",
   "dependencies": {
+    "dot-object": "^2.1.4",
     "jszip": "^3.7.1",
     "mongodb": "^4.5.0",
     "ws": "^7.4.3"

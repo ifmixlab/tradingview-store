@@ -41,7 +41,7 @@ async function saveLatest(ctx,mongoClient,market,origin_docs) {
                 filter:{
                     "meta.symbol":symbol
                 },
-                replacement:it,
+                replacement:mongo.fixFieldNameForMongo(it),
                 upsert:true
             }
         }

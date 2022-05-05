@@ -26,7 +26,9 @@ async function savePacket(mongoClient, symbolCtx, data) {
         ...symbolCtx,
         d: data,
     };
-    await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV, "packet_history", doc);
+    const coll = mongoClient.db(DB_NAME_LOG_TV).collection("packet_history");
+    const res = await coll.insertOne(doc);
+    // await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV, "packet_history", doc);
     console.log("savePacket done.", JSON.stringify(symbolCtx));
 }
 
@@ -61,12 +63,9 @@ async function saveChartInfo(mongoClient, symbolCtx, infos) {
         meta,
         ts: symbolCtx.ts,
     };
-    const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_info")
-    const res = await coll.replaceOne({
+   await mongo.replaceDoc(mongoClient,DB_NAME_OD_TV,"chart_info",{
         "meta.symbol": symbol
-    }, doc, {
-        upsert: true
-    });
+    },doc)
     console.log("saveChartInfo done.", symbol);
 }
 
@@ -95,7 +94,7 @@ async function updatePeriods(mongoClient, collName, symbolCtx, origin_periods) {
                     filter: {
                         "meta.symbol": meta.symbol
                     },
-                    replacement: doc,
+                    replacement: mongo.fixFieldNameForMongo(doc),
                     upsert: true
                 }
             }
