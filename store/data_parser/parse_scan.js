@@ -30,14 +30,14 @@ async function mainProcess(mongoClient) {
         const logItems = await findLogItems(mongoClient)
         if (logItems.length == 0) {
             done = true;
-            console.log("mainProcess skip, no doc")
+            console.log(`mainProcess done. count: ${count}`)
             return
         }
         await processLogItems(mongoClient, logItems)
         count++;
         // done=true
     }
-    console.log("mainProcess done.")
+
 }
 
 async function findLogItems(mongoClient) {
