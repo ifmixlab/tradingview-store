@@ -9,7 +9,7 @@ const client = new MongoClient(uri);
 let connected = false;
 
 function fixFieldNameForMongo(doc){
-    console.log("fixFieldNameForMongo, origin_doc: ", JSON.stringify(doc.meta));
+    console.log("fixFieldNameForMongo ", doc.meta.symbol);
     // const doc = dot.dot(origin_doc);
     const newDoc = {}
     const keys = Object.keys(doc).sort()

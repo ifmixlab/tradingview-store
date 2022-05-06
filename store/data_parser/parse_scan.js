@@ -5,10 +5,10 @@ const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
 const utils = require("../utils")
 
 
-function getColumns(market,version) {
-    if(market=="crypto"){
+function getColumns(market, version) {
+    if (market == "crypto") {
         return scan_crypto_columns;
-    }else{
+    } else {
         return scan_stock_columns;
     }
 }
@@ -26,50 +26,58 @@ async function mainProcess(mongoClient) {
     let done = false;
     while (!done) {
         const logItems = await findLogItems(mongoClient)
-        if (logItems.length==0) {
+        if (logItems.length == 0) {
             done = true;
             console.log("mainProcess skip, no doc")
             return
         }
-        const promises = []
-        logItems.map((it) => {
-            promises.push(processLogItem(mongoClient, it))
-        })
-        await Promise.all(promises)
+        await processLogItems(mongoClient, logItems)
+        // done=true
     }
     console.log("mainProcess done.")
 }
 
 async function findLogItems(mongoClient) {
     const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan)
-    const res = await coll.find({parsed: {$ne: true}},{
-        limit:1000
+    const res = await coll.find({parsed: {$ne: true}}, {
+        limit: 1000
     }).toArray();
     // const res = coll.findOne({handled: true});
     return res;
 }
 
-async function markLogItemParsed(mongoClient, logItem) {
+async function markLogItemsParsed(ctx, mongoClient, logItems) {
     const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan)
-    const {_id} = logItem
-    console.log(`updateLogItem _id:${_id}`)
-    const res = await coll.updateOne({
-        _id
-    }, {
-        "$set": {
-            parsed: true,
-            last_parsed_at:new Date()
+    console.log(`markLogItemsParsed len: ${logItems.length}`)
+    const ops = logItems.map(it => {
+        const {_id} = it
+        const op = {
+            updateOne: {
+                filter: {
+                    _id
+                },
+                update:{
+                    "$set": {
+                        parsed: true,
+                        last_parsed_at: new Date()
+                    }
+                }
+            }
         }
-    });
+        return op
+    })
+    const res = await coll.bulkWrite(ops, {bypassDocumentValidation: true, ordered: false})
     // const res = coll.findOne({handled: true});
     return res;
 }
 
-async function saveHistory(ctx, mongoClient, market, docs) {
+async function saveHistory(ctx, mongoClient, logItems) {
+    const docs = logItems.map(it => parseData(it))
     await mongo.insertManyDocs(mongoClient, db_name_od_tv, `indicator_history`, docs, true);
 }
 
-async function saveLatest(ctx, mongoClient, market, docs) {
+async function saveLatest(ctx, mongoClient, logItems) {
+    const docs = logItems.map(it => parseData(it))
     const ops = docs.map(it => {
         const {symbol} = it.meta
         delete it._id
@@ -87,30 +95,23 @@ async function saveLatest(ctx, mongoClient, market, docs) {
     await mongo.bulkWrite(mongoClient, `indicator_latest`, ops);
 }
 
-async function processLogItem(mongoClient, logItem) {
-    const {_id,market, ts, data} = logItem
-    console.log(`processLogItem start.  ${market},${_id}`)
-    if (data == null) {
-        console.error("fetch error, data is null. ", JSON.stringify(logItem))
+async function processLogItems(mongoClient, logItems) {
+    console.log(`processLogItem start. len: ${logItems.length}`)
+    if (!logItems) {
+        console.error("fetch error, logItems is null. ", JSON.stringify(logItems))
         return;
     }
-    const logId = _id
-    const ctx = {
-        logId,
-        ts,
-        market
-    }
-    const docs = [parseData(logItem)]
+    const ctx = {}
     await Promise.all([
-        saveHistory(ctx, mongoClient, market, docs),
-        saveLatest(ctx, mongoClient, market, docs),
-        markLogItemParsed(mongoClient,logItem)
+        saveHistory(ctx, mongoClient, logItems),
+        saveLatest(ctx, mongoClient, logItems),
+        markLogItemsParsed(ctx, mongoClient, logItems)
     ])
-    console.log(`processLogItem done.  ${market}, ${_id}`)
+    console.log(`processLogItem done.  len: ${logItems.length}`)
 }
 
 function parseData(logItem) {
-    const {_id:logId,market, ts, data} = logItem
+    const {_id: logId, market, ts, data} = logItem
     const columns = getColumns(market)
     if (data.d.length !== columns.length) {
         console.error("len not match, skip. len:", data.d.length, " data:", JSON.stringify(data))
