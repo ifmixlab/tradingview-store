@@ -8,22 +8,21 @@ const client = new MongoClient(uri);
 
 let connected = false;
 
-function fixFieldNameForMongo(origin_doc){
-    console.log("fixFieldNameForMongo, origin_doc: ", JSON.stringify(origin_doc.meta));
-    // const row = dot.dot(origin_doc);
-    const row = origin_doc;
+function fixFieldNameForMongo(doc){
+    console.log("fixFieldNameForMongo, origin_doc: ", JSON.stringify(doc.meta));
+    // const doc = dot.dot(origin_doc);
     const newDoc = {}
-    const keys = Object.keys(row).sort()
+    const keys = Object.keys(doc).sort()
     const reserveKeys = ["ts","meta"]
     for(key of reserveKeys){
-        newDoc[key] = row[key]
+        newDoc[key] = doc[key]
     }
     for(key of keys){
         if(reserveKeys.includes(key)){
             continue
         }
         const newKey = getMongoKey(key)
-        newDoc[newKey] = row[key]
+        newDoc[newKey] = doc[key]
     }
     return newDoc;
 }

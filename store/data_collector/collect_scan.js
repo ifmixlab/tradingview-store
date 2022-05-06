@@ -2,9 +2,9 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
-const {db_name_log_tv, coll_name_scan_requests} = require("../../src/consts");
+const {db_name_log_tv, coll_name_scan} = require("../../src/consts");
 const {sleep} = require("../../src/utils")
-const PAGE_SIZE = 1000;
+const REQ_PAGE_SIZE = 1000;
 
 async function main() {
     await mongo.run((client) => mainProcess(client));
@@ -18,7 +18,7 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await Promise.all([
         processMarket(mongoClient, "crypto", scan_crypto_columns),
-        processMarket(mongoClient, "china", scan_stock_columns),
+        // processMarket(mongoClient, "china", scan_stock_columns),
         processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
     ])
@@ -34,15 +34,15 @@ async function processMarket(mongoClient, market, columns) {
 async function processMarketPage(mongoClient, market, columns, page = 0, retryCount = 0) {
     try {
         console.log("processMarketPage start. ", market, page, retryCount)
-        const rangeStart = page * PAGE_SIZE;
-        const rangeEnd = (page + 1) * PAGE_SIZE;
+        const rangeStart = page * REQ_PAGE_SIZE;
+        const rangeEnd = (page + 1) * REQ_PAGE_SIZE;
         const range = [
             rangeStart,
             rangeEnd
         ]
         const content = {
             columns,
-            range
+            // range
         };
         const response = await TradingView.fetchScanData(
             market,
@@ -57,6 +57,26 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         //         {
         //             s: "test2:symbol2",
         //             d: ["bar", 100, 200, 400],
+        //         },
+        //         {
+        //             s: "test3:symbol3",
+        //             d: ["bar", 100, 200, 400],
+        //         },
+        //         {
+        //             s: "test1:symbol4",
+        //             d: ["bar", 100, 200, 300],
+        //         },
+        //         {
+        //             s: "test2:symbol5",
+        //             d: ["bar", 100, 200, 400],
+        //         },
+        //         {
+        //             s: "test3:symbol6",
+        //             d: ["bar", 100, 200, 400],
+        //         },
+        //         {
+        //             s: "test3:symbol7",
+        //             d: ["bar", 100, 200, 400],
         //         }
         //     ]
         // }
@@ -65,17 +85,21 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             console.error("fetch error, response or response.data is null. ", JSON.stringify(response))
             return;
         }
-        const doc = {
-            market,
-            page,
-            content,
-            response,
-            ts: new Date(),
-        }
-        const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan_requests);
-        const res = await coll.insertOne(doc);
+        const ts = new Date()
+        const docs = response.data
+            .map((it) => {
+                const obj = {
+                    market,
+                    reqVersion:1,
+                    ts,
+                    data:it,
+                };
+                return obj;
+            })
+            .filter((it) => it != null);
+        await mongo.insertManyDocs(mongoClient,db_name_log_tv,coll_name_scan,docs)
         console.log("processMarketPage done. ", market, page, retryCount)
-        if (response.data.length === PAGE_SIZE) {
+        if (response.data.length === REQ_PAGE_SIZE) {
             await sleep(10)
             await processMarketPage(mongoClient, market, columns, page + 1, 0)
         }

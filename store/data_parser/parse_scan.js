@@ -1,9 +1,17 @@
-const TradingView = require("../../main");
 const mongo = require("../service/mongo");
+const {db_name_od_tv, db_name_log_tv, coll_name_scan} = require("../../src/consts");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
-const {db_name_od_tv, db_name_log_tv, coll_name_scan_requests} = require("../../src/consts");
 const utils = require("../utils")
+
+
+function getColumns(market,version) {
+    if(market=="crypto"){
+        return scan_crypto_columns;
+    }else{
+        return scan_stock_columns;
+    }
+}
 
 async function main() {
     await mongo.run((client) => mainProcess(client));
@@ -17,27 +25,32 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     let done = false;
     while (!done) {
-        const logItem = await findOneLogItem(mongoClient)
-        if (!logItem) {
+        const logItems = await findLogItems(mongoClient)
+        if (logItems.length==0) {
             done = true;
             console.log("mainProcess skip, no doc")
             return
         }
-        await processLogItem(mongoClient, logItem)
-        await updateLogItem(mongoClient,logItem)
+        const promises = []
+        logItems.map((it) => {
+            promises.push(processLogItem(mongoClient, it))
+        })
+        await Promise.all(promises)
     }
     console.log("mainProcess done.")
 }
 
-async function findOneLogItem(mongoClient) {
-    const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan_requests)
-    const res = await coll.findOne({parsed: {$ne: true}});
+async function findLogItems(mongoClient) {
+    const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan)
+    const res = await coll.find({parsed: {$ne: true}},{
+        limit:1000
+    }).toArray();
     // const res = coll.findOne({handled: true});
     return res;
 }
 
-async function updateLogItem(mongoClient, logItem) {
-    const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan_requests)
+async function markLogItemParsed(mongoClient, logItem) {
+    const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan)
     const {_id} = logItem
     console.log(`updateLogItem _id:${_id}`)
     const res = await coll.updateOne({
@@ -52,19 +65,13 @@ async function updateLogItem(mongoClient, logItem) {
     return res;
 }
 
-async function saveHistory(ctx, mongoClient, market, origin_docs) {
-    const docs = JSON.parse(JSON.stringify(origin_docs))
-    docs.forEach(it => {
-        it.ts = ctx.ts
-    })
+async function saveHistory(ctx, mongoClient, market, docs) {
     await mongo.insertManyDocs(mongoClient, db_name_od_tv, `indicator_history`, docs, true);
 }
 
-async function saveLatest(ctx, mongoClient, market, origin_docs) {
-    const docs = JSON.parse(JSON.stringify(origin_docs))
+async function saveLatest(ctx, mongoClient, market, docs) {
     const ops = docs.map(it => {
         const {symbol} = it.meta
-        it.ts = ctx.ts
         delete it._id
         const op = {
             replaceOne: {
@@ -81,45 +88,49 @@ async function saveLatest(ctx, mongoClient, market, origin_docs) {
 }
 
 async function processLogItem(mongoClient, logItem) {
-    const {_id,market, content, ts, response: res} = logItem
+    const {_id,market, ts, data} = logItem
     console.log(`processLogItem start.  ${market},${_id}`)
-    if (res == null || res.data == null) {
-        console.error("fetch error, res or res.data is null. ", JSON.stringify(res))
+    if (data == null) {
+        console.error("fetch error, data is null. ", JSON.stringify(logItem))
         return;
     }
     const logId = _id
-    const {columns} = content
     const ctx = {
         logId,
         ts,
         market
     }
-    const docs = res.data
-        .map((it) => {
-            if (it.d.length !== columns.length) {
-                console.error("len not match, skip. len:", it.d.length, " it:", JSON.stringify(it))
-                return null;
-            }
-            const symbol = it.s;
-            const obj = {
-                meta: {
-                    symbol,
-                    market,
-                    ...utils.splitTVSymbol(it.s)
-                }
-            };
-            for (let index = 0; index < columns.length; index++) {
-                const colName = columns[index];
-                const value = it.d[index];
-                obj[colName] = value;
-            }
-            // console.log("doc: ", JSON.stringify(obj));
-            return obj;
-        })
-        .filter((it) => it != null);
+    const docs = [parseData(logItem)]
     await Promise.all([
         saveHistory(ctx, mongoClient, market, docs),
         saveLatest(ctx, mongoClient, market, docs),
+        markLogItemParsed(mongoClient,logItem)
     ])
-    console.log(`processLogItem done.  ${market},${_id}`)
+    console.log(`processLogItem done.  ${market}, ${_id}`)
+}
+
+function parseData(logItem) {
+    const {_id:logId,market, ts, data} = logItem
+    const columns = getColumns(market)
+    if (data.d.length !== columns.length) {
+        console.error("len not match, skip. len:", data.d.length, " data:", JSON.stringify(data))
+        return null;
+    }
+    const symbol = data.s;
+    const obj = {
+        logId,
+        ts,
+        meta: {
+            symbol,
+            market,
+            ...utils.splitTVSymbol(data.s)
+        }
+    };
+    for (let index = 0; index < columns.length; index++) {
+        const colName = columns[index];
+        const value = data.d[index];
+        obj[colName] = value;
+    }
+    // console.log("doc: ", JSON.stringify(obj));
+    return obj;
 }
