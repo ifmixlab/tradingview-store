@@ -18,7 +18,7 @@ async function mainProcess(mongoClient) {
     console.log("mainProcess start.")
     await Promise.all([
         processMarket(mongoClient, "crypto", scan_crypto_columns),
-        // processMarket(mongoClient, "china", scan_stock_columns),
+        processMarket(mongoClient, "china", scan_stock_columns),
         processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
     ])

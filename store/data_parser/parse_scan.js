@@ -24,7 +24,9 @@ async function mainProcess(mongoClient) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("mainProcess start.")
     let done = false;
+    let count = 0;
     while (!done) {
+        console.log(`mainProcess count: ${count}`);
         const logItems = await findLogItems(mongoClient)
         if (logItems.length == 0) {
             done = true;
@@ -32,6 +34,7 @@ async function mainProcess(mongoClient) {
             return
         }
         await processLogItems(mongoClient, logItems)
+        count++;
         // done=true
     }
     console.log("mainProcess done.")
@@ -56,7 +59,7 @@ async function markLogItemsParsed(ctx, mongoClient, logItems) {
                 filter: {
                     _id
                 },
-                update:{
+                update: {
                     "$set": {
                         parsed: true,
                         last_parsed_at: new Date()
