@@ -10,12 +10,12 @@ const indicators = ["Recommend.Other", "Recommend.All", "Recommend.MA"];
 const builtInIndicList = [];
 
 
-async function doFetchScanData(type = "", content) {
+async function fetchScanData(market = "", content) {
 
     const options = {
         method: "POST",
         hostname: "scanner.tradingview.com",
-        path: `/${type}/scan`,
+        path: `/${market}/scan`,
         headers: {
             "Content-Type": "application/json",
         },
@@ -72,13 +72,14 @@ async function doFetchScanData(type = "", content) {
 module.exports = {
     async fetchScanDataForAllSymbols(type = "", columns = []) {
         const content = {columns};
-        return doFetchScanData(type, content);
+        return fetchScanData(type, content);
     },
 
-    async fetchScanData(tickers = [], type = "", columns = []) {
+    async fetchScanDataForSymbols(tickers = [], type = "", columns = []) {
         const content = {symbols: {tickers}, columns};
-        return doFetchScanData(type, content);
+        return fetchScanData(type, content);
     },
+    fetchScanData,
     /**
      * Get a screener from an exchange
      * @function getScreener

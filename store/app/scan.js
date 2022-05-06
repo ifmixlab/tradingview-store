@@ -2,7 +2,7 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
-const {DB_NAME_OD_TV} = require("../../src/consts");
+const {db_name_od_tv} = require("../../src/consts");
 const utils = require("../utils")
 
 async function main() {
@@ -18,7 +18,7 @@ async function mainProcess(mongoClient) {
         // processMarket(mongoClient, "crypto",scan_crypto_columns),
         // processMarket(mongoClient, "china",scan_stock_columns),
         processMarket(mongoClient, "hongkong",scan_stock_columns),
-        processMarket(mongoClient, "america",scan_stock_columns),
+        // processMarket(mongoClient, "america",scan_stock_columns),
     ])
     console.log("mainProcess done.")
 }
@@ -27,7 +27,7 @@ async function saveHistory(ctx,mongoClient,market,origin_docs) {
     docs.forEach(it=>{
         it.ts = ctx.ts
     })
-    await mongo.insertManyDocs(mongoClient, DB_NAME_OD_TV,`indicator_history`, docs,true);
+    await mongo.insertManyDocs(mongoClient, db_name_od_tv,`indicator_history`, docs,true);
 }
 
 async function saveLatest(ctx,mongoClient,market,origin_docs) {

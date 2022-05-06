@@ -1,5 +1,5 @@
 const {MongoClient} = require("mongodb");
-const {DB_NAME_OD_TV} = require("../../src/consts")
+const {db_name_od_tv} = require("../../src/consts")
 
 const uri = "mongodb://127.0.0.1:27017/od_tv?readPreference=primary&ssl=false";
 const dot = require('dot-object');
@@ -93,7 +93,7 @@ async function bulkWrite(mongoClient, collName, ops) {
             " ops.length: ",
             ops.length
         );
-        const coll = mongoClient.db(DB_NAME_OD_TV).collection(collName);
+        const coll = mongoClient.db(db_name_od_tv).collection(collName);
         const res = await coll.bulkWrite(ops, {bypassDocumentValidation: true, ordered: false})
         console.log("bulkWrite done. collName: ", collName);
         return res;

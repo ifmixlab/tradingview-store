@@ -1,6 +1,6 @@
 const TradingView = require('../../main');
 const mongo = require("../service/mongo")
-const {tvEventTypes,DB_NAME_OD_TV,DB_NAME_LOG_TV} = require("../../src/consts");
+const {tvEventTypes,db_name_od_tv,db_name_log_tv} = require("../../src/consts");
 
 const PAGE_SIZE = 100
 
@@ -12,7 +12,7 @@ main()
 
 async function savePacket(mongoClient, params, data) {
     const time = new Date()
-    const coll = mongoClient.db(DB_NAME_LOG_TV).collection("packet");
+    const coll = mongoClient.db(db_name_log_tv).collection("packet");
     const doc = {
         t: time,
         p: params,
@@ -25,7 +25,7 @@ async function savePacket(mongoClient, params, data) {
 async function saveChartInfo(mongoClient, params, chart) {
     console.log(JSON.stringify(chart.periods));
     const time = new Date()
-    const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_info");
+    const coll = mongoClient.db(db_name_od_tv).collection("chart_info");
     const doc = {
         t: time,
         p: params,
@@ -38,7 +38,7 @@ async function saveChartInfo(mongoClient, params, chart) {
 async function saveChartPeriods(mongoClient, params, chart) {
     console.log(JSON.stringify(chart.periods));
     const time = new Date()
-    const coll = mongoClient.db(DB_NAME_OD_TV).collection("chart_periods");
+    const coll = mongoClient.db(db_name_od_tv).collection("chart_periods");
     const periods = JSON.parse(JSON.stringify(chart.periods))
     periods.forEach(it=>{
         it.t=new Date(it.time*1000)

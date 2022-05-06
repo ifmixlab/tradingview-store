@@ -4,6 +4,7 @@ const tvEventTypes={
 
 module.exports = {
     tvEventTypes,
-    DB_NAME_OD_TV:"od_tv",
-    DB_NAME_LOG_TV:"log_tv"
+    db_name_od_tv:"od_tv",
+    db_name_log_tv:"log_tv",
+    coll_name_scan_requests:"scan_requests",
 };

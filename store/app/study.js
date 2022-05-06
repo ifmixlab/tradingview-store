@@ -1,13 +1,13 @@
 const TradingView = require("../../main");
 const mongo = require("../service/mongo");
-const {DB_NAME_OD_TV, DB_NAME_LOG_TV} = require("../../src/consts")
+const {db_name_od_tv, db_name_log_tv} = require("../../src/consts")
 
-const symbolIds = require("../../data/study_symbol_ids.json");
+// const symbolIds = require("../../data/study_symbol_ids.json");
 const utils = require("../utils")
-// const symbolIds = ["hongkong_HKEX:1991", "hongkong_HKEX:531"];
+const symbolIds = ["hongkong_HKEX:1991", "hongkong_HKEX:531"];
 
 const PAGE_SIZE = 1000000;
-const skipHasReport = true;
+const skipHasReport = false;
 const strategyInfo = {
     name: "GetYourTrend",
     version: "1.0",
@@ -26,15 +26,15 @@ async function savePacket(mongoClient, symbolCtx, data) {
         ...symbolCtx,
         d: data,
     };
-    const coll = mongoClient.db(DB_NAME_LOG_TV).collection("packet_history");
+    const coll = mongoClient.db(db_name_log_tv).collection("packet_history");
     const res = await coll.insertOne(doc);
-    // await mongo.insertDoc(mongoClient, DB_NAME_LOG_TV, "packet_history", doc);
+    // await mongo.insertDoc(mongoClient, db_name_log_tv, "packet_history", doc);
     console.log("savePacket done.", JSON.stringify(symbolCtx));
 }
 
 
 async function findHasReportSymbols(mongoClient) {
-    const coll = mongoClient.db(DB_NAME_OD_TV).collection("study_report_latest")
+    const coll = mongoClient.db(db_name_od_tv).collection("study_report_latest")
     const cursor = coll.find({}, {
         limit: 10000000,
         timeout: false,
@@ -63,7 +63,7 @@ async function saveChartInfo(mongoClient, symbolCtx, infos) {
         meta,
         ts: symbolCtx.ts,
     };
-    await mongo.replaceDoc(mongoClient, DB_NAME_OD_TV, "chart_info", {
+    await mongo.replaceDoc(mongoClient, db_name_od_tv, "chart_info", {
         "meta.symbol": symbol
     }, doc)
     console.log("saveChartInfo done.", symbol);
@@ -121,8 +121,8 @@ async function saveStudyReport(mongoClient, symbolCtx, origin_data) {
     };
     console.log("saveStudyReport start.");
     await Promise.all([
-        mongo.insertDoc(mongoClient, DB_NAME_OD_TV, "study_report_history", doc1),
-        mongo.replaceDoc(mongoClient, DB_NAME_OD_TV, "study_report_latest",
+        mongo.insertDoc(mongoClient, db_name_od_tv, "study_report_history", doc1),
+        mongo.replaceDoc(mongoClient, db_name_od_tv, "study_report_latest",
             {"meta.symbol": meta.symbol}, doc2),
     ])
     console.log("saveStudyReport done.");
