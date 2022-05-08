@@ -2,9 +2,9 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const {db_name_od_tv, db_name_log_tv} = require("../../src/consts")
 
-// const symbolIds = require("../../data/study_symbol_ids.json");
+const symbolIds = require("../../data/study_symbol_ids.json");
 const utils = require("../utils")
-const symbolIds = ["hongkong_HKEX:1991", "hongkong_HKEX:531"];
+// const symbolIds = ["hongkong_HKEX:1991", "hongkong_HKEX:531"];
 
 const PAGE_SIZE = 1000000;
 const skipHasReport = false;
