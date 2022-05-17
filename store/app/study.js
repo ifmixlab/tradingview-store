@@ -61,7 +61,7 @@ async function saveChartInfo(mongoClient, symbolCtx, infos) {
     const doc = {
         ...infos,
         meta,
-        ts: symbolCtx.ts,
+        ts: symbolCtx.ts_day,
     };
     await mongo.replaceDoc(mongoClient, db_name_od_tv, "chart_info", {
         "meta.symbol": symbol
@@ -175,13 +175,16 @@ async function processSymbol(mongoClient, symbol, market) {
         const tvClient = new TradingView.Client({
             DEBUG: true,
         });
+        const ts_day = new Date();
+        ts_day.setUTCHours(0, 0, 0, 0)
         const symbolCtx = {
             meta: {
                 symbol,
                 market,
                 ...utils.splitTVSymbol(symbol)
             },
-            ts: new Date(),
+            ts_day,
+            ts_now: new Date(),
             strategyInfo,
             marketOptions: {
                 // Set the market

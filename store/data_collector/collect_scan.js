@@ -80,24 +80,27 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         //         }
         //     ]
         // }
-        console.log("request done. ", market, page,retryCount)
+        console.log("request done. ", market, page, retryCount)
         if (response == null || response.data == null) {
             console.error("fetch error, response or response.data is null. ", JSON.stringify(response))
             return;
         }
         const ts = new Date()
+        const ts_day = new Date();
+        ts_day.setUTCHours(0, 0, 0, 0)
         const docs = response.data
             .map((it) => {
                 const obj = {
                     market,
-                    reqVersion:1,
+                    reqVersion: 1,
                     ts,
-                    data:it,
+                    ts_day,
+                    data: it,
                 };
                 return obj;
             })
             .filter((it) => it != null);
-        await mongo.insertManyDocs(mongoClient,db_name_log_tv,coll_name_scan,docs)
+        await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
         console.log("processMarketPage done. ", market, page, retryCount)
         if (response.data.length === REQ_PAGE_SIZE) {
             await sleep(10)

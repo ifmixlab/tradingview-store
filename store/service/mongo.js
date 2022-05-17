@@ -2,7 +2,7 @@ const {MongoClient} = require("mongodb");
 const {db_name_od_tv} = require("../../src/consts")
 
 // const uri = "mongodb://127.0.0.1:27017/od_tv?readPreference=primary&ssl=false";
-const uri = "mongodb://192.168.0.106:27017/od_tv?readPreference=primary&ssl=false";
+const uri = "mongodb://192.168.0.105:27017/od_tv?readPreference=primary&ssl=false";
 const dot = require('dot-object');
 
 const client = new MongoClient(uri);

@@ -1,5 +1,5 @@
 const mongo = require("../service/mongo");
-const {db_name_od_tv, db_name_log_tv, coll_name_scan} = require("../../src/consts");
+const {db_name_od_tv, db_name_log_tv, coll_name_scan,coll_name_indicator_hour,coll_name_indicator_latest} = require("../../src/consts");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
 const utils = require("../utils")
@@ -45,6 +45,9 @@ async function findLogItems(mongoClient) {
     const res = await coll.find({parsed: {$ne: true}}, {
         limit: 1000
     }).toArray();
+    // const res = await coll.find({}, {
+    //     limit: 1
+    // }).toArray();
     // const res = coll.findOne({handled: true});
     return res;
 }
@@ -76,7 +79,7 @@ async function markLogItemsParsed(ctx, mongoClient, logItems) {
 
 async function saveHistory(ctx, mongoClient, logItems) {
     const docs = logItems.map(it => parseData(it))
-    await mongo.insertManyDocs(mongoClient, db_name_od_tv, `indicator_history`, docs, true);
+    await mongo.insertManyDocs(mongoClient, db_name_od_tv, coll_name_indicator_hour, docs, true);
 }
 
 async function saveLatest(ctx, mongoClient, logItems) {
@@ -95,7 +98,7 @@ async function saveLatest(ctx, mongoClient, logItems) {
         }
         return op
     })
-    await mongo.bulkWrite(mongoClient, `indicator_latest`, ops);
+    await mongo.bulkWrite(mongoClient, coll_name_indicator_latest, ops);
 }
 
 async function processLogItems(mongoClient, logItems) {
@@ -121,6 +124,7 @@ function parseData(logItem) {
         return null;
     }
     const symbol = data.s;
+    ts.setUTCHours(0, 0, 0, 0)
     const obj = {
         logId,
         ts,

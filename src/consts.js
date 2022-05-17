@@ -8,4 +8,6 @@ module.exports = {
     db_name_log_tv:"log_tv",
     coll_name_scan_requests:"scan_requests",
     coll_name_scan:"scan",
+    coll_name_indicator_latest:"indicator_latest",
+    coll_name_indicator_hour:"indicator_hour"
 };
