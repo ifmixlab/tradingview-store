@@ -3,7 +3,8 @@ const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
 const {db_name_log_tv, coll_name_scan} = require("../../src/consts");
-const {sleep} = require("../../src/utils")
+const {sleep} = require("../../src/utils");
+const { ObjectId } = require("mongodb");
 const REQ_PAGE_SIZE = 1000;
 
 async function main() {
@@ -95,6 +96,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         const docs = response.data
             .map((it) => {
                 const obj = {
+                    _id: new ObjectId(),
                     market,
                     v: 1, // reqVersion
                     ts,
@@ -104,6 +106,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             })
             .filter((it) => it != null);
         await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
+        
         console.log("processMarketPage done. ", market, page, retryCount)
         if (response.data.length === REQ_PAGE_SIZE) {
             await sleep(10)
