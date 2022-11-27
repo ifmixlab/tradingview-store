@@ -3,7 +3,7 @@ const {db_name_od_tv, db_name_log_tv, coll_name_scan,coll_name_indicator_hour,co
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
 const utils = require("../utils")
-
+const _ = require("lodash");
 
 function getColumns(market, version) {
     if (market == "crypto") {
@@ -124,10 +124,12 @@ function parseData(logItem) {
         return null;
     }
     const symbol = data.s;
-    ts.setUTCHours(0, 0, 0, 0)
+    const ts_day = _.cloneDeep(ts);
+    ts_day.setUTCHours(0, 0, 0, 0)
     const obj = {
         logId,
         ts,
+        ts_day,
         meta: {
             symbol,
             market,
