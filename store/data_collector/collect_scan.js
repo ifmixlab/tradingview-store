@@ -21,7 +21,7 @@ async function mainProcess(mongoClient) {
     await coll.createIndex({ "ts": 1 }, {expireAfterSeconds: expire_seconds });
     
     await Promise.all([
-        processMarket(mongoClient, "crypto", scan_crypto_columns),
+        // processMarket(mongoClient, "crypto", scan_crypto_columns),
         processMarket(mongoClient, "china", scan_stock_columns),
         processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
@@ -90,15 +90,14 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             return;
         }
         const ts = new Date()
-        const ts_day = new Date();
-        ts_day.setUTCHours(0, 0, 0, 0)
+        // const ts_day = new Date();
+        // ts_day.setUTCHours(0, 0, 0, 0)
         const docs = response.data
             .map((it) => {
                 const obj = {
                     market,
-                    reqVersion: 1,
+                    v: 1, // reqVersion
                     ts,
-                    ts_day,
                     data: it,
                 };
                 return obj;
