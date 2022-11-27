@@ -54,7 +54,7 @@ async function findLogItems(mongoClient) {
 
 async function markLogItemsParsed(ctx, mongoClient, logItems) {
     const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan)
-    console.log(`markLogItemsParsed len: ${logItems.length}`)
+    console.log(`markLogItemsParsed start. len: ${logItems.length}`)
     const ops = logItems.map(it => {
         const {_id} = it
         const op = {
