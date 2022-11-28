@@ -49,7 +49,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             columns,
             // range
         };
-        const response = await TradingView.fetchScanData(
+        const response = await TradingView.fetchScanDataRaw(
             market,
             content
         );
