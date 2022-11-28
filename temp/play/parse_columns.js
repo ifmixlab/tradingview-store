@@ -25,12 +25,14 @@ const path = require("path");
 // }
 
 // const removeList =["index","component"]
-
+const black_list =["component","index"];
 async function getMetaObject() {
     const obj = {}
     for(const f of scan_america_metadata.fields){
         const name = f["n"];
-        obj[name] = f;
+        if(!black_list.includes(name)){
+            obj[name] = f;
+        }
     }
     return obj;
 }

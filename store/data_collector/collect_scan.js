@@ -38,7 +38,7 @@ async function processMarket(mongoClient, market, columns) {
 
 async function processMarketPage(mongoClient, market, columns, page = 0, retryCount = 0) {
     try {
-        console.log("processMarketPage start. ", market, page, retryCount)
+        console.log(`processMarketPage start. market:${market}, page:${page}, retryCount:${retryCount}`);
         const rangeStart = page * REQ_PAGE_SIZE;
         const rangeEnd = (page + 1) * REQ_PAGE_SIZE;
         const range = [
