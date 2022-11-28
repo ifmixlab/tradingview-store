@@ -2,6 +2,7 @@ const scan_columns_meta = require("../../data/scan_columns_meta.json");
 // const scan_america_metadata = require("../../data/scan_america_metadata.json");
 const fs = require("fs/promises");
 const path = require("path");
+const {writeFile} = require("../../store/utils/index");
 // const scan_column_name_cn = require("../../data/scan_column_name_cn.json");
 // const _ = require("lodash");
 
@@ -42,33 +43,36 @@ const path = require("path");
 // console.log("newNames count:",newNames.length)
 // }
 
-async function clean() {
-    console.log("clean start")
+// async function clean() {
+//     console.log("clean start")
 
-    const newObj = {}
-    for (const key of Object.keys(scan_columns_meta)) {
-        const v = scan_columns_meta[key];
-        if(key.includes("|")){
-            console.log(`skip ${key}`);
-        }else{
-            newObj[key] = v;
-        }
-    }
-    writeFiles(newObj);
-    return newObj;
+//     const newObj = {}
+//     for (const key of Object.keys(scan_columns_meta)) {
+//         const v = scan_columns_meta[key];
+//         if(key.includes("|")){
+//             console.log(`skip ${key}`);
+//         }else{
+//             newObj[key] = v;
+//         }
+//     }
+//     writeFiles("../../data/scan_columns_meta.json", newObj);
+//     return newObj;
+// }
+
+
+
+async function update_columns(meta) {
+    const cols = Object.keys(meta).sort();
+    writeFile("../../data/scan_columns.json", cols);
 }
 
-async function writeFiles(data) {
-    const f = path.resolve(__dirname,"../../data/scan_columns_meta.json");
-    console.log("writeFiles",f)
-    await fs.writeFile(f, JSON.stringify(data,null,2))
-}
 
 async function main() {
     // await columns_with_cn();
     // console.log(JSON.stringify(scan_columns_cn_obj))
     // print_columns()
-    await clean();
+    // await clean();
+    await update_columns(scan_columns_meta);
 }
 
 main()
