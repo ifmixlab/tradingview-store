@@ -1,0 +1,1712 @@
+{
+  "close": {
+    "key": "close",
+    "title_cn": "价格"
+  },
+  "number_of_employees": {
+    "key": "number_of_employees",
+    "title_cn": "员工人数"
+  },
+  "earnings_per_share_basic_ttm": {
+    "key": "earnings_per_share_basic_ttm",
+    "title_cn": "基本每股收益(TTM)"
+  },
+  "market_cap_basic": {
+    "key": "market_cap_basic",
+    "title_cn": "市场价值"
+  },
+  "price_earnings_ttm": {
+    "key": "price_earnings_ttm",
+    "title_cn": "市盈率(TTM)"
+  },
+  "volume": {
+    "key": "volume",
+    "title_cn": "成交量"
+  },
+  "Value.Traded": {
+    "key": "Value.Traded",
+    "title_cn": "成交量*价格"
+  },
+  "Recommend.All": {
+    "key": "Recommend.All",
+    "title_cn": "技术评级"
+  },
+  "sector": {
+    "key": "sector",
+    "title_cn": "板块"
+  },
+  "change_abs": {
+    "key": "change_abs",
+    "title_cn": "涨跌"
+  },
+  "change": {
+    "key": "change",
+    "title_cn": "涨跌幅%"
+  },
+  "beta_1_year": {
+    "key": "beta_1_year",
+    "title_cn": "1年期Beta值"
+  },
+  "Low.3M": {
+    "key": "Low.3M",
+    "title_cn": "3个月低点"
+  },
+  "Perf.3M": {
+    "key": "Perf.3M",
+    "title_cn": "3个月表现"
+  },
+  "High.3M": {
+    "key": "High.3M",
+    "title_cn": "3个月高点"
+  },
+  "Low.6M": {
+    "key": "Low.6M",
+    "title_cn": "6个月低点"
+  },
+  "Perf.6M": {
+    "key": "Perf.6M",
+    "title_cn": "6个月表现"
+  },
+  "High.6M": {
+    "key": "High.6M",
+    "title_cn": "6个月高点"
+  },
+  "price_52_week_low": {
+    "key": "price_52_week_low",
+    "title_cn": "52周最低"
+  },
+  "price_52_week_high": {
+    "key": "price_52_week_high",
+    "title_cn": "52周最高"
+  },
+  "ADR": {
+    "key": "ADR",
+    "title_cn": "Average Day Range (14)"
+  },
+  "CCI20": {
+    "key": "CCI20",
+    "title_cn": "CCI指标(20）"
+  },
+  "ebitda": {
+    "key": "ebitda",
+    "title_cn": "EBITDA (TTM)"
+  },
+  "ebitda_yoy_growth_ttm": {
+    "key": "ebitda_yoy_growth_ttm",
+    "title_cn": "EBITDA（TTM同比增长）"
+  },
+  "ebitda_yoy_growth_fq": {
+    "key": "ebitda_yoy_growth_fq",
+    "title_cn": "EBITDA（季度同比增长）"
+  },
+  "ebitda_qoq_growth_fq": {
+    "key": "ebitda_qoq_growth_fq",
+    "title_cn": "EBITDA（季度环比增长）"
+  },
+  "ebitda_yoy_growth_fy": {
+    "key": "ebitda_yoy_growth_fy",
+    "title_cn": "EBITDA（年度同比增长）"
+  },
+  "MACD.macd": {
+    "key": "MACD.macd",
+    "title_cn": "MACD Level (12, 26)"
+  },
+  "MACD.signal": {
+    "key": "MACD.signal",
+    "title_cn": "MACD Signal (12, 26)"
+  },
+  "ROC": {
+    "key": "ROC",
+    "title_cn": "Rate Of Change (9)"
+  },
+  "revenue_per_employee": {
+    "key": "revenue_per_employee",
+    "title_cn": "Revenue per Employee (FY)"
+  },
+  "RSI7": {
+    "key": "RSI7",
+    "title_cn": "RSI(7)"
+  },
+  "RSI": {
+    "key": "RSI",
+    "title_cn": "RSI(14)"
+  },
+  "Stoch.D": {
+    "key": "Stoch.D",
+    "title_cn": "Stochastic %D (14, 3, 3)"
+  },
+  "Stoch.K": {
+    "key": "Stoch.K",
+    "title_cn": "Stochastic %K (14, 3, 3)"
+  },
+  "Stoch.RSI.K": {
+    "key": "Stoch.RSI.K",
+    "title_cn": "Stochastic RSI Fast (3, 3, 14, 14)"
+  },
+  "Stoch.RSI.D": {
+    "key": "Stoch.RSI.D",
+    "title_cn": "Stochastic RSI Slow (3, 3, 14, 14)"
+  },
+  "Ichimoku.Lead1": {
+    "key": "Ichimoku.Lead1",
+    "title_cn": "一目均衡表先行带A (9, 26, 52, 26)"
+  },
+  "Ichimoku.Lead2": {
+    "key": "Ichimoku.Lead2",
+    "title_cn": "一目均衡表先行带B (9, 26, 52, 26)"
+  },
+  "Ichimoku.BLine": {
+    "key": "Ichimoku.BLine",
+    "title_cn": "一目均衡表基准线 (9, 26, 52, 26)"
+  },
+  "Ichimoku.CLine": {
+    "key": "Ichimoku.CLine",
+    "title_cn": "一目均衡表转换线 (9, 26, 52, 26)"
+  },
+  "exchange": {
+    "key": "exchange",
+    "title_cn": "交易所"
+  },
+  "change_from_open": {
+    "key": "change_from_open",
+    "title_cn": "从开盘价涨跌%"
+  },
+  "change_from_open_abs": {
+    "key": "change_from_open_abs",
+    "title_cn": "从开盘涨跌"
+  },
+  "price_free_cash_flow_ttm": {
+    "key": "price_free_cash_flow_ttm",
+    "title_cn": "价格/自由现金流量(TTM)"
+  },
+  "enterprise_value_ebitda_ttm": {
+    "key": "enterprise_value_ebitda_ttm",
+    "title_cn": "企业价值/EBITDA，(TTM)"
+  },
+  "enterprise_value_fq": {
+    "key": "enterprise_value_fq",
+    "title_cn": "企业价值(MRQ)"
+  },
+  "debt_to_equity": {
+    "key": "debt_to_equity",
+    "title_cn": "债务股本比(MRQ)"
+  },
+  "net_debt": {
+    "key": "net_debt",
+    "title_cn": "净债务(MRQ)"
+  },
+  "after_tax_margin": {
+    "key": "after_tax_margin",
+    "title_cn": "净利率(TTM)"
+  },
+  "net_income": {
+    "key": "net_income",
+    "title_cn": "净收入(FY)"
+  },
+  "net_income_yoy_growth_ttm": {
+    "key": "net_income_yoy_growth_ttm",
+    "title_cn": "净收入（TTM同比增长）"
+  },
+  "net_income_yoy_growth_fq": {
+    "key": "net_income_yoy_growth_fq",
+    "title_cn": "净收入（季度同比增长）"
+  },
+  "net_income_qoq_growth_fq": {
+    "key": "net_income_qoq_growth_fq",
+    "title_cn": "净收入（季度环比增长）"
+  },
+  "net_income_yoy_growth_fy": {
+    "key": "net_income_yoy_growth_fy",
+    "title_cn": "净收入（年同比增长）"
+  },
+  "Mom": {
+    "key": "Mom",
+    "title_cn": "动量指标(10)"
+  },
+  "AO": {
+    "key": "AO",
+    "title_cn": "动量震荡指标(AO)"
+  },
+  "Perf.W": {
+    "key": "Perf.W",
+    "title_cn": "单周表现"
+  },
+  "Low.All": {
+    "key": "Low.All",
+    "title_cn": "历史低点"
+  },
+  "High.All": {
+    "key": "High.All",
+    "title_cn": "历史高点"
+  },
+  "last_annual_revenue": {
+    "key": "last_annual_revenue",
+    "title_cn": "去年收入(FY)"
+  },
+  "ADX-DI": {
+    "key": "ADX-DI",
+    "title_cn": "反向方向性指数 NDI(14)"
+  },
+  "Volatility.W": {
+    "key": "Volatility.W",
+    "title_cn": "周波动率"
+  },
+  "DonchCh20.Upper": {
+    "key": "DonchCh20.Upper",
+    "title_cn": "唐奇安通道(20)上轨"
+  },
+  "DonchCh20.Lower": {
+    "key": "DonchCh20.Lower",
+    "title_cn": "唐奇安通道(20)下轨"
+  },
+  "goodwill": {
+    "key": "goodwill",
+    "title_cn": "商誉"
+  },
+  "country": {
+    "key": "country",
+    "title_cn": "国家/地区"
+  },
+  "basic_eps_net_income": {
+    "key": "basic_eps_net_income",
+    "title_cn": "基本每股收益(FY)"
+  },
+  "W.R": {
+    "key": "W.R",
+    "title_cn": "威廉百分比变动 (14)"
+  },
+  "submarket": {
+    "key": "submarket",
+    "title_cn": "子市场"
+  },
+  "earnings_release_next_date": {
+    "key": "earnings_release_next_date",
+    "title_cn": "将近收益日期"
+  },
+  "dividends_paid": {
+    "key": "dividends_paid",
+    "title_cn": "已付股利(FY)"
+  },
+  "total_shares_outstanding_fundamental": {
+    "key": "total_shares_outstanding_fundamental",
+    "title_cn": "已发行股票总数(MRQ)"
+  },
+  "price_book_ratio": {
+    "key": "price_book_ratio",
+    "title_cn": "市净率(FY)"
+  },
+  "price_book_fq": {
+    "key": "price_book_fq",
+    "title_cn": "市净率(MRQ)"
+  },
+  "price_revenue_ttm": {
+    "key": "price_revenue_ttm",
+    "title_cn": "市营率(TTM)"
+  },
+  "price_sales_ratio": {
+    "key": "price_sales_ratio",
+    "title_cn": "市销率(FY)"
+  },
+  "BB.upper": {
+    "key": "BB.upper",
+    "title_cn": "布林带上轨(20)"
+  },
+  "BB.lower": {
+    "key": "BB.lower",
+    "title_cn": "布林带下轨(20)"
+  },
+  "average_volume_10d_calc": {
+    "key": "average_volume_10d_calc",
+    "title_cn": "平均成交量(10天)"
+  },
+  "average_volume_30d_calc": {
+    "key": "average_volume_30d_calc",
+    "title_cn": "平均成交量(30天)"
+  },
+  "average_volume_60d_calc": {
+    "key": "average_volume_60d_calc",
+    "title_cn": "平均成交量(60天)"
+  },
+  "average_volume_90d_calc": {
+    "key": "average_volume_90d_calc",
+    "title_cn": "平均成交量(90天)"
+  },
+  "ADX": {
+    "key": "ADX",
+    "title_cn": "平均趋向指数ADX(14)"
+  },
+  "Perf.YTD": {
+    "key": "Perf.YTD",
+    "title_cn": "年初至今表现"
+  },
+  "Perf.Y": {
+    "key": "Perf.Y",
+    "title_cn": "年表现"
+  },
+  "open": {
+    "key": "open",
+    "title_cn": "开盘价"
+  },
+  "candlestick": {
+    "key": "candlestick",
+    "title_cn": "形态"
+  },
+  "total_debt_yoy_growth_fq": {
+    "key": "total_debt_yoy_growth_fq",
+    "title_cn": "总债务（季度同比增长）"
+  },
+  "total_debt_qoq_growth_fq": {
+    "key": "total_debt_qoq_growth_fq",
+    "title_cn": "总债务（季度环比增长）"
+  },
+  "total_debt_yoy_growth_fy": {
+    "key": "total_debt_yoy_growth_fy",
+    "title_cn": "总债务（年同比增长）"
+  },
+  "total_revenue": {
+    "key": "total_revenue",
+    "title_cn": "总收入 (FY)"
+  },
+  "total_current_assets": {
+    "key": "total_current_assets",
+    "title_cn": "总流动资产(MRQ)"
+  },
+  "total_liabilities_fy": {
+    "key": "total_liabilities_fy",
+    "title_cn": "总负债（FY）"
+  },
+  "total_debt": {
+    "key": "total_debt",
+    "title_cn": "总负债(MRQ)"
+  },
+  "total_liabilities_fq": {
+    "key": "total_liabilities_fq",
+    "title_cn": "总负债（MRQ）"
+  },
+  "total_assets": {
+    "key": "total_assets",
+    "title_cn": "总资产(MRQ)"
+  },
+  "total_assets_yoy_growth_fq": {
+    "key": "total_assets_yoy_growth_fq",
+    "title_cn": "总资产（季度同比增长）"
+  },
+  "total_assets_qoq_growth_fq": {
+    "key": "total_assets_qoq_growth_fq",
+    "title_cn": "总资产（季度环比增长）"
+  },
+  "total_assets_yoy_growth_fy": {
+    "key": "total_assets_yoy_growth_fy",
+    "title_cn": "总资产（年同比增长）"
+  },
+  "VWAP": {
+    "key": "VWAP",
+    "title_cn": "成交量加权平均价格"
+  },
+  "VWMA": {
+    "key": "VWMA",
+    "title_cn": "成交量加权移动平均线 VWMA (20)"
+  },
+  "return_on_invested_capital": {
+    "key": "return_on_invested_capital",
+    "title_cn": "投资资本回报率(TTM)"
+  },
+  "P.SAR": {
+    "key": "P.SAR",
+    "title_cn": "抛物线转向指标(PSAR)"
+  },
+  "EMA5": {
+    "key": "EMA5",
+    "title_cn": "指数移动平均线(5)"
+  },
+  "EMA10": {
+    "key": "EMA10",
+    "title_cn": "指数移动平均线(10)"
+  },
+  "EMA20": {
+    "key": "EMA20",
+    "title_cn": "指数移动平均线(20)"
+  },
+  "EMA30": {
+    "key": "EMA30",
+    "title_cn": "指数移动平均线(30)"
+  },
+  "EMA50": {
+    "key": "EMA50",
+    "title_cn": "指数移动平均线(50)"
+  },
+  "EMA100": {
+    "key": "EMA100",
+    "title_cn": "指数移动平均线(100)"
+  },
+  "EMA200": {
+    "key": "EMA200",
+    "title_cn": "指数移动平均线(200)"
+  },
+  "Recommend.Other": {
+    "key": "Recommend.Other",
+    "title_cn": "振荡指标评级"
+  },
+  "last_annual_eps": {
+    "key": "last_annual_eps",
+    "title_cn": "摊薄每股收益(FY)"
+  },
+  "earnings_per_share_fq": {
+    "key": "earnings_per_share_fq",
+    "title_cn": "摊薄每股收益(MRQ)"
+  },
+  "earnings_per_share_diluted_ttm": {
+    "key": "earnings_per_share_diluted_ttm",
+    "title_cn": "摊薄每股收益(TTM)"
+  },
+  "total_revenue_yoy_growth_ttm": {
+    "key": "total_revenue_yoy_growth_ttm",
+    "title_cn": "收入（TTM同比增长）"
+  },
+  "total_revenue_yoy_growth_fq": {
+    "key": "total_revenue_yoy_growth_fq",
+    "title_cn": "收入（季度同比增长）"
+  },
+  "total_revenue_qoq_growth_fq": {
+    "key": "total_revenue_qoq_growth_fq",
+    "title_cn": "收入（季度环比增长）"
+  },
+  "total_revenue_yoy_growth_fy": {
+    "key": "total_revenue_yoy_growth_fy",
+    "title_cn": "收入（年同比增长）"
+  },
+  "relative_volume_intraday.5": {
+    "key": "relative_volume_intraday.5",
+    "title_cn": "时间相对交易量"
+  },
+  "low": {
+    "key": "low",
+    "title_cn": "最低价"
+  },
+  "earnings_release_date": {
+    "key": "earnings_release_date",
+    "title_cn": "最近收益日期"
+  },
+  "high": {
+    "key": "high",
+    "title_cn": "最高价"
+  },
+  "Low.1M": {
+    "key": "Low.1M",
+    "title_cn": "月低点"
+  },
+  "Volatility.M": {
+    "key": "Volatility.M",
+    "title_cn": "月波动率"
+  },
+  "Perf.1M": {
+    "key": "Perf.1M",
+    "title_cn": "月表现"
+  },
+  "High.1M": {
+    "key": "High.1M",
+    "title_cn": "月高点"
+  },
+  "Pivot.M.Demark.Middle": {
+    "key": "Pivot.M.Demark.Middle",
+    "title_cn": "枢轴点 DM P"
+  },
+  "Pivot.M.Demark.R1": {
+    "key": "Pivot.M.Demark.R1",
+    "title_cn": "枢轴点 DM R1"
+  },
+  "Pivot.M.Demark.S1": {
+    "key": "Pivot.M.Demark.S1",
+    "title_cn": "枢轴点 DM S1"
+  },
+  "Pivot.M.Woodie.Middle": {
+    "key": "Pivot.M.Woodie.Middle",
+    "title_cn": "枢轴点 伍迪 P"
+  },
+  "Pivot.M.Woodie.R1": {
+    "key": "Pivot.M.Woodie.R1",
+    "title_cn": "枢轴点 伍迪 R1"
+  },
+  "Pivot.M.Woodie.R2": {
+    "key": "Pivot.M.Woodie.R2",
+    "title_cn": "枢轴点 伍迪 R2"
+  },
+  "Pivot.M.Woodie.R3": {
+    "key": "Pivot.M.Woodie.R3",
+    "title_cn": "枢轴点 伍迪 R3"
+  },
+  "Pivot.M.Woodie.S1": {
+    "key": "Pivot.M.Woodie.S1",
+    "title_cn": "枢轴点 伍迪 S1"
+  },
+  "Pivot.M.Woodie.S2": {
+    "key": "Pivot.M.Woodie.S2",
+    "title_cn": "枢轴点 伍迪 S2"
+  },
+  "Pivot.M.Woodie.S3": {
+    "key": "Pivot.M.Woodie.S3",
+    "title_cn": "枢轴点 伍迪 S3"
+  },
+  "Pivot.M.Camarilla.Middle": {
+    "key": "Pivot.M.Camarilla.Middle",
+    "title_cn": "枢轴点 卡玛利亚 P"
+  },
+  "Pivot.M.Camarilla.R1": {
+    "key": "Pivot.M.Camarilla.R1",
+    "title_cn": "枢轴点 卡玛利亚 R1"
+  },
+  "Pivot.M.Camarilla.R2": {
+    "key": "Pivot.M.Camarilla.R2",
+    "title_cn": "枢轴点 卡玛利亚 R2"
+  },
+  "Pivot.M.Camarilla.R3": {
+    "key": "Pivot.M.Camarilla.R3",
+    "title_cn": "枢轴点 卡玛利亚 R3"
+  },
+  "Pivot.M.Camarilla.S1": {
+    "key": "Pivot.M.Camarilla.S1",
+    "title_cn": "枢轴点 卡玛利亚 S1"
+  },
+  "Pivot.M.Camarilla.S2": {
+    "key": "Pivot.M.Camarilla.S2",
+    "title_cn": "枢轴点 卡玛利亚 S2"
+  },
+  "Pivot.M.Camarilla.S3": {
+    "key": "Pivot.M.Camarilla.S3",
+    "title_cn": "枢轴点 卡玛利亚 S3"
+  },
+  "Pivot.M.Fibonacci.Middle": {
+    "key": "Pivot.M.Fibonacci.Middle",
+    "title_cn": "枢轴点 斐波那契 P"
+  },
+  "Pivot.M.Fibonacci.R1": {
+    "key": "Pivot.M.Fibonacci.R1",
+    "title_cn": "枢轴点 斐波那契 R1"
+  },
+  "Pivot.M.Fibonacci.R2": {
+    "key": "Pivot.M.Fibonacci.R2",
+    "title_cn": "枢轴点 斐波那契 R2"
+  },
+  "Pivot.M.Fibonacci.R3": {
+    "key": "Pivot.M.Fibonacci.R3",
+    "title_cn": "枢轴点 斐波那契 R3"
+  },
+  "Pivot.M.Fibonacci.S1": {
+    "key": "Pivot.M.Fibonacci.S1",
+    "title_cn": "枢轴点 斐波那契 S1"
+  },
+  "Pivot.M.Fibonacci.S2": {
+    "key": "Pivot.M.Fibonacci.S2",
+    "title_cn": "枢轴点 斐波那契 S2"
+  },
+  "Pivot.M.Fibonacci.S3": {
+    "key": "Pivot.M.Fibonacci.S3",
+    "title_cn": "枢轴点 斐波那契 S3"
+  },
+  "Pivot.M.Classic.Middle": {
+    "key": "Pivot.M.Classic.Middle",
+    "title_cn": "枢轴点 经典 P"
+  },
+  "Pivot.M.Classic.R1": {
+    "key": "Pivot.M.Classic.R1",
+    "title_cn": "枢轴点 经典 R1"
+  },
+  "Pivot.M.Classic.R2": {
+    "key": "Pivot.M.Classic.R2",
+    "title_cn": "枢轴点 经典 R2"
+  },
+  "Pivot.M.Classic.R3": {
+    "key": "Pivot.M.Classic.R3",
+    "title_cn": "枢轴点 经典 R3"
+  },
+  "Pivot.M.Classic.S1": {
+    "key": "Pivot.M.Classic.S1",
+    "title_cn": "枢轴点 经典 S1"
+  },
+  "Pivot.M.Classic.S2": {
+    "key": "Pivot.M.Classic.S2",
+    "title_cn": "枢轴点 经典 S2"
+  },
+  "Pivot.M.Classic.S3": {
+    "key": "Pivot.M.Classic.S3",
+    "title_cn": "枢轴点 经典 S3"
+  },
+  "ADX+DI": {
+    "key": "ADX+DI",
+    "title_cn": "正向方向性指数 PDI(14)"
+  },
+  "earnings_per_share_forecast_next_fq": {
+    "key": "earnings_per_share_forecast_next_fq",
+    "title_cn": "每股收益预期(FQ)"
+  },
+  "dps_common_stock_prim_issue_fy": {
+    "key": "dps_common_stock_prim_issue_fy",
+    "title_cn": "每股股利(FY)"
+  },
+  "dividends_per_share_fq": {
+    "key": "dividends_per_share_fq",
+    "title_cn": "每股股息(MRQ)"
+  },
+  "dps_common_stock_prim_issue_yoy_growth_fy": {
+    "key": "dps_common_stock_prim_issue_yoy_growth_fy",
+    "title_cn": "每股股息（年同比增长）"
+  },
+  "gross_profit": {
+    "key": "gross_profit",
+    "title_cn": "毛利润(FY)"
+  },
+  "gross_profit_fq": {
+    "key": "gross_profit_fq",
+    "title_cn": "毛利润(MRQ)"
+  },
+  "gross_profit_yoy_growth_ttm": {
+    "key": "gross_profit_yoy_growth_ttm",
+    "title_cn": "毛利润（TTM同比增长）"
+  },
+  "gross_profit_yoy_growth_fq": {
+    "key": "gross_profit_yoy_growth_fq",
+    "title_cn": "毛利润（季度同比增长）"
+  },
+  "gross_profit_qoq_growth_fq": {
+    "key": "gross_profit_qoq_growth_fq",
+    "title_cn": "毛利润（季度环比增长）"
+  },
+  "gross_profit_yoy_growth_fy": {
+    "key": "gross_profit_yoy_growth_fy",
+    "title_cn": "毛利润（年同比增长）"
+  },
+  "gross_margin": {
+    "key": "gross_margin",
+    "title_cn": "毛利率(TTM)"
+  },
+  "Volatility.D": {
+    "key": "Volatility.D",
+    "title_cn": "波动率"
+  },
+  "current_ratio": {
+    "key": "current_ratio",
+    "title_cn": "流动比率(MRQ)"
+  },
+  "float_shares_outstanding": {
+    "key": "float_shares_outstanding",
+    "title_cn": "流通股"
+  },
+  "change_abs.1M": {
+    "key": "change_abs.1M",
+    "title_cn": "涨跌1个月"
+  },
+  "change_abs.1": {
+    "key": "change_abs.1",
+    "title_cn": "涨跌1分钟"
+  },
+  "change_abs.1W": {
+    "key": "change_abs.1W",
+    "title_cn": "涨跌1周"
+  },
+  "change_abs.60": {
+    "key": "change_abs.60",
+    "title_cn": "涨跌1小时"
+  },
+  "change_abs.240": {
+    "key": "change_abs.240",
+    "title_cn": "涨跌4小时"
+  },
+  "change_abs.5": {
+    "key": "change_abs.5",
+    "title_cn": "涨跌5分钟"
+  },
+  "change_abs.15": {
+    "key": "change_abs.15",
+    "title_cn": "涨跌15分钟"
+  },
+  "change.1M": {
+    "key": "change.1M",
+    "title_cn": "涨跌幅1个月, %"
+  },
+  "change.1": {
+    "key": "change.1",
+    "title_cn": "涨跌幅1分钟, %"
+  },
+  "change.1W": {
+    "key": "change.1W",
+    "title_cn": "涨跌幅1周, %"
+  },
+  "change.60": {
+    "key": "change.60",
+    "title_cn": "涨跌幅1小时, %"
+  },
+  "change.240": {
+    "key": "change.240",
+    "title_cn": "涨跌幅4小时, %"
+  },
+  "change.5": {
+    "key": "change.5",
+    "title_cn": "涨跌幅5分钟, %"
+  },
+  "change.15": {
+    "key": "change.15",
+    "title_cn": "涨跌幅15分钟, %"
+  },
+  "BBPower": {
+    "key": "BBPower",
+    "title_cn": "牛熊力量(BBP)"
+  },
+  "premarket_low": {
+    "key": "premarket_low",
+    "title_cn": "盘前低点"
+  },
+  "premarket_open": {
+    "key": "premarket_open",
+    "title_cn": "盘前开市"
+  },
+  "premarket_volume": {
+    "key": "premarket_volume",
+    "title_cn": "盘前成交量"
+  },
+  "premarket_change_abs": {
+    "key": "premarket_change_abs",
+    "title_cn": "盘前涨跌"
+  },
+  "premarket_change_from_open": {
+    "key": "premarket_change_from_open",
+    "title_cn": "盘前涨跌%"
+  },
+  "premarket_change_from_open_abs": {
+    "key": "premarket_change_from_open_abs",
+    "title_cn": "盘前涨跌"
+  },
+  "premarket_change": {
+    "key": "premarket_change",
+    "title_cn": "盘前涨跌幅%"
+  },
+  "premarket_close": {
+    "key": "premarket_close",
+    "title_cn": "盘前结束"
+  },
+  "premarket_gap": {
+    "key": "premarket_gap",
+    "title_cn": "盘前跳空%"
+  },
+  "premarket_high": {
+    "key": "premarket_high",
+    "title_cn": "盘前高点"
+  },
+  "postmarket_low": {
+    "key": "postmarket_low",
+    "title_cn": "盘后低点"
+  },
+  "postmarket_open": {
+    "key": "postmarket_open",
+    "title_cn": "盘后开市"
+  },
+  "postmarket_volume": {
+    "key": "postmarket_volume",
+    "title_cn": "盘后成交量"
+  },
+  "postmarket_close": {
+    "key": "postmarket_close",
+    "title_cn": "盘后时段"
+  },
+  "postmarket_change_abs": {
+    "key": "postmarket_change_abs",
+    "title_cn": "盘后涨跌"
+  },
+  "postmarket_change": {
+    "key": "postmarket_change",
+    "title_cn": "盘后涨跌幅%"
+  },
+  "postmarket_high": {
+    "key": "postmarket_high",
+    "title_cn": "盘后高点"
+  },
+  "relative_volume_10d_calc": {
+    "key": "relative_volume_10d_calc",
+    "title_cn": "相对成交量(Relative Vol)"
+  },
+  "ATR": {
+    "key": "ATR",
+    "title_cn": "真实波幅均值ATR(14)"
+  },
+  "Recommend.MA": {
+    "key": "Recommend.MA",
+    "title_cn": "移动平均评级"
+  },
+  "earnings_per_share_diluted_yoy_growth_ttm": {
+    "key": "earnings_per_share_diluted_yoy_growth_ttm",
+    "title_cn": "稀释后每股收益（TTM同比增长）"
+  },
+  "earnings_per_share_diluted_yoy_growth_fq": {
+    "key": "earnings_per_share_diluted_yoy_growth_fq",
+    "title_cn": "稀释后每股收益（季度同比增长）"
+  },
+  "earnings_per_share_diluted_qoq_growth_fq": {
+    "key": "earnings_per_share_diluted_qoq_growth_fq",
+    "title_cn": "稀释后每股收益（季度环比增长）"
+  },
+  "earnings_per_share_diluted_yoy_growth_fy": {
+    "key": "earnings_per_share_diluted_yoy_growth_fy",
+    "title_cn": "稀释后每股收益（年同比增长）"
+  },
+  "pre_tax_margin": {
+    "key": "pre_tax_margin",
+    "title_cn": "税前利润率(TTM)"
+  },
+  "SMA5": {
+    "key": "SMA5",
+    "title_cn": "简单移动平均线(5)"
+  },
+  "SMA10": {
+    "key": "SMA10",
+    "title_cn": "简单移动平均线(10)"
+  },
+  "SMA20": {
+    "key": "SMA20",
+    "title_cn": "简单移动平均线(20)"
+  },
+  "SMA30": {
+    "key": "SMA30",
+    "title_cn": "简单移动平均线(30)"
+  },
+  "SMA50": {
+    "key": "SMA50",
+    "title_cn": "简单移动平均线(50)"
+  },
+  "SMA100": {
+    "key": "SMA100",
+    "title_cn": "简单移动平均线(100)"
+  },
+  "SMA200": {
+    "key": "SMA200",
+    "title_cn": "简单移动平均线(200)"
+  },
+  "UO": {
+    "key": "UO",
+    "title_cn": "终极震荡指标UO (7, 14, 28)"
+  },
+  "number_of_shareholders": {
+    "key": "number_of_shareholders",
+    "title_cn": "股东数量"
+  },
+  "dividend_yield_recent": {
+    "key": "dividend_yield_recent",
+    "title_cn": "股息收益率远期"
+  },
+  "return_on_equity": {
+    "key": "return_on_equity",
+    "title_cn": "股本回报率 (TTM)"
+  },
+  "KltChnl.upper": {
+    "key": "KltChnl.upper",
+    "title_cn": "肯特纳通道上轨(20)"
+  },
+  "KltChnl.lower": {
+    "key": "KltChnl.lower",
+    "title_cn": "肯特纳通道下轨(20)"
+  },
+  "free_cash_flow_yoy_growth_ttm": {
+    "key": "free_cash_flow_yoy_growth_ttm",
+    "title_cn": "自由现金流（TTM同比增长）"
+  },
+  "free_cash_flow_yoy_growth_fq": {
+    "key": "free_cash_flow_yoy_growth_fq",
+    "title_cn": "自由现金流（季度同比增长）"
+  },
+  "free_cash_flow_qoq_growth_fq": {
+    "key": "free_cash_flow_qoq_growth_fq",
+    "title_cn": "自由现金流（季度环比增长）"
+  },
+  "free_cash_flow_yoy_growth_fy": {
+    "key": "free_cash_flow_yoy_growth_fy",
+    "title_cn": "自由现金流（年同比增长）"
+  },
+  "HullMA9": {
+    "key": "HullMA9",
+    "title_cn": "船体移动平均线 Hull MA (9)"
+  },
+  "operating_margin": {
+    "key": "operating_margin",
+    "title_cn": "营业利润率(TTM)"
+  },
+  "ChaikinMoneyFlow": {
+    "key": "ChaikinMoneyFlow",
+    "title_cn": "蔡金资金流量 CMF(20)"
+  },
+  "industry": {
+    "key": "industry",
+    "title_cn": "行业"
+  },
+  "return_on_assets": {
+    "key": "return_on_assets",
+    "title_cn": "资产回报率(TTM)"
+  },
+  "MoneyFlow": {
+    "key": "MoneyFlow",
+    "title_cn": "资金流量 MF(14)"
+  },
+  "gap": {
+    "key": "gap",
+    "title_cn": "跳空 %"
+  },
+  "quick_ratio": {
+    "key": "quick_ratio",
+    "title_cn": "速动比率(MRQ)"
+  },
+  "Aroon.Up": {
+    "key": "Aroon.Up",
+    "title_cn": "阿隆向上 (14)"
+  },
+  "Aroon.Down": {
+    "key": "Aroon.Down",
+    "title_cn": "阿隆向下 (14)"
+  },
+  "logoid": {
+    "key": "logoid"
+  },
+  "key": {
+    "key": "key"
+  },
+  "description": {
+    "key": "description"
+  },
+  "type": {
+    "key": "type"
+  },
+  "subtype": {
+    "key": "subtype"
+  },
+  "update_mode": {
+    "key": "update_mode"
+  },
+  "CCI20[1]": {
+    "key": "CCI20[1]"
+  },
+  "RSI7[1]": {
+    "key": "RSI7[1]"
+  },
+  "RSI[1]": {
+    "key": "RSI[1]"
+  },
+  "Stoch.K[1]": {
+    "key": "Stoch.K[1]"
+  },
+  "Stoch.D[1]": {
+    "key": "Stoch.D[1]"
+  },
+  "Rec.Stoch.RSI": {
+    "key": "Rec.Stoch.RSI"
+  },
+  "Rec.Ichimoku": {
+    "key": "Rec.Ichimoku"
+  },
+  "pricescale": {
+    "key": "pricescale"
+  },
+  "minmov": {
+    "key": "minmov"
+  },
+  "fractional": {
+    "key": "fractional"
+  },
+  "minmove2": {
+    "key": "minmove2"
+  },
+  "Mom[1]": {
+    "key": "Mom[1]"
+  },
+  "AO[1]": {
+    "key": "AO[1]"
+  },
+  "AO[2]": {
+    "key": "AO[2]"
+  },
+  "Rec.WR": {
+    "key": "Rec.WR"
+  },
+  "ADX+DI[1]": {
+    "key": "ADX+DI[1]"
+  },
+  "ADX-DI[1]": {
+    "key": "ADX-DI[1]"
+  },
+  "Candle.3BlackCrows": {
+    "key": "Candle.3BlackCrows"
+  },
+  "Candle.HangingMan": {
+    "key": "Candle.HangingMan"
+  },
+  "Candle.InvertedHammer": {
+    "key": "Candle.InvertedHammer"
+  },
+  "Candle.Marubozu.White": {
+    "key": "Candle.Marubozu.White"
+  },
+  "Candle.Marubozu.Black": {
+    "key": "Candle.Marubozu.Black"
+  },
+  "Candle.Doji": {
+    "key": "Candle.Doji"
+  },
+  "Candle.MorningStar": {
+    "key": "Candle.MorningStar"
+  },
+  "Candle.Doji.Gravestone": {
+    "key": "Candle.Doji.Gravestone"
+  },
+  "Candle.ShootingStar": {
+    "key": "Candle.ShootingStar"
+  },
+  "Candle.3WhiteSoldiers": {
+    "key": "Candle.3WhiteSoldiers"
+  },
+  "Candle.SpinningTop.White": {
+    "key": "Candle.SpinningTop.White"
+  },
+  "Candle.TriStar.Bullish": {
+    "key": "Candle.TriStar.Bullish"
+  },
+  "Candle.Kicking.Bullish": {
+    "key": "Candle.Kicking.Bullish"
+  },
+  "Candle.Engulfing.Bullish": {
+    "key": "Candle.Engulfing.Bullish"
+  },
+  "Candle.Harami.Bullish": {
+    "key": "Candle.Harami.Bullish"
+  },
+  "Candle.AbandonedBaby.Bullish": {
+    "key": "Candle.AbandonedBaby.Bullish"
+  },
+  "Candle.TriStar.Bearish": {
+    "key": "Candle.TriStar.Bearish"
+  },
+  "Candle.Kicking.Bearish": {
+    "key": "Candle.Kicking.Bearish"
+  },
+  "Candle.Engulfing.Bearish": {
+    "key": "Candle.Engulfing.Bearish"
+  },
+  "Candle.Harami.Bearish": {
+    "key": "Candle.Harami.Bearish"
+  },
+  "Candle.AbandonedBaby.Bearish": {
+    "key": "Candle.AbandonedBaby.Bearish"
+  },
+  "Candle.Doji.Dragonfly": {
+    "key": "Candle.Doji.Dragonfly"
+  },
+  "Candle.Hammer": {
+    "key": "Candle.Hammer"
+  },
+  "Candle.LongShadow.Upper": {
+    "key": "Candle.LongShadow.Upper"
+  },
+  "Candle.LongShadow.Lower": {
+    "key": "Candle.LongShadow.Lower"
+  },
+  "Candle.EveningStar": {
+    "key": "Candle.EveningStar"
+  },
+  "Candle.SpinningTop.Black": {
+    "key": "Candle.SpinningTop.Black"
+  },
+  "Rec.VWMA": {
+    "key": "Rec.VWMA"
+  },
+  "Rec.BBPower": {
+    "key": "Rec.BBPower"
+  },
+  "Rec.UO": {
+    "key": "Rec.UO"
+  },
+  "Rec.HullMA9": {
+    "key": "Rec.HullMA9"
+  },
+  "currency": {
+    "key": "currency"
+  },
+  "fundamental_currency_code": {
+    "key": "fundamental_currency_code"
+  },
+  "return_of_invested_capital_percent_ttm": {
+    "key": "return_of_invested_capital_percent_ttm"
+  },
+  "dividend_payout_ratio_percent_fq": {
+    "key": "dividend_payout_ratio_percent_fq"
+  },
+  "free_cash_flow_fq": {
+    "key": "free_cash_flow_fq"
+  },
+  "earnings_per_share_basic_fy_h": {
+    "key": "earnings_per_share_basic_fy_h"
+  },
+  "frequency_recent": {
+    "key": "frequency_recent"
+  },
+  "rates_earnings_fq": {
+    "key": "rates_earnings_fq"
+  },
+  "payment_date_recent": {
+    "key": "payment_date_recent"
+  },
+  "average_volume": {
+    "key": "average_volume"
+  },
+  "float_shares_outstanding_current": {
+    "key": "float_shares_outstanding_current"
+  },
+  "ebitda_fy_h": {
+    "key": "ebitda_fy_h"
+  },
+  "revenue_forecast_next_fq": {
+    "key": "revenue_forecast_next_fq"
+  },
+  "price_annual_sales": {
+    "key": "price_annual_sales"
+  },
+  "yield_recent": {
+    "key": "yield_recent"
+  },
+  "total_debt_fq_h": {
+    "key": "total_debt_fq_h"
+  },
+  "revenue_fq": {
+    "key": "revenue_fq"
+  },
+  "ex_dividend_date_upcoming": {
+    "key": "ex_dividend_date_upcoming"
+  },
+  "dividend_payout_ratio_percent_fy": {
+    "key": "dividend_payout_ratio_percent_fy"
+  },
+  "research_and_dev_fy": {
+    "key": "research_and_dev_fy"
+  },
+  "earnings_per_share_basic_fy": {
+    "key": "earnings_per_share_basic_fy"
+  },
+  "total_shares_outstanding_current": {
+    "key": "total_shares_outstanding_current"
+  },
+  "free_cash_flow_fy_h": {
+    "key": "free_cash_flow_fy_h"
+  },
+  "total_assets_fy_h": {
+    "key": "total_assets_fy_h"
+  },
+  "eps_diluted_growth_percent_fy": {
+    "key": "eps_diluted_growth_percent_fy"
+  },
+  "sell_gen_admin_exp_other_ttm": {
+    "key": "sell_gen_admin_exp_other_ttm"
+  },
+  "gross_margin_percent_ttm": {
+    "key": "gross_margin_percent_ttm"
+  },
+  "net_income_fy": {
+    "key": "net_income_fy"
+  },
+  "total_revenue_fy_h": {
+    "key": "total_revenue_fy_h"
+  },
+  "rates_cf": {
+    "key": "rates_cf"
+  },
+  "total_current_liabilities_fq": {
+    "key": "total_current_liabilities_fq"
+  },
+  "earnings_per_share_diluted_fy_h": {
+    "key": "earnings_per_share_diluted_fy_h"
+  },
+  "rates_earnings_next_fq": {
+    "key": "rates_earnings_next_fq"
+  },
+  "all_time_open": {
+    "key": "all_time_open"
+  },
+  "cash_n_equivalents_fy": {
+    "key": "cash_n_equivalents_fy"
+  },
+  "earnings_release_calendar_date": {
+    "key": "earnings_release_calendar_date"
+  },
+  "expected_annual_dividends": {
+    "key": "expected_annual_dividends"
+  },
+  "price_sales_current": {
+    "key": "price_sales_current"
+  },
+  "research_and_dev_ttm": {
+    "key": "research_and_dev_ttm"
+  },
+  "ebitda_fq_h": {
+    "key": "ebitda_fq_h"
+  },
+  "long_term_capital": {
+    "key": "long_term_capital"
+  },
+  "rates_dividend_upcoming": {
+    "key": "rates_dividend_upcoming"
+  },
+  "quick_ratio_current": {
+    "key": "quick_ratio_current"
+  },
+  "frequency_upcoming": {
+    "key": "frequency_upcoming"
+  },
+  "dividend_payment_date_upcoming": {
+    "key": "dividend_payment_date_upcoming"
+  },
+  "rates_pt": {
+    "key": "rates_pt"
+  },
+  "total_revenue_fy": {
+    "key": "total_revenue_fy"
+  },
+  "gross_profit_fy_h": {
+    "key": "gross_profit_fy_h"
+  },
+  "number_of_shareholders_fy": {
+    "key": "number_of_shareholders_fy"
+  },
+  "revenue_forecast_fq": {
+    "key": "revenue_forecast_fq"
+  },
+  "free_cash_flow": {
+    "key": "free_cash_flow"
+  },
+  "dividend_frequency_upcoming": {
+    "key": "dividend_frequency_upcoming"
+  },
+  "eps_diluted_growth_percent_fq": {
+    "key": "eps_diluted_growth_percent_fq"
+  },
+  "total_assets_fq_h": {
+    "key": "total_assets_fq_h"
+  },
+  "current_ratio_current": {
+    "key": "current_ratio_current"
+  },
+  "goodwill_fq": {
+    "key": "goodwill_fq"
+  },
+  "provider-id": {
+    "key": "provider-id"
+  },
+  "debt_to_equity_fq": {
+    "key": "debt_to_equity_fq"
+  },
+  "long_term_debt_to_assets_fq": {
+    "key": "long_term_debt_to_assets_fq"
+  },
+  "ebitda_ttm": {
+    "key": "ebitda_ttm"
+  },
+  "earnings_per_share_fy": {
+    "key": "earnings_per_share_fy"
+  },
+  "total_debt_fy_h": {
+    "key": "total_debt_fy_h"
+  },
+  "total_current_assets_fq": {
+    "key": "total_current_assets_fq"
+  },
+  "price_cash_flow_current": {
+    "key": "price_cash_flow_current"
+  },
+  "cash_n_equivalents_fq": {
+    "key": "cash_n_equivalents_fq"
+  },
+  "earnings_per_share_forecast_fq": {
+    "key": "earnings_per_share_forecast_fq"
+  },
+  "dividend_frequency_recent": {
+    "key": "dividend_frequency_recent"
+  },
+  "price_book_current": {
+    "key": "price_book_current"
+  },
+  "total_capital": {
+    "key": "total_capital"
+  },
+  "gross_profit_fy": {
+    "key": "gross_profit_fy"
+  },
+  "dividends_yield": {
+    "key": "dividends_yield"
+  },
+  "dividend_ex_date_recent": {
+    "key": "dividend_ex_date_recent"
+  },
+  "long_term_debt_to_equity_fq": {
+    "key": "long_term_debt_to_equity_fq"
+  },
+  "dps_common_stock_prim_issue_fq": {
+    "key": "dps_common_stock_prim_issue_fq"
+  },
+  "premarket_time": {
+    "key": "premarket_time"
+  },
+  "price_annual_book": {
+    "key": "price_annual_book"
+  },
+  "dividend_ex_date_upcoming": {
+    "key": "dividend_ex_date_upcoming"
+  },
+  "earnings_release_next_calendar_date": {
+    "key": "earnings_release_next_calendar_date"
+  },
+  "free_cash_flow_fy": {
+    "key": "free_cash_flow_fy"
+  },
+  "sell_gen_admin_exp_other_fy": {
+    "key": "sell_gen_admin_exp_other_fy"
+  },
+  "net_income_fy_h": {
+    "key": "net_income_fy_h"
+  },
+  "rtc": {
+    "key": "rtc"
+  },
+  "cash_n_short_term_invest_fy": {
+    "key": "cash_n_short_term_invest_fy"
+  },
+  "gross_profit_ttm_h": {
+    "key": "gross_profit_ttm_h"
+  },
+  "total_shares_outstanding": {
+    "key": "total_shares_outstanding"
+  },
+  "preferred_dividends": {
+    "key": "preferred_dividends"
+  },
+  "number_of_employees_fy": {
+    "key": "number_of_employees_fy"
+  },
+  "total_revenue_fq_h": {
+    "key": "total_revenue_fq_h"
+  },
+  "earnings_release_time": {
+    "key": "earnings_release_time"
+  },
+  "beta_5_year": {
+    "key": "beta_5_year"
+  },
+  "net_income_fq_h": {
+    "key": "net_income_fq_h"
+  },
+  "index_priority": {
+    "key": "index_priority"
+  },
+  "free_cash_flow_ttm": {
+    "key": "free_cash_flow_ttm"
+  },
+  "dividend_amount_recent": {
+    "key": "dividend_amount_recent"
+  },
+  "net_margin": {
+    "key": "net_margin"
+  },
+  "earnings_per_share_diluted_fq": {
+    "key": "earnings_per_share_diluted_fq"
+  },
+  "yield_upcoming": {
+    "key": "yield_upcoming"
+  },
+  "price_earnings_to_growth_ttm": {
+    "key": "price_earnings_to_growth_ttm"
+  },
+  "cash_ratio": {
+    "key": "cash_ratio"
+  },
+  "rates_fq": {
+    "key": "rates_fq"
+  },
+  "current_session": {
+    "key": "current_session"
+  },
+  "rates_ttm": {
+    "key": "rates_ttm"
+  },
+  "net_debt_fq": {
+    "key": "net_debt_fq"
+  },
+  "cash_n_short_term_invest_fq": {
+    "key": "cash_n_short_term_invest_fq"
+  },
+  "total_revenue_ttm_h": {
+    "key": "total_revenue_ttm_h"
+  },
+  "free_cash_flow_fq_h": {
+    "key": "free_cash_flow_fq_h"
+  },
+  "long_term_debt_to_assets_fy": {
+    "key": "long_term_debt_to_assets_fy"
+  },
+  "dps_common_stock_prim_issue_fy_h": {
+    "key": "dps_common_stock_prim_issue_fy_h"
+  },
+  "total_debt_fq": {
+    "key": "total_debt_fq"
+  },
+  "net_income_bef_disc_oper_fy": {
+    "key": "net_income_bef_disc_oper_fy"
+  },
+  "enterprise_value_ebitda_current": {
+    "key": "enterprise_value_ebitda_current"
+  },
+  "earnings_per_share_diluted_fy": {
+    "key": "earnings_per_share_diluted_fy"
+  },
+  "amount_recent": {
+    "key": "amount_recent"
+  },
+  "daily-bar": {
+    "key": "daily-bar"
+  },
+  "total_shares_outstanding_calculated": {
+    "key": "total_shares_outstanding_calculated"
+  },
+  "root": {
+    "key": "root"
+  },
+  "net_income_ttm_h": {
+    "key": "net_income_ttm_h"
+  },
+  "free_cash_flow_ttm_h": {
+    "key": "free_cash_flow_ttm_h"
+  },
+  "earnings_release_next_time": {
+    "key": "earnings_release_next_time"
+  },
+  "payment_date_upcoming": {
+    "key": "payment_date_upcoming"
+  },
+  "postmarket_time": {
+    "key": "postmarket_time"
+  },
+  "all_time_low": {
+    "key": "all_time_low"
+  },
+  "country_code_fund": {
+    "key": "country_code_fund"
+  },
+  "rates_dividend_recent": {
+    "key": "rates_dividend_recent"
+  },
+  "price_earnings_current": {
+    "key": "price_earnings_current"
+  },
+  "all_time_high": {
+    "key": "all_time_high"
+  },
+  "dividend_payment_date_recent": {
+    "key": "dividend_payment_date_recent"
+  },
+  "dividend_yield_upcoming": {
+    "key": "dividend_yield_upcoming"
+  },
+  "total_assets_fq": {
+    "key": "total_assets_fq"
+  },
+  "earnings_per_share_diluted_fq_h": {
+    "key": "earnings_per_share_diluted_fq_h"
+  },
+  "rates_fy": {
+    "key": "rates_fy"
+  },
+  "total_cash_dividends_paid_fy": {
+    "key": "total_cash_dividends_paid_fy"
+  },
+  "gross_profit_fq_h": {
+    "key": "gross_profit_fq_h"
+  },
+  "ex_dividend_date_recent": {
+    "key": "ex_dividend_date_recent"
+  },
+  "beta_3_year": {
+    "key": "beta_3_year"
+  },
+  "total_revenue_ttm": {
+    "key": "total_revenue_ttm"
+  },
+  "ebitda_ttm_h": {
+    "key": "ebitda_ttm_h"
+  },
+  "price_free_cash_flow_current": {
+    "key": "price_free_cash_flow_current"
+  },
+  "amount_upcoming": {
+    "key": "amount_upcoming"
+  },
+  "price_earnings_forward_fy": {
+    "key": "price_earnings_forward_fy"
+  },
+  "oper_income_fy": {
+    "key": "oper_income_fy"
+  },
+  "dividend_amount_upcoming": {
+    "key": "dividend_amount_upcoming"
+  },
+  "rates_mc": {
+    "key": "rates_mc"
+  },
+  "debt_to_assets": {
+    "key": "debt_to_assets"
+  },
+  "earnings_per_share_diluted_ttm_h": {
+    "key": "earnings_per_share_diluted_ttm_h"
+  },
+  "days_to_maturity": {
+    "key": "days_to_maturity"
+  },
+  "base_currency_kind": {
+    "key": "base_currency_kind"
+  },
+  "free_cash_flow_margin_ttm": {
+    "key": "free_cash_flow_margin_ttm"
+  },
+  "oper_income_margin_fy": {
+    "key": "oper_income_margin_fy"
+  },
+  "eps_surprise_fq": {
+    "key": "eps_surprise_fq"
+  },
+  "relative_volume": {
+    "key": "relative_volume"
+  },
+  "market": {
+    "key": "market"
+  },
+  "free_cash_flow_margin_fy": {
+    "key": "free_cash_flow_margin_fy"
+  },
+  "maturity_date": {
+    "key": "maturity_date"
+  },
+  "base_currency_logoid": {
+    "key": "base_currency_logoid"
+  },
+  "cagr_5_earnings_per_share_basic": {
+    "key": "cagr_5_earnings_per_share_basic"
+  },
+  "currency_kind": {
+    "key": "currency_kind"
+  },
+  "expiration": {
+    "key": "expiration"
+  },
+  "coupon": {
+    "key": "coupon"
+  },
+  "eps_surprise_percent_fq": {
+    "key": "eps_surprise_percent_fq"
+  },
+  "research_and_dev_margin_ttm": {
+    "key": "research_and_dev_margin_ttm"
+  },
+  "typespecs": {
+    "key": "typespecs"
+  },
+  "is_primary": {
+    "key": "is_primary"
+  },
+  "currency_logoid": {
+    "key": "currency_logoid"
+  },
+  "revenue_one_year_growth_fy": {
+    "key": "revenue_one_year_growth_fy"
+  },
+  "gross_profit_margin_fy": {
+    "key": "gross_profit_margin_fy"
+  },
+  "cagr_5_net_income": {
+    "key": "cagr_5_net_income"
+  },
+  "net_income_bef_disc_oper_margin_fy": {
+    "key": "net_income_bef_disc_oper_margin_fy"
+  },
+  "sell_gen_admin_exp_other_margin_ttm": {
+    "key": "sell_gen_admin_exp_other_margin_ttm"
+  },
+  "research_and_dev_margin_fy": {
+    "key": "research_and_dev_margin_fy"
+  },
+  "revenue_one_year_growth_fq": {
+    "key": "revenue_one_year_growth_fq"
+  },
+  "sell_gen_admin_exp_other_margin_fy": {
+    "key": "sell_gen_admin_exp_other_margin_fy"
+  },
+  "update_time": {
+    "key": "update_time"
+  },
+  "market_cap_calc": {
+    "key": "market_cap_calc"
+  },
+  "cagr_5_revenue": {
+    "key": "cagr_5_revenue"
+  },
+  "cagr_5_free_cash_flow": {
+    "key": "cagr_5_free_cash_flow"
+  },
+  "price_sales": {
+    "key": "price_sales"
+  },
+  "active_symbol": {
+    "key": "active_symbol"
+  },
+  "last_bar_update_time": {
+    "key": "last_bar_update_time"
+  },
+  "pre_change_abs": {
+    "key": "pre_change_abs"
+  },
+  "pre_change": {
+    "key": "pre_change"
+  },
+  "time": {
+    "key": "time"
+  },
+  "post_change": {
+    "key": "post_change"
+  },
+  "indicators_bars_count": {
+    "key": "indicators_bars_count"
+  },
+  "bars_count": {
+    "key": "bars_count"
+  },
+  "Perf.All": {
+    "key": "Perf.All"
+  },
+  "MACD.hist": {
+    "key": "MACD.hist"
+  },
+  "BB.basis": {
+    "key": "BB.basis"
+  },
+  "DonchCh20.Middle": {
+    "key": "DonchCh20.Middle"
+  },
+  "Low.5D": {
+    "key": "Low.5D"
+  },
+  "Open.All.Calc": {
+    "key": "Open.All.Calc"
+  },
+  "High.5D": {
+    "key": "High.5D"
+  },
+  "Low.All.Calc": {
+    "key": "Low.All.Calc"
+  },
+  "Perf.5Y": {
+    "key": "Perf.5Y"
+  },
+  "time_business_day": {
+    "key": "time_business_day"
+  },
+  "High.All.Calc": {
+    "key": "High.All.Calc"
+  }
+}
