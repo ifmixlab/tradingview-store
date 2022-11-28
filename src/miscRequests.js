@@ -91,6 +91,7 @@ async function fetchScanDataRaw(market = "", content) {
 
 module.exports = {
   fetchScanData,
+  fetchScanDataRaw,
     async fetchScanDataForAllSymbols(type = "", columns = []) {
         const content = {columns};
         return fetchScanDataRaw(type, content);

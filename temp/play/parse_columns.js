@@ -2,7 +2,6 @@
 const scan_america_metadata = require("../../data/scan_america_metadata.json");
 const fs = require("fs/promises");
 const path = require("path");
-const {writeFile} = require("../../store/utils/index");
 // const scan_column_name_cn = require("../../data/scan_column_name_cn.json");
 // const _ = require("lodash");
 
@@ -42,6 +41,11 @@ async function update_columns_by_tv_meta(meta) {
     writeFile("../../data/scan_columns.json", cols);
 }
 
+async function writeFile(file_path,data) {
+    const f = path.resolve(__dirname,file_path);
+    console.log("writeFile:",f)
+    await fs.writeFile(f, JSON.stringify(data,null,2))
+}
 
 async function main() {
     const obj = await getMetaObject();
