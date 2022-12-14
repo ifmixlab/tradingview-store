@@ -25,7 +25,12 @@ const path = require("path");
 // }
 
 // const removeList =["index","component"]
-const black_list =["component","index"];
+const black_list =["component","index",
+    "research_and_dev_margin_fy",
+    "research_and_dev_margin_ttm",
+    "sell_gen_admin_exp_other_margin_fy",
+  "sell_gen_admin_exp_other_margin_ttm"
+];
 async function getMetaObject() {
     const obj = {}
     for(const f of scan_america_metadata.fields){
@@ -40,7 +45,7 @@ async function getMetaObject() {
 
 async function update_columns_by_tv_meta(meta) {
     const cols = Object.keys(meta).sort();
-    writeFile("../../data/scan_columns.json", cols);
+    writeFile("../../data/scan_stock_columns.json", cols);
 }
 
 async function writeFile(file_path,data) {

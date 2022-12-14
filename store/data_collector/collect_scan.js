@@ -17,12 +17,12 @@ main();
 async function mainProcess(mongoClient) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("mainProcess start.")
-    
+
     const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan);
     await coll.createIndex({ "ts": 1 }, {expireAfterSeconds: expire_seconds });
-    
+
     await Promise.all([
-        // processMarket(mongoClient, "crypto", scan_crypto_columns),
+        processMarket(mongoClient, "crypto", scan_crypto_columns),
         processMarket(mongoClient, "china", scan_stock_columns),
         processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
@@ -106,7 +106,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             })
             .filter((it) => it != null);
         await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
-        
+
         console.log("processMarketPage done. ", market, page, retryCount)
         if (response.data.length === REQ_PAGE_SIZE) {
             await sleep(10)
