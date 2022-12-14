@@ -26,10 +26,12 @@ const path = require("path");
 
 // const removeList =["index","component"]
 const black_list =["component","index",
+  // 2022/12/15 added
     "research_and_dev_margin_fy",
     "research_and_dev_margin_ttm",
     "sell_gen_admin_exp_other_margin_fy",
-  "sell_gen_admin_exp_other_margin_ttm"
+  "sell_gen_admin_exp_other_margin_ttm",
+  // todo
 ];
 async function getMetaObject() {
     const obj = {}
