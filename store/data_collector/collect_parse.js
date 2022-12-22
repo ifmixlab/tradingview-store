@@ -92,7 +92,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         }
 
         // await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
-        await parseResponse(mongoClient,response);
+        await parseResponse(mongoClient,market,response);
         console.log("processMarketPage done. ", market, page, retryCount)
         if (response.data.length === REQ_PAGE_SIZE) {
             await sleep(10)
@@ -105,7 +105,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
     }
 }
 
-async function parseResponse(mongoClient,response){
+async function parseResponse(mongoClient,market,response){
     const ts = new Date();
     // const ts_day = new Date();
     // ts_day.setUTCHours(0, 0, 0, 0)
