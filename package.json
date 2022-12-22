@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "docs": "jsdoc -c jsdoc.json",
-    "scan": "cd store/data_collector; while true ;do node collect_scan.js; sleep 3; done;",
+    "scan": "node --max-old-space-size=8192 store/data_collector/collect_parse.js",
     "test": "node test"
   },
   "repository": {
