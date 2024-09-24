@@ -2,7 +2,6 @@ const TradingView = require("../../main");
 const mongo = require("../service/mongo");
 const scan_stock_columns = require("../../data/scan_stock_columns.json")
 const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
-const {db_name_log_tv, coll_name_scan} = require("../../src/consts");
 const {sleep} = require("../../src/utils");
 const { ObjectId } = require("mongodb");
 const {processItems} = require("../data_parser/parse_scan")
@@ -19,12 +18,12 @@ async function mainProcess(mongoClient) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("mainProcess start.")
 
-    const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan);
-    await coll.createIndex({ "ts": 1 }, {expireAfterSeconds: expire_seconds });
+    // const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan);
+    // await coll.createIndex({ "meta.ts": 1 }, {expireAfterSeconds: expire_seconds });
     await Promise.all([
         // processMarket(mongoClient, "crypto", scan_crypto_columns),
-        processMarket(mongoClient, "china", scan_stock_columns),
-        // processMarket(mongoClient, "hongkong", scan_stock_columns),
+        // processMarket(mongoClient, "china", scan_stock_columns),
+        processMarket(mongoClient, "hongkong", scan_stock_columns),
         // processMarket(mongoClient, "america", scan_stock_columns),
     ])
     console.log("mainProcess done.")
@@ -107,8 +106,8 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
 
 async function parseResponse(mongoClient,market,response){
     const ts = new Date();
-    // const ts_day = new Date();
-    // ts_day.setUTCHours(0, 0, 0, 0)
+    const ts_day = new Date();
+    ts_day.setUTCHours(0, 0, 0, 0);
     const docs = response.data
         .map((it) => {
             const obj = {
@@ -116,6 +115,7 @@ async function parseResponse(mongoClient,market,response){
                 market,
                 v: 1, // reqVersion
                 ts,
+                ts_day,
                 data: it,
             };
             return obj;
