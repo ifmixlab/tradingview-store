@@ -35,14 +35,14 @@ async function mainProcess(mongoClient) {
 }
 
 async function processMarket(mongoClient, market, columns) {
-    console.log("processMarket start. ", market)
+    console.log(`\nprocessMarket start. ${market}`)
     await processMarketPage(mongoClient, market, columns, 0)
-    console.log("processMarket done. ", market)
+    console.log(`processMarket done. ${market}\n`)
 }
 
 async function processMarketPage(mongoClient, market, columns, page = 0, retryCount = 0) {
     try {
-        console.log(`processMarketPage start. market:${market}, page:${page}, retryCount:${retryCount}`);
+        console.log(`processMarketPage start. ${JSON.stringify({market, page, retryCount})}`);
         const rangeStart = page * REQ_PAGE_SIZE;
         const rangeEnd = (page + 1) * REQ_PAGE_SIZE;
         const range = [
