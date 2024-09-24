@@ -25,17 +25,9 @@ async function fetchScanData(tickers = [], columns = []) {
 
 
 async function fetchScanDataRaw(market = "", content) {
-    const options = {
-        method: "POST",
-        hostname: "scanner.tradingview.com",
-        path: `/${market}/scan`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }
   const { data } = await axios.post(
     `https://scanner.tradingview.com/${market}/scan`,
-    {},
+    content,
     { validateStatus },
   );
 
