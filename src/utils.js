@@ -18,7 +18,7 @@ module.exports = {
         resolve()
       }, time)
     })
-  }
+  },
   genAuthCookies(sessionId = '', signature = '') {
     if (!sessionId) return '';
     if (!signature) return `sessionid=${sessionId}`;

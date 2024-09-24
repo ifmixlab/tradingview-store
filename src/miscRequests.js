@@ -3,6 +3,7 @@ const axios = require('axios');
 
 const PineIndicator = require('./classes/PineIndicator');
 const { genAuthCookies } = require('./utils');
+const { request } = require('axios');
 
 const validateStatus = (status) => status < 500;
 
@@ -32,23 +33,23 @@ async function fetchScanDataRaw(market = "", content) {
             "Content-Type": "application/json",
         },
     }
-    let {data} = await request(
-        options,
-        true,
-        JSON.stringify(content)
-    );
+  const { data } = await axios.post(
+    `https://scanner.tradingview.com/${market}/scan`,
+    {},
+    { validateStatus },
+  );
 
-    if (!data.startsWith("{")) throw new Error("Wrong screener or symbol");
-    try {
-      data = JSON.parse(data);
-    } catch (e) {
-      throw new Error('Can\'t parse server response');
-    }
-  
+    // if (!data.startsWith("{")) throw new Error("Wrong screener or symbol");
+    // try {
+    //   data = JSON.parse(data);
+    // } catch (e) {
+    //   throw new Error('Can\'t parse server response');
+    // }
+
     return data;
   }
 
-  
+
 /** @typedef {number} advice */
 
 /**

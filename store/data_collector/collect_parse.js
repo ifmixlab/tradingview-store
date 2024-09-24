@@ -22,10 +22,10 @@ async function mainProcess(mongoClient) {
     const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan);
     await coll.createIndex({ "ts": 1 }, {expireAfterSeconds: expire_seconds });
     await Promise.all([
-        processMarket(mongoClient, "crypto", scan_crypto_columns),
+        // processMarket(mongoClient, "crypto", scan_crypto_columns),
         processMarket(mongoClient, "china", scan_stock_columns),
-        processMarket(mongoClient, "hongkong", scan_stock_columns),
-        processMarket(mongoClient, "america", scan_stock_columns),
+        // processMarket(mongoClient, "hongkong", scan_stock_columns),
+        // processMarket(mongoClient, "america", scan_stock_columns),
     ])
     console.log("mainProcess done.")
 }
