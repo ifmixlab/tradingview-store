@@ -6,7 +6,7 @@ const {sleep} = require("../../src/utils");
 const { ObjectId } = require("mongodb");
 const {processItems} = require("../data_parser/parse_scan")
 const REQ_PAGE_SIZE = 1000;
-const enablePage = false;
+const enablePage = true;
 async function main() {
     await mongo.run((client) => mainProcess(client));
     process.exit(0)
@@ -22,7 +22,7 @@ async function mainProcess(mongoClient) {
     // await coll.createIndex({ "meta.ts": 1 }, {expireAfterSeconds: expire_seconds });
     await Promise.all([
         // processMarket(mongoClient, "crypto", scan_crypto_columns),
-        // processMarket(mongoClient, "china", scan_stock_columns),
+        processMarket(mongoClient, "china", scan_stock_columns),
         // processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
     ])
@@ -49,8 +49,10 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             // range
         };
         if(enablePage){
+            content.sort = {"sortBy": "name", "sortOrder": "desc"};
             content.range = range;
         }
+        console.log(`request start. ${JSON.stringify({market, page, retryCount})}`);
         const response = await TradingView.fetchScanDataRaw(
             market,
             content
@@ -87,7 +89,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         //         }
         //     ]
         // }
-        console.log("request done. ", market, page, retryCount);
+        console.log(`request done. ${JSON.stringify({market, page, retryCount})}`);
         if (response == null || response.data == null) {
             console.error("fetch error, response or response.data is null. ", JSON.stringify(response))
             return;

@@ -25,20 +25,31 @@ async function fetchScanData(tickers = [], columns = []) {
 
 
 async function fetchScanDataRaw(market = "", content) {
-  const { data } = await axios.post(
-    `https://scanner.tradingview.com/${market}/scan`,
-    content,
-    { validateStatus },
-  );
+    const { range } = content ||{};
+    try{
+      const url = `https://scanner.tradingview.com/${market}/scan`;
+      // console.log(`fetchScanDataRaw start. ${JSON.stringify({ market,range })}`);
+      const { data } = await axios.post(
+        url,
+        content,
+        { validateStatus },
+      );
 
-    // if (!data.startsWith("{")) throw new Error("Wrong screener or symbol");
-    // try {
-    //   data = JSON.parse(data);
-    // } catch (e) {
-    //   throw new Error('Can\'t parse server response');
-    // }
-
-    return data;
+      // if (!data.startsWith("{")) throw new Error("Wrong screener or symbol");
+      // try {
+      //   data = JSON.parse(data);
+      // } catch (e) {
+      //   throw new Error('Can\'t parse server response');
+      // }
+      // console.log(`fetchScanDataRaw success. ${JSON.stringify({ market,range })}`);
+      return data;
+    }catch(e) {
+      console.error(`fetchScanDataRaw error. ${JSON.stringify({
+        market,
+        range
+      })}`, e);
+      throw e;
+    }
   }
 
 
