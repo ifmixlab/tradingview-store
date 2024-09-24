@@ -10,10 +10,10 @@ const enablePage = true;
 const MAX_RETRY_COUNT = 30;
 
 async function main() {
-    console.log(`collect start. now: ${new Date().toISOString()}`);
+    console.log(`\n\ncollect start. now: ${new Date().toISOString()}`);
     await mongo.run((client) => mainProcess(client))
       .catch((e)=>{ console.error(`main error: ${e.message}`,e) });
-    console.log(`collect complete. now: ${new Date().toISOString()}`);
+    console.log(`\ncollect complete. now: ${new Date().toISOString()}`);
     process.exit(0)
 }
 const expire_seconds = 3600*24*7; // 7 day
@@ -22,7 +22,7 @@ main();
 async function mainProcess(mongoClient) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     console.log("mainProcess start.")
-    throw new Error("test error");
+    // throw new Error("test error");
     // const coll = mongoClient.db(db_name_log_tv).collection(coll_name_scan);
     // await coll.createIndex({ "meta.ts": 1 }, {expireAfterSeconds: expire_seconds });
     await Promise.all([
