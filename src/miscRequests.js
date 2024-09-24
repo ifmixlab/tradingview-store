@@ -41,7 +41,8 @@ async function fetchScanDataRaw(market = "", content) {
       // } catch (e) {
       //   throw new Error('Can\'t parse server response');
       // }
-      // console.log(`fetchScanDataRaw success. ${JSON.stringify({ market,range })}`);
+      const {totalCount} = data ||{};
+      console.log(`fetchScanDataRaw success. ${JSON.stringify({ market,range,totalCount })}`);
       return data;
     }catch(e) {
       console.error(`fetchScanDataRaw error. ${JSON.stringify({

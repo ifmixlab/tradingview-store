@@ -91,21 +91,21 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         // }
         console.log(`request done. ${JSON.stringify({market, page, retryCount})}`);
         if (response == null || response.data == null) {
-            console.error("fetch error, response or response.data is null. ", JSON.stringify(response))
+            console.error("fetch error, response or response.data is null. ", JSON.stringify(response));
             return;
         }
 
         // await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
         await parseResponse(mongoClient,market,response);
-        console.log("processMarketPage done. ", market, page, retryCount)
+        console.log(`processMarketPage done. ${JSON.stringify({market, page, retryCount})}`);
         if (enablePage && response.data.length === REQ_PAGE_SIZE) {
-            await sleep(100)
-            await processMarketPage(mongoClient, market, columns, page + 1, 0)
+            await sleep(100);
+            await processMarketPage(mongoClient, market, columns, page + 1, 0);
         }
     } catch (e) {
-        await sleep(1000)
-        console.error("processMarketPage error, will retry.", market, page, retryCount, e)
-        await processMarketPage(mongoClient, market, columns, page, retryCount + 1)
+        await sleep(1000);
+        console.error(`processMarketPage error, will retry. ${JSON.stringify({market, page, retryCount})}`, e);
+        await processMarketPage(mongoClient, market, columns, page, retryCount + 1);
     }
 }
 
