@@ -1,31 +1,23 @@
 const os = require('os');
-const https = require('https');
-const request = require('./request');
-const FormData = require('./FormData');
+const axios = require('axios');
 
-const PinePermManager = require('./classes/PinePermManager');
 const PineIndicator = require('./classes/PineIndicator');
+const { genAuthCookies } = require('./utils');
+
+const validateStatus = (status) => status < 500;
 
 const indicators = ['Recommend.Other', 'Recommend.All', 'Recommend.MA'];
 const builtInIndicList = [];
 
-async function fetchScanData(tickers = [], type = '', columns = []) {
-  let { data } = await request({
-    method: 'POST',
-    hostname: 'scanner.tradingview.com',
-    path: `/${type}/scan`,
-    headers: {
-      'Content-Type': 'application/json',
+async function fetchScanData(tickers = [], columns = []) {
+  const { data } = await axios.post(
+    'https://scanner.tradingview.com/global/scan',
+    {
+      symbols: { tickers },
+      columns,
     },
-  }, true, JSON.stringify({ symbols: { tickers }, columns }));
-
-  if (!data.startsWith('{')) throw new Error('Wrong screener or symbol');
-
-  try {
-    data = JSON.parse(data);
-  } catch (e) {
-    throw new Error('Can\'t parse server response');
-  }
+    { validateStatus },
+  );
 
   return data;
 }
@@ -80,15 +72,6 @@ async function fetchScanDataRaw(market = "", content) {
  * }} Periods
  */
 
-/**
- * @typedef {string | 'forex' | 'crypto'
- * | 'america' | 'australia' | 'canada' | 'egypt'
- * | 'germany' | 'india' | 'israel' | 'italy'
- * | 'luxembourg' | 'poland' | 'sweden' | 'turkey'
- * | 'uk' | 'vietnam'} Screener
- * You can use `getScreener(exchange)` function for non-forex and non-crypto markets.
- */
-
 module.exports = {
   fetchScanData,
   fetchScanDataRaw,
@@ -97,45 +80,19 @@ module.exports = {
         return fetchScanDataRaw(type, content);
     },
   /**
-   * Get a screener from an exchange
-   * @function getScreener
-   * @param {string} exchange Example: BINANCE, EURONEXT, NASDAQ
-   * @returns {Screener}
-  */
-  getScreener(exchange) {
-    const e = exchange.toUpperCase();
-    if (['NASDAQ', 'NYSE', 'NYSE ARCA', 'OTC'].includes(e)) return 'america';
-    if (['ASX'].includes(e)) return 'australia';
-    if (['TSX', 'TSXV', 'CSE', 'NEO'].includes(e)) return 'canada';
-    if (['EGX'].includes(e)) return 'egypt';
-    if (['FWB', 'SWB', 'XETR'].includes(e)) return 'germany';
-    if (['BSE', 'NSE'].includes(e)) return 'india';
-    if (['TASE'].includes(e)) return 'israel';
-    if (['MIL', 'MILSEDEX'].includes(e)) return 'italy';
-    if (['LUXSE'].includes(e)) return 'luxembourg';
-    if (['NEWCONNECT'].includes(e)) return 'poland';
-    if (['NGM'].includes(e)) return 'sweden';
-    if (['BIST'].includes(e)) return 'turkey';
-    if (['LSE', 'LSIN'].includes(e)) return 'uk';
-    if (['HNX'].includes(e)) return 'vietnam';
-    return exchange.toLowerCase();
-  },
-
-  /**
    * Get technical analysis
    * @function getTA
-   * @param {Screener} screener Market screener
    * @param {string} id Full market id (Example: COINBASE:BTCEUR)
    * @returns {Promise<Periods>} results
    */
-  async getTA(screener, id) {
+  async getTA(id) {
     const advice = {};
 
     const cols = ['1', '5', '15', '60', '240', '1D', '1W', '1M']
       .map((t) => indicators.map((i) => (t !== '1D' ? `${i}|${t}` : i)))
       .flat();
 
-    const rs = await fetchScanData([id], screener, cols);
+    const rs = await fetchScanData([id], cols);
     if (!rs.data || !rs.data[0]) return false;
 
     rs.data[0].d.forEach((val, i) => {
@@ -153,7 +110,6 @@ module.exports = {
    * @prop {string} id Market full symbol
    * @prop {string} exchange Market exchange name
    * @prop {string} fullExchange Market exchange full name
-   * @prop {Screener | 'forex' | 'crypto'} screener Market screener
    * @prop {string} symbol Market symbol
    * @prop {string} description Market name
    * @prop {string} type Market type
@@ -161,7 +117,7 @@ module.exports = {
    */
 
   /**
-   * Find a symbol
+   * Find a symbol (deprecated)
    * @function searchMarket
    * @param {string} search Keywords
    * @param {'stock'
@@ -169,32 +125,84 @@ module.exports = {
    *  | 'crypto' | 'index' | 'economic'
    * } [filter] Caterogy filter
    * @returns {Promise<SearchMarketResult[]>} Search results
+   * @deprecated Use searchMarketV3 instead
    */
   async searchMarket(search, filter = '') {
-    const { data } = await request({
-      host: 'symbol-search.tradingview.com',
-      path: `/symbol_search/?text=${search.replace(/ /g, '%20')}&type=${filter}`,
-      origin: 'https://www.tradingview.com',
-    });
+    const { data } = await axios.get(
+      'https://symbol-search.tradingview.com/symbol_search',
+      {
+        params: {
+          text: search.replace(/ /g, '%20'),
+          type: filter,
+        },
+        headers: {
+          origin: 'https://www.tradingview.com',
+        },
+        validateStatus,
+      },
+    );
 
     return data.map((s) => {
       const exchange = s.exchange.split(' ')[0];
       const id = `${exchange}:${s.symbol}`;
 
-      const screener = (['forex', 'crypto'].includes(s.type)
-        ? s.type
-        : this.getScreener(exchange)
-      );
+      return {
+        id,
+        exchange,
+        fullExchange: s.exchange,
+        symbol: s.symbol,
+        description: s.description,
+        type: s.type,
+        getTA: () => this.getTA(id),
+      };
+    });
+  },
+
+  /**
+   * Find a symbol
+   * @function searchMarketV3
+   * @param {string} search Keywords
+   * @param {'stock'
+   *  | 'futures' | 'forex' | 'cfd'
+   *  | 'crypto' | 'index' | 'economic'
+   * } [filter] Caterogy filter
+   * @returns {Promise<SearchMarketResult[]>} Search results
+   */
+  async searchMarketV3(search, filter = '') {
+    const splittedSearch = search.toUpperCase().replace(/ /g, '+').split(':');
+
+    const request = await axios.get(
+      'https://symbol-search.tradingview.com/symbol_search/v3',
+      {
+        params: {
+          exchange: (splittedSearch.length === 2
+            ? splittedSearch[0]
+            : undefined
+          ),
+          text: splittedSearch.pop(),
+          search_type: filter,
+        },
+        headers: {
+          origin: 'https://www.tradingview.com',
+        },
+        validateStatus,
+      },
+    );
+
+    const { data } = request;
+
+    return data.symbols.map((s) => {
+      const exchange = s.exchange.split(' ')[0];
+      const id = `${exchange.toUpperCase()}:${s.symbol}`;
 
       return {
         id,
         exchange,
         fullExchange: s.exchange,
-        screener,
         symbol: s.symbol,
         description: s.description,
         type: s.type,
-        getTA: () => this.getTA(screener, id),
+        getTA: () => this.getTA(id),
       };
     });
   },
@@ -222,17 +230,28 @@ module.exports = {
   async searchIndicator(search = '') {
     if (!builtInIndicList.length) {
       await Promise.all(['standard', 'candlestick', 'fundamental'].map(async (type) => {
-        builtInIndicList.push(...(await request({
-          host: 'pine-facade.tradingview.com',
-          path: `/pine-facade/list/?filter=${type}`,
-        })).data);
+        const { data } = await axios.get(
+          'https://pine-facade.tradingview.com/pine-facade/list',
+          {
+            params: {
+              filter: type,
+            },
+            validateStatus,
+          },
+        );
+        builtInIndicList.push(...data);
       }));
     }
 
-    const { data } = await request({
-      host: 'www.tradingview.com',
-      path: `/pubscripts-suggest-json/?search=${search.replace(/ /g, '%20')}`,
-    });
+    const { data } = await axios.get(
+      'https://www.tradingview.com/pubscripts-suggest-json',
+      {
+        params: {
+          search: search.replace(/ /g, '%20'),
+        },
+        validateStatus,
+      },
+    );
 
     function norm(str = '') {
       return str.toUpperCase().replace(/[^A-Z]/g, '');
@@ -283,21 +302,22 @@ module.exports = {
    * @function getIndicator
    * @param {string} id Indicator ID (Like: PUB;XXXXXXXXXXXXXXXXXXXXX)
    * @param {'last' | string} [version] Wanted version of the indicator
+   * @param {string} [session] User 'sessionid' cookie
+   * @param {string} [signature] User 'sessionid_sign' cookie
    * @returns {Promise<PineIndicator>} Indicator
    */
-  async getIndicator(id, version = 'last') {
+  async getIndicator(id, version = 'last', session = '', signature = '') {
     const indicID = id.replace(/ |%/g, '%25');
 
-    let { data } = await request({
-      host: 'pine-facade.tradingview.com',
-      path: `/pine-facade/translate/${indicID}/${version}`,
-    }, true);
-
-    try {
-      data = JSON.parse(data);
-    } catch (e) {
-      throw new Error(`Inexistent or unsupported indicator: '${id}'`);
-    }
+    const { data } = await axios.get(
+      `https://pine-facade.tradingview.com/pine-facade/translate/${indicID}/${version}`,
+      {
+        headers: {
+          cookie: genAuthCookies(session, signature),
+        },
+        validateStatus,
+      },
+    );
 
     if (!data.success || !data.result.metaInfo || !data.result.metaInfo.inputs) {
       throw new Error(`Inexistent or unsupported indicator: "${data.reason}"`);
@@ -375,6 +395,7 @@ module.exports = {
    * @prop {number} notifications.following Notification from following accounts
    * @prop {string} session User session
    * @prop {string} sessionHash User session hash
+   * @prop {string} signature User session signature
    * @prop {string} privateChannel User private channel
    * @prop {string} authToken User auth token
    * @prop {Date} joinDate Account creation date
@@ -390,26 +411,28 @@ module.exports = {
    * @returns {Promise<User>} Token
    */
   async loginUser(username, password, remember = true, UA = 'TWAPI/3.0') {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
-    if (remember) formData.append('remember', 'on');
-
-    const { data, cookies } = await request({
-      method: 'POST',
-      host: 'www.tradingview.com',
-      path: '/accounts/signin/',
-      headers: {
-        referer: 'https://www.tradingview.com',
-        'Content-Type': `multipart/form-data; boundary=${formData.boundary}`,
-        'User-agent': `${UA} (${os.version()}; ${os.platform()}; ${os.arch()})`,
+    const { data, headers } = await axios.post(
+      'https://www.tradingview.com/accounts/signin/',
+      `username=${username}&password=${password}${remember ? '&remember=on' : ''}`,
+      {
+        headers: {
+          referer: 'https://www.tradingview.com',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-agent': `${UA} (${os.version()}; ${os.platform()}; ${os.arch()})`,
+        },
+        validateStatus,
       },
-    }, false, formData.toString());
+    );
+
+    const cookies = headers['set-cookie'];
 
     if (data.error) throw new Error(data.error);
 
-    const cookie = cookies.find((c) => c.includes('sessionid='));
-    const session = (cookie.match(/sessionid=(.*?);/) ?? [])[1];
+    const sessionCookie = cookies.find((c) => c.includes('sessionid='));
+    const session = (sessionCookie.match(/sessionid=(.*?);/) ?? [])[1];
+
+    const signCookie = cookies.find((c) => c.includes('sessionid_sign='));
+    const signature = (signCookie.match(/sessionid_sign=(.*?);/) ?? [])[1];
 
     return {
       id: data.user.id,
@@ -421,6 +444,7 @@ module.exports = {
       followers: data.user.followers,
       notifications: data.user.notification_count,
       session,
+      signature,
       sessionHash: data.user.session_hash,
       privateChannel: data.user.private_channel,
       authToken: data.user.auth_token,
@@ -432,93 +456,85 @@ module.exports = {
    * Get user from 'sessionid' cookie
    * @function getUser
    * @param {string} session User 'sessionid' cookie
+   * @param {string} [signature] User 'sessionid_sign' cookie
    * @param {string} [location] Auth page location (For france: https://fr.tradingview.com/)
    * @returns {Promise<User>} Token
    */
-  async getUser(session, location = 'https://www.tradingview.com/') {
-    return new Promise((cb, err) => {
-      https.get(location, {
-        headers: { cookie: `sessionid=${session}` },
-      }, (res) => {
-        let rs = '';
-        res.on('data', (d) => { rs += d; });
-        res.on('end', async () => {
-          if (res.headers.location && location !== res.headers.location) {
-            cb(await module.exports.getUser(session, res.headers.location));
-            return;
-          }
-          if (rs.includes('auth_token')) {
-            cb({
-              id: /"id":([0-9]{1,10}),/.exec(rs)[1],
-              username: /"username":"(.*?)"/.exec(rs)[1],
-              firstName: /"first_name":"(.*?)"/.exec(rs)[1],
-              lastName: /"last_name":"(.*?)"/.exec(rs)[1],
-              reputation: parseFloat(/"reputation":(.*?),/.exec(rs)[1] || 0),
-              following: parseFloat(/,"following":([0-9]*?),/.exec(rs)[1] || 0),
-              followers: parseFloat(/,"followers":([0-9]*?),/.exec(rs)[1] || 0),
-              notifications: {
-                following: parseFloat(/"notification_count":\{"following":([0-9]*),/.exec(rs)[1] || 0),
-                user: parseFloat(/"notification_count":\{"following":[0-9]*,"user":([0-9]*)/.exec(rs)[1] || 0),
-              },
-              session,
-              sessionHash: /"session_hash":"(.*?)"/.exec(rs)[1],
-              privateChannel: /"private_channel":"(.*?)"/.exec(rs)[1],
-              authToken: /"auth_token":"(.*?)"/.exec(rs)[1],
-              joinDate: new Date(/"date_joined":"(.*?)"/.exec(rs)[1] || 0),
-            });
-          } else err(new Error('Wrong or expired sessionid'));
-        });
-
-        res.on('error', err);
-      }).end();
+  async getUser(session, signature = '', location = 'https://www.tradingview.com/') {
+    const { data } = await axios.get(location, {
+      headers: {
+        cookie: genAuthCookies(session, signature),
+      },
+      validateStatus,
     });
+
+    if (data.includes('auth_token')) {
+      return {
+        id: /"id":([0-9]{1,10}),/.exec(data)?.[1],
+        username: /"username":"(.*?)"/.exec(data)?.[1],
+        firstName: /"first_name":"(.*?)"/.exec(data)?.[1],
+        lastName: /"last_name":"(.*?)"/.exec(data)?.[1],
+        reputation: parseFloat(/"reputation":(.*?),/.exec(data)?.[1] || 0),
+        following: parseFloat(/,"following":([0-9]*?),/.exec(data)?.[1] || 0),
+        followers: parseFloat(/,"followers":([0-9]*?),/.exec(data)?.[1] || 0),
+        notifications: {
+          following: parseFloat(/"notification_count":\{"following":([0-9]*),/.exec(data)?.[1] ?? 0),
+          user: parseFloat(/"notification_count":\{"following":[0-9]*,"user":([0-9]*)/.exec(data)?.[1] ?? 0),
+        },
+        session,
+        signature,
+        sessionHash: /"session_hash":"(.*?)"/.exec(data)?.[1],
+        privateChannel: /"private_channel":"(.*?)"/.exec(data)?.[1],
+        authToken: /"auth_token":"(.*?)"/.exec(data)?.[1],
+        joinDate: new Date(/"date_joined":"(.*?)"/.exec(data)?.[1] || 0),
+      };
+    }
+
+    throw new Error('Wrong or expired sessionid/signature');
   },
 
   /**
    * Get user's private indicators from a 'sessionid' cookie
    * @function getPrivateIndicators
    * @param {string} session User 'sessionid' cookie
+   * @param {string} [signature] User 'sessionid_sign' cookie
    * @returns {Promise<SearchIndicatorResult[]>} Search results
    */
-  async getPrivateIndicators(session) {
-    return new Promise((cb, err) => {
-      https.get('https://pine-facade.tradingview.com/pine-facade/list?filter=saved', {
-        headers: { cookie: `sessionid=${session}` },
-      }, (res) => {
-        let rs = '';
-        res.on('data', (d) => { rs += d; });
-        res.on('end', async () => {
-          try {
-            rs = JSON.parse(rs);
-          } catch (error) {
-            err(new Error('Can\'t parse private indicator list'));
-            return;
-          }
+  async getPrivateIndicators(session, signature = '') {
+    const { data } = await axios.get(
+      'https://pine-facade.tradingview.com/pine-facade/list',
+      {
+        headers: {
+          cookie: genAuthCookies(session, signature),
+        },
+        params: {
+          filter: 'saved',
+        },
+        validateStatus,
+      },
+    );
 
-          cb(rs.map((ind) => ({
-            id: ind.scriptIdPart,
-            version: ind.version,
-            name: ind.scriptName,
-            author: {
-              id: -1,
-              username: '@ME@',
-            },
-            image: ind.imageUrl,
-            access: 'private',
-            source: ind.scriptSource,
-            type: (ind.extra && ind.extra.kind) ? ind.extra.kind : 'study',
-            get() {
-              return module.exports.getIndicator(ind.scriptIdPart, ind.version);
-            },
-            getManager() {
-              return new PinePermManager(ind.scriptIdPart);
-            },
-          })));
-        });
-
-        res.on('error', err);
-      }).end();
-    });
+    return data.map((ind) => ({
+      id: ind.scriptIdPart,
+      version: ind.version,
+      name: ind.scriptName,
+      author: {
+        id: -1,
+        username: '@ME@',
+      },
+      image: ind.imageUrl,
+      access: 'private',
+      source: ind.scriptSource,
+      type: (ind.extra && ind.extra.kind) ? ind.extra.kind : 'study',
+      get() {
+        return module.exports.getIndicator(
+          ind.scriptIdPart,
+          ind.version,
+          session,
+          signature,
+        );
+      },
+    }));
   },
 
   /**
@@ -526,25 +542,36 @@ module.exports = {
    * @typedef {Object} UserCredentials
    * @prop {number} id User ID
    * @prop {string} session User session ('sessionid' cookie)
+   * @prop {string} [signature] User session signature ('sessionid_sign' cookie)
    */
 
   /**
    * Get a chart token from a layout ID and the user credentials if the layout is not public
    * @function getChartToken
    * @param {string} layout The layout ID found in the layout URL (Like: 'XXXXXXXX')
-   * @param {UserCredentials} [credentials] User credentials (id + session)
+   * @param {UserCredentials} [credentials] User credentials (id + session + [signature])
    * @returns {Promise<string>} Token
    */
   async getChartToken(layout, credentials = {}) {
-    const creds = credentials.id && credentials.session;
-    const userID = creds ? credentials.id : -1;
-    const session = creds ? credentials.session : null;
+    const { id, session, signature } = (
+      credentials.id && credentials.session
+        ? credentials
+        : { id: -1, session: null, signature: null }
+    );
 
-    const { data } = await request({
-      host: 'www.tradingview.com',
-      path: `/chart-token/?image_url=${layout}&user_id=${userID}`,
-      headers: { cookie: session ? `sessionid=${session}` : '' },
-    });
+    const { data } = await axios.get(
+      'https://www.tradingview.com/chart-token',
+      {
+        headers: {
+          cookie: genAuthCookies(session, signature),
+        },
+        params: {
+          image_url: layout,
+          user_id: id,
+        },
+        validateStatus,
+      },
+    );
 
     if (!data.token) throw new Error('Wrong layout or credentials');
 
@@ -578,21 +605,26 @@ module.exports = {
    * @function getDrawings
    * @param {string} layout The layout ID found in the layout URL (Like: 'XXXXXXXX')
    * @param {string | ''} [symbol] Market filter (Like: 'BINANCE:BTCEUR')
-   * @param {UserCredentials} [credentials] User credentials (id + session)
+   * @param {UserCredentials} [credentials] User credentials (id + session + [signature])
    * @param {number} [chartID] Chart ID
    * @returns {Promise<Drawing[]>} Drawings
    */
-  async getDrawings(layout, symbol = '', credentials = {}, chartID = 1) {
+  async getDrawings(layout, symbol = '', credentials = {}, chartID = '_shared') {
     const chartToken = await module.exports.getChartToken(layout, credentials);
-    const creds = credentials.id && credentials.session;
-    const session = creds ? credentials.session : null;
 
-    const { data } = await request({
-      host: 'charts-storage.tradingview.com',
-      path: `/charts-storage/layout/${layout}/sources?chart_id=${chartID
-      }&jwt=${chartToken}${symbol ? `&symbol=${symbol}` : ''}`,
-      headers: { cookie: session ? `sessionid=${session}` : '' },
-    });
+    const { data } = await axios.get(
+      `https://charts-storage.tradingview.com/charts-storage/get/layout/${
+        layout
+      }/sources`,
+      {
+        params: {
+          chart_id: chartID,
+          jwt: chartToken,
+          symbol,
+        },
+        validateStatus,
+      },
+    );
 
     if (!data.payload) throw new Error('Wrong layout, user credentials, or chart id.');
 

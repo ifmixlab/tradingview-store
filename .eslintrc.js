@@ -20,5 +20,9 @@ module.exports = {
         devDependencies: ['./test.js', './tests/**'],
       },
     ],
+    'no-restricted-syntax': 'off',
+    'no-await-in-loop': 'off',
+    'no-continue': 'off',
+    'guard-for-in': 'off',
   },
 };
