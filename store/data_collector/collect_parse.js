@@ -6,7 +6,7 @@ const {sleep} = require("../../src/utils");
 const { ObjectId } = require("mongodb");
 const {processItems} = require("../data_parser/parse_scan")
 const REQ_PAGE_SIZE = 1000;
-
+const enablePage = false;
 async function main() {
     await mongo.run((client) => mainProcess(client));
     process.exit(0)
@@ -23,8 +23,8 @@ async function mainProcess(mongoClient) {
     await Promise.all([
         // processMarket(mongoClient, "crypto", scan_crypto_columns),
         // processMarket(mongoClient, "china", scan_stock_columns),
-        processMarket(mongoClient, "hongkong", scan_stock_columns),
-        // processMarket(mongoClient, "america", scan_stock_columns),
+        // processMarket(mongoClient, "hongkong", scan_stock_columns),
+        processMarket(mongoClient, "america", scan_stock_columns),
     ])
     console.log("mainProcess done.")
 }
@@ -38,16 +38,19 @@ async function processMarket(mongoClient, market, columns) {
 async function processMarketPage(mongoClient, market, columns, page = 0, retryCount = 0) {
     try {
         console.log(`processMarketPage start. market:${market}, page:${page}, retryCount:${retryCount}`);
-        // const rangeStart = page * REQ_PAGE_SIZE;
-        // const rangeEnd = (page + 1) * REQ_PAGE_SIZE;
-        // const range = [
-        //     rangeStart,
-        //     rangeEnd
-        // ]
+        const rangeStart = page * REQ_PAGE_SIZE;
+        const rangeEnd = (page + 1) * REQ_PAGE_SIZE;
+        const range = [
+            rangeStart,
+            rangeEnd
+        ]
         const content = {
             columns,
             // range
         };
+        if(enablePage){
+            content.range = range;
+        }
         const response = await TradingView.fetchScanDataRaw(
             market,
             content
@@ -93,8 +96,8 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
         // await mongo.insertManyDocs(mongoClient, db_name_log_tv, coll_name_scan, docs)
         await parseResponse(mongoClient,market,response);
         console.log("processMarketPage done. ", market, page, retryCount)
-        if (response.data.length === REQ_PAGE_SIZE) {
-            await sleep(10)
+        if (enablePage && response.data.length === REQ_PAGE_SIZE) {
+            await sleep(100)
             await processMarketPage(mongoClient, market, columns, page + 1, 0)
         }
     } catch (e) {
