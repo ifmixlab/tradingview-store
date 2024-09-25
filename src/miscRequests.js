@@ -47,8 +47,9 @@ async function fetchScanDataRaw(market = "", content) {
     }catch(e) {
       console.error(`fetchScanDataRaw error. ${JSON.stringify({
         market,
-        range
-      })}`, e);
+        range,
+        error: e.message,
+      })}`,e);
       throw e;
     }
   }

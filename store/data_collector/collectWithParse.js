@@ -113,7 +113,7 @@ async function processMarketPage(mongoClient, market, columns, page = 0, retryCo
             throw new Error("max retry count reached.");
         }else{
             await sleep(1000);
-            console.error(`processMarketPage error, will retry. ${JSON.stringify({market, page, retryCount})}`, e);
+            console.error(`processMarketPage error, will retry. ${JSON.stringify({market, page, retryCount,error:e.message})}`);
             await processMarketPage(mongoClient, market, columns, page, retryCount + 1);
         }
     }
