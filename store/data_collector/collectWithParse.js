@@ -5,7 +5,7 @@ const scan_crypto_columns = require("../../data/scan_crypto_columns.json")
 const {sleep} = require("../../src/utils");
 const { ObjectId } = require("mongodb");
 const {processItems} = require("../data_parser/parse_scan")
-const REQ_PAGE_SIZE = 10000;
+const REQ_PAGE_SIZE = 1000;
 const enablePage = true;
 const MAX_RETRY_COUNT = 30;
 
@@ -27,8 +27,8 @@ async function mainProcess(mongoClient) {
     // await coll.createIndex({ "meta.ts": 1 }, {expireAfterSeconds: expire_seconds });
     await Promise.all([
         // processMarket(mongoClient, "crypto", scan_crypto_columns),
-        processMarket(mongoClient, "china", scan_stock_columns),
-        processMarket(mongoClient, "hongkong", scan_stock_columns),
+        // processMarket(mongoClient, "china", scan_stock_columns),
+        // processMarket(mongoClient, "hongkong", scan_stock_columns),
         processMarket(mongoClient, "america", scan_stock_columns),
     ])
     console.log("mainProcess done.")
